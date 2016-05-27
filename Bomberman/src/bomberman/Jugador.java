@@ -9,6 +9,7 @@ public class Jugador extends Personaje {
 	public Jugador() {
 		this.vidas = 4;
 		this.potenciaBomba = 10.0f;
+		this.velocidad = 10.0f;
 	}	
 	
 	@Override

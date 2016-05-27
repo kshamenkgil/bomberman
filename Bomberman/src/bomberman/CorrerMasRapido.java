@@ -4,8 +4,7 @@ public class CorrerMasRapido extends Potenciador{
 
 	@Override
 	public void potenciar(Jugador jugador) {
-		// TODO Auto-generated method stub
-		
+		jugador.setVelocidad(jugador.getVelocidad()+1.0f);		
 	}
 
 }

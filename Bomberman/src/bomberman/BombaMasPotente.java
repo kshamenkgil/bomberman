@@ -4,8 +4,7 @@ public class BombaMasPotente extends Potenciador {
 
 	@Override
 	public void potenciar(Jugador jugador) {
-		// TODO Auto-generated method stub
-		
+		jugador.setPotenciaBomba(jugador.getPotenciaBomba()+10.0f);		
 	}
 
 }

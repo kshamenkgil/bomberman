@@ -11,4 +11,12 @@ public abstract class Personaje {
 		// mover en x o y * velocidad 
 	}
 	
+	public float getVelocidad() {
+		return velocidad;
+	}
+	
+	public void setVelocidad(float velocidad) {
+		this.velocidad = velocidad;
+	}
+	
 }
