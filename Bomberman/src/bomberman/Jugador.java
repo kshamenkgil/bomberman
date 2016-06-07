@@ -1,7 +1,7 @@
 package bomberman;
 
 public class Jugador extends Personaje {
-	private int id; //aleatorio segun ingreso al servidor	
+	protected int id; //aleatorio segun ingreso al servidor	
 	private int vidas; 
 	private float potenciaBomba;
 	
@@ -9,7 +9,7 @@ public class Jugador extends Personaje {
 	public Jugador() {
 		this.vidas = 4;
 		this.potenciaBomba = 10.0f;
-		this.velocidad = 10.0f;
+		this.velocidad = 1.0f;
 	}	
 	
 	@Override

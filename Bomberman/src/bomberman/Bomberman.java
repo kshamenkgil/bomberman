@@ -19,4 +19,8 @@ public class Bomberman {
 	public void dibujar(){
 		//dibujar mundo
 	}
+
+	public void run() {
+				
+	}
 }
