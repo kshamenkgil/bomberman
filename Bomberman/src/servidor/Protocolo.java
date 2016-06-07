@@ -58,7 +58,7 @@ public class Protocolo {
 	
 	private void moverJugador(Jugador jugador, byte direccion){
 		jugador.mover(direccion);
-		//Mundo.getInstance().actualizarPosicion(jugador, direccion);
+		Mundo.getInstance().actualizarPosicion(jugador, direccion);
 	}
 		
 }
