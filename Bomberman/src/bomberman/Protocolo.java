@@ -1,12 +1,11 @@
-package servidor;
+package bomberman;
 
-import bomberman.Jugador;
+import java.util.ArrayList;
 
 public class Protocolo {
 	/*
 	 * Protocolo
-	 * movimiento: se envia cabecera + id + direccion de movimiento, cliente calcula la nueva posicion con la velocidad(previamente enviada)
-	 * 			   se recibe cabecera + direccion de movimiento
+	 * movimiento: se recibe cabecera + id + direccion de movimiento, cliente calcula la nueva posicion con la velocidad(previamente enviada)
 	 * tiles explotados: se envia cabecera + cantidad + posiciones
 	 * enemigos?: se actualiza posicion
 	 * bombas: cabecera + posicion + potencia (explosion calculada en servidor?)
@@ -30,7 +29,7 @@ public class Protocolo {
 	public static final byte DESCONEXION = 8;
 	public static final byte GET_POTENCIADOR = 9;
 	public static final byte CONEXION = 10;
-	
+		
 	//Direcciones
 	public static final byte NORTE = 1;
 	public static final byte SUR = 2;
@@ -41,9 +40,12 @@ public class Protocolo {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void procesarEntrada(byte[] data, Jugador jugador){
+	public void procesarEntrada(byte[] data){
 		byte header = data[0];
-		switch(header){					
+		switch(header){
+			case CONEXION:
+				Mundo.getInstance().getJugador().id = data[1];
+				break;
 			case COMIENZO_JUEGO:
 				//COMENZAR JUEGO
 				//enviar mapa la primera vez.
@@ -52,21 +54,15 @@ public class Protocolo {
 				
 				break;
 			case MOVIMIENTO:
-				moverJugador(jugador, data[1]);
+				moverJugador(data);
 				break;
 		}			
 	}
 	
-	private void moverJugador(Jugador jugador, byte direccion){
-		jugador.mover(direccion);
-		
-		//H+ID+D
-		byte[] data = new byte[3];
-		data[0] = Protocolo.MOVIMIENTO;
-		data[1] = (byte)jugador.getId();
-		data[2] = direccion;
-		
-		Mundo.getInstance().actualizarPosicion(jugador, data);
+	private void moverJugador(byte[] data){
+		for (Jugador jugador : Mundo.getInstance().getJugadores()) {
+			if(jugador.id == data[1])
+				jugador.mover(data[2]);
+		}
 	}
-		
 }

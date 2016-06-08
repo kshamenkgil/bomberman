@@ -13,25 +13,35 @@ public class ThreadServer extends Thread {
 	public ThreadServer(Socket socket, String name) {
 		super(name);
 		this.socket = socket;
-		this.isRunning = false;
+		this.isRunning = true;
+	}
+	
+	public void terminate(){
+		isRunning = false;
 	}
 	
 	public void run() {        		
+		DataInputStream dIn = null;
+		try {
+			dIn = new DataInputStream(socket.getInputStream());
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		while(isRunning){
 			try {			
-				byte[] message = null;
-				DataInputStream dIn = new DataInputStream(socket.getInputStream());				
+				byte[] message = null;								
 				int length = dIn.readInt();                    // read length of incoming message
 				if(length>0) {
 				    message = new byte[length];
 				    dIn.readFully(message, 0, message.length); // read the message
 				}
+								
+				//dIn.close();
 				
-				/*BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));				
-				message = in.readLine();*/
 				Protocolo protocolo = new Protocolo();
 				protocolo.procesarEntrada(message, jugador);
-				dIn.close();
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -45,10 +55,20 @@ public class ThreadServer extends Thread {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				send(data);
+				try {					
+					DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+					dOut.writeInt(data.length); // write length of the message
+					dOut.write(data);           // write the messag			
+					//dOut.close();
+					//PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+					//out.println();
+					//out.close();			
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		});
+		}).start();
 	}
 	
 	public Jugador getJugador() {
@@ -58,21 +78,7 @@ public class ThreadServer extends Thread {
 	public void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
-	
-	private void send(byte[] data){
-		try {					
-			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-			dOut.writeInt(data.length); // write length of the message
-			dOut.write(data);           // write the messag			
-			dOut.close();
-			//PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			//out.println();
-			//out.close();			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+		
 	
 	public Socket getSocket() {
 		return socket;

@@ -2,14 +2,14 @@ package bomberman;
 
 import java.util.ArrayList;
 
+
 public class Bomberman {
-	private Mapa map;
-	private ArrayList<Jugador> jugadores;
-	private ArrayList<Enemigo> enemigos;
+	
+	private Cliente cliente = null;
 	
 	public Bomberman() {
-		//cargar todo
-		Mapa map = new Mapa("path");
+		Configuracion.getInstancia().leerConfiguracion();
+		System.out.println(Configuracion.getInstancia().isFullscreen());
 	}
 	
 	public void update(){
@@ -21,6 +21,8 @@ public class Bomberman {
 	}
 
 	public void run() {
-				
+		cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
+		Mundo.getInstance().setJugador(new Jugador());
+		cliente.recieveData();		
 	}
 }

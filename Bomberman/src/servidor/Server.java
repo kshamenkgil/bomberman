@@ -2,6 +2,7 @@ package servidor;
 
 import java.io.*;
 import java.net.*;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import bomberman.Jugador;
@@ -10,8 +11,8 @@ public class Server implements Runnable{
 	
 	private boolean isRunning;
 	private int connectedUsers;
-	private int lastId;
-	private ArrayList<ThreadServer> connections;
+	private byte lastId;
+	private ArrayList<ThreadServer> connections = new ArrayList<ThreadServer>();
 	public Server() {
 		this.isRunning = false;
 		this.connectedUsers = 0;
@@ -28,6 +29,7 @@ public class Server implements Runnable{
 		
         try {
             serverSocket = new ServerSocket(24556);
+            System.out.println("Servidor escuchando en puerto 24556");
             
         } catch (IOException e) {
         	System.out.println("No se puede escuchar en el puerto 24556");            
@@ -43,13 +45,21 @@ public class Server implements Runnable{
 				e.printStackTrace();
 			}
 			ThreadServer t = new ThreadServer(entrante,"Usuario" + connectedUsers);
+			
 			Jugador j = new Jugador();
 			j.setId(lastId);
-			t.setJugador(j);			
+			
+			t.setJugador(j);
+			
 			t.start();
 			
+			byte data[] = new byte[2];
+			data[0] = Protocolo.CONEXION;
+			data[1] = lastId;
+			
+			t.sendData(data);
 			connections.add(t);
-			//players.add(new Player(t));
+			
 			this.lastId++;
 			this.connectedUsers++;			
 		}

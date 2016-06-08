@@ -17,16 +17,16 @@ public abstract class Personaje {
 	
 	public void mover(int direccion){ // norte sur este oeste
 		switch(direccion){
-			case 0: //cambiar por protocolo.norte
+			case 1: //cambiar por protocolo.norte
 				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() + (1*this.velocidad));
 				break;
-			case 1: //cambiar por protocolo.sur
+			case 2: //cambiar por protocolo.sur
 				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() - (1*this.velocidad));
 				break;
-			case 2: //cambiar por protocolo.este
+			case 3: //cambiar por protocolo.este
 				this.posicion = new Punto2D(this.posicion.getX() + (1*this.velocidad), this.posicion.getY());
 				break;
-			case 3: //cambiar por protocolo.oeste
+			case 4: //cambiar por protocolo.oeste
 				this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());
 				break;
 		}		

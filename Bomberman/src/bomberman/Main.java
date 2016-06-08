@@ -6,8 +6,8 @@ public class Main {
 		Server server = null;
 		Bomberman bomberman = null;
 		for (int i = 0; i < args.length; i++) {
-			if(args[i] == "-server"){
-				if(server == null){
+			if(args[i].compareTo("-server") == 0){
+				if(server == null){					
 					server = new Server();
 					new Thread(server, "Servidor").start();
 				}
@@ -16,6 +16,7 @@ public class Main {
 		
 		bomberman = new Bomberman();
 		bomberman.run();
+		
 	}
 
 }

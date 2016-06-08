@@ -7,7 +7,6 @@ import bomberman.Jugador;
 import bomberman.Tile;
 
 public class Mundo {
-	private static Mundo instance = null;
 	private ArrayList<Enemigo> enemigos;
 	private ArrayList<Tile> bloquesRompibles;
 	private ArrayList<ThreadServer> connections;
@@ -29,12 +28,7 @@ public class Mundo {
 		this.connections = connections;
 	}
 	
-	public void actualizarPosicion(Jugador jugador, byte direccion){
-		//H+ID+D
-		byte[] data = new byte[3];
-		data[0] = Protocolo.MOVIMIENTO;
-		data[1] = (byte)jugador.getId();
-		data[2] = direccion;
+	public void actualizarPosicion(Jugador jugador, byte[] data){
 		for (ThreadServer t: connections) {
 			if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);
