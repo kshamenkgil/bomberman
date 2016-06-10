@@ -23,6 +23,6 @@ public class Bomberman {
 	public void run() {
 		cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
 		Mundo.getInstance().setJugador(new Jugador());
-		cliente.recieveData();		
+		cliente.recieveData();	
 	}
 }

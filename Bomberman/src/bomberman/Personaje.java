@@ -1,7 +1,11 @@
 package bomberman;
 
 public abstract class Personaje {	
-	protected Sprite personaje;
+	protected Sprite personajeN;
+	protected Sprite personajeS;
+	protected Sprite personajeE;
+	protected Sprite personajeO;
+	protected Sprite personajeMuerte;
 	protected Punto2D posicion;
 	protected float velocidad; 
 	

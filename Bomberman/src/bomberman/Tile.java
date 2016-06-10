@@ -1,15 +1,19 @@
 package bomberman;
 
 public class Tile {
-	private Textura textura; 
+	private Sprite tileSprite; 
 	private double width, height; // 32x32, 64x64 , etc	
-		
-	public Tile(String path) {
-		
-	}
+	private boolean seRompe;
+	private boolean colisionable;
 	
+	
+	public Tile(boolean seRompe, boolean colisionable, Sprite tileSprite) {
+		this.seRompe = seRompe;
+		this.colisionable = colisionable;
+		this.tileSprite = tileSprite;		
+	}
+
 	public void dibujar(){
 		
-	}
-	
+	}		
 }

@@ -2,13 +2,15 @@ package bomberman;
 
 public class Bomba {
 	private Sprite bombaSprite;
-	private float potencia;
+	private int potencia;
 	private float tiempoExplosion;
 	private Punto2D ubicacion; //no deberia tambien tener atributo ubicacion?
 	
 		
-	public Bomba(float potencia, float tiempoExplosion,Punto2D ubic) {
+	public Bomba(int potencia, float tiempoExplosion,Punto2D ubic) {		
 		ubicacion = new Punto2D(ubic.getX(),ubic.getY());
+		this.potencia = potencia;
+		this.tiempoExplosion = tiempoExplosion;
 	}
 	
 	public void explotar(float tiempoExplocion){
@@ -22,8 +24,7 @@ public class Bomba {
 	public void dibujarBomba(){
 		
 	}
-		
-	
+			
 	public Sprite getBombaSprite() {
 		return bombaSprite;
 	}

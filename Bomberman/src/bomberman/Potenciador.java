@@ -1,9 +1,9 @@
 package bomberman;
 
 public abstract class Potenciador {
-	protected Textura textura;
+	protected int textura;
 	
-	public Textura getTextura() {
+	public int getTextura() {
 		return textura;
 	}
 	

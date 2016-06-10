@@ -3,12 +3,13 @@ package bomberman;
 public class Jugador extends Personaje {
 	protected int id; //aleatorio segun ingreso al servidor	
 	private int vidas; 
-	private float potenciaBomba;
-	
+	private int potenciaBomba;
+	private int cantBombas;
+	private byte color;
 	
 	public Jugador() {
 		this.vidas = 4;
-		this.potenciaBomba = 10.0f;
+		this.potenciaBomba = 10;
 		this.velocidad = 1.0f;
 	}	
 	
@@ -34,13 +35,27 @@ public class Jugador extends Personaje {
 		return vidas;
 	}
 	
-	public void setPotenciaBomba(float potenciaBomba) {
+	public void setPotenciaBomba(int potenciaBomba) {
 		this.potenciaBomba = potenciaBomba;
 	}
 	
-	public float getPotenciaBomba() {
+	public int getPotenciaBomba() {
 		return potenciaBomba;
 	}
 	
+	public int getCantBombas() {
+		return cantBombas;
+	}
 	
+	public void setCantBombas(int cantBombas) {
+		this.cantBombas = cantBombas;
+	}
+	
+	public byte getColor() {
+		return color;
+	}
+	
+	public void setColor(byte color) {
+		this.color = color;
+	}
 }
