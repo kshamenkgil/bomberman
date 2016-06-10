@@ -1,6 +1,9 @@
 package bomberman;
 import java.util.Hashtable;
 public class Engine {
+	//public static int TILE_WIDTH = 16;
+	//public static int TILE_HEIGHT = 16;
+	public static int FPS = 60;
 	private static Engine instancia;
 	private Hashtable<String, Textura> texturas = new Hashtable<String,Textura>();
 	public static Engine getInstancia() {
