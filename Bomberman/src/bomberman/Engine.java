@@ -1,10 +1,20 @@
 package bomberman;
+import java.awt.Graphics2D;
+import java.awt.image.ImageObserver;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
+
 public class Engine {
 	//public static int TILE_WIDTH = 16;
 	//public static int TILE_HEIGHT = 16;
 	public static int FPS = 60;
+	public static int MS_PER_UPDATE = 16;
 	private static Engine instancia;
+	private ArrayList<Tile> tiles = new ArrayList<Tile>();	
+	private GameScreen juego;
+	private boolean startUpdate = false;
+	//private boolean isRunning = false;
 	private Hashtable<String, Textura> texturas = new Hashtable<String,Textura>();
 	public static Engine getInstancia() {
 		// TODO Auto-generated constructor stub
@@ -14,6 +24,42 @@ public class Engine {
 		return instancia;
 	}
 	
+	public synchronized void setStartUpdate(boolean startUpdate) {
+		this.startUpdate = startUpdate;
+	}
+	
+	public void dispose()
+	{
+		//cerrar muchas cosas y esto		
+		setStartUpdate(false);
+	}
+	
+	public void inicializarVentana(){
+		/*new Thread(new Runnable() {
+			public void run() {
+				juego = new GameScreen();
+				setStartUpdate(true);
+				juego.setVisible(true);				
+			}
+		}).start();*/
+		
+		addTexturas("ex", new Textura("assets/graficos/bomberman1/tiles/explotable.png"));
+		
+
+		//addTexturas("bl", new Textura("assets/graficos/bomberman1/tiles/bloqueado.png"));
+		
+		for (int i = 0; i < 475; i++) {
+			Tile t = new Tile(true, true, new Sprite("ex", false));		
+			t.getTileSprite().setLooping(false);
+			tiles.add(t);
+		}
+		
+		juego = new GameScreen();
+		juego.setVisible(true);
+		setStartUpdate(true);
+		
+	}
+		
 	public void cargarTexturas(String set){
 		//personajes
 		addTexturas("p1n", new Textura(set+"personaje/1/norte.png"));
@@ -62,7 +108,11 @@ public class Engine {
 		
 	}
 	
-	private void addTexturas(String name, Textura textura) {
+	public boolean isStartUpdate() {
+		return startUpdate;
+	}
+	
+	public void addTexturas(String name, Textura textura) {
 		if(texturas.get(name) == null)
 			texturas.put(name, textura);
 	}
@@ -71,12 +121,64 @@ public class Engine {
 		return texturas.get(name);
 	}
 	
-	public void dibujar(Punto2D pos){
-		//rutina del engine para dibujar en la pantalla
+	public synchronized void dibujar(Graphics2D g, ImageObserver io){		
+							
+			int c = 0;
+			int t = 0;
+			for (Tile tile : tiles) {
+				tile.dibujar(g, io, new Punto2D(c, t));
+				c++;
+				if(c == 25){
+					c= 0;
+					t++;
+				}
+			}
+			//if(Mundo.getInstance().getJugador().personajeS != null)
+			Mundo.getInstance().getJugador().personajeN.dibujar(g, io, new Punto2D(0, 0));
+			Mundo.getInstance().getJugador().personajeS.dibujar(g, io, new Punto2D(1, 0));
+			Mundo.getInstance().getJugador().personajeE.dibujar(g, io, new Punto2D(2, 0));
+			Mundo.getInstance().getJugador().personajeO.dibujar(g, io, new Punto2D(3, 0));
+			Mundo.getInstance().getJugador().personajeMuerte.dibujar(g, io, new Punto2D(4, 0));
+
 	}
 	
 	public void update(){
 		
+			while(!Engine.getInstancia().isStartUpdate()){
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}			
+			
+
+			while(startUpdate)
+			{		
+				
+								
+
+			    //processInput();
+
+			    //update
+				
+				//fin update
+			    
+				  
+				 
+				//repaint
+				juego.repaint();
+				
+				/*try {
+					Thread.sleep(elapsed);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				*/				
+			}		
+							
 	}
 		
 }

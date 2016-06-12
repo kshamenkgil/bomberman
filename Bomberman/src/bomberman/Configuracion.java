@@ -30,8 +30,7 @@ public class Configuracion {
 			Document doc = dBuilder.parse(inputFile);
 	        doc.getDocumentElement().normalize();
 
-	        this.fullscreen = Boolean.parseBoolean(doc.getElementsByTagName("fullscreen").item(0).getTextContent());
-	        this.fullscreen = Boolean.parseBoolean(doc.getElementsByTagName("fullscreen").item(0).getTextContent());
+	        this.fullscreen = Boolean.parseBoolean(doc.getElementsByTagName("fullscreen").item(0).getTextContent());	        
 	        this.screenX = Integer.parseInt(doc.getElementsByTagName("x").item(0).getTextContent());
 	        this.setScreenY(Integer.parseInt(doc.getElementsByTagName("y").item(0).getTextContent()));
 	        this.ip = doc.getElementsByTagName("ip").item(0).getTextContent();

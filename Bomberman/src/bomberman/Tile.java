@@ -1,5 +1,8 @@
 package bomberman;
 
+import java.awt.Graphics2D;
+import java.awt.image.ImageObserver;
+
 public class Tile {
 	private Sprite tileSprite; 
 	private double width, height; // 32x32, 64x64 , etc	
@@ -10,10 +13,23 @@ public class Tile {
 	public Tile(boolean seRompe, boolean colisionable, Sprite tileSprite) {
 		this.seRompe = seRompe;
 		this.colisionable = colisionable;
-		this.tileSprite = tileSprite;		
+		this.tileSprite = tileSprite;
 	}
 
-	public void dibujar(){
+	
+	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
+		tileSprite.dibujar(g, io, pos);
+	}
+	
+	public boolean isColisionable() {
+		return colisionable;
+	}
+	
+	public Sprite getTileSprite() {
+		return tileSprite;
+	}	
 		
-	}		
+	public boolean isSeRompe() {
+		return seRompe;
+	}
 }

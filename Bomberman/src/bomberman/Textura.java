@@ -14,6 +14,7 @@ public class Textura {
 	public Textura(String path) {
 		try {
 			this.imagen = ImageIO.read(new File(path));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

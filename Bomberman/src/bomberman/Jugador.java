@@ -10,8 +10,17 @@ public class Jugador extends Personaje {
 	public Jugador() {
 		this.vidas = 4;
 		this.potenciaBomba = 10;
-		this.velocidad = 1.0f;
+		this.velocidad = 1.0f;			
+		
 	}	
+	
+	public void setSprites(Sprite norte, Sprite sur, Sprite este ,Sprite oeste, Sprite muerte){
+		this.personajeN = norte;
+		this.personajeS = sur;
+		this.personajeE = este;
+		this.personajeO = oeste;
+		this.personajeMuerte = muerte;	
+	}
 	
 	@Override
 	public void atacar() {
