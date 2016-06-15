@@ -1,7 +1,5 @@
 package bomberman;
 
-import java.util.ArrayList;
-
 public class Protocolo {
 	/*
 	 * Protocolo
@@ -56,6 +54,19 @@ public class Protocolo {
 			case MOVIMIENTO:
 				moverJugador(data);
 				break;
+			case DESCONEXION:
+				byte id = data[1];
+				if(id == Mundo.getInstance().getJugador().getId()){				
+					Bomberman.getInstancia().setCanClose(true);
+				}else{
+					Jugador j1 = null;
+					for (Jugador j : Mundo.getInstance().getJugadores()) {
+						if(j.getId() == id)
+							j1 = j;
+					}
+					Mundo.getInstance().getJugadores().remove(j1);
+				}
+				break;
 		}			
 	}
 	
@@ -65,4 +76,11 @@ public class Protocolo {
 				jugador.mover(data[2]);
 		}
 	}
+	
+	public static void moverJugador(byte direccion){
+		byte[] t = new byte[2];
+        t[0] = Protocolo.MOVIMIENTO;
+        t[1] = direccion;
+        Bomberman.getInstancia().getCliente().sendData(t);
+	}	
 }

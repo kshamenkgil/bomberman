@@ -1,18 +1,20 @@
 package bomberman;
 
 public class Jugador extends Personaje {
-	protected int id; //aleatorio segun ingreso al servidor	
+	protected byte id; //aleatorio segun ingreso al servidor	
 	private int vidas; 
 	private int potenciaBomba;
 	private int cantBombas;
 	private byte color;
 	
-	public Jugador() {
+	public Jugador(Punto2D posicion) {
+		super(posicion);
 		this.vidas = 4;
 		this.potenciaBomba = 10;
 		this.velocidad = 1.0f;			
 		
 	}	
+		
 	
 	public void setSprites(Sprite norte, Sprite sur, Sprite este ,Sprite oeste, Sprite muerte){
 		this.personajeN = norte;
@@ -28,11 +30,11 @@ public class Jugador extends Personaje {
 		
 	}
 	
-	public int getId() {
+	public byte getId() {
 		return id;
 	}
 	
-	public void setId(int id) {
+	public void setId(byte id) {
 		this.id = id;
 	}
 	

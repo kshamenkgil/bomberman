@@ -2,10 +2,10 @@ package servidor;
 
 import java.io.*;
 import java.net.*;
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 
 import bomberman.Jugador;
+import bomberman.Punto2D;
 
 public class Server implements Runnable{
 	
@@ -32,7 +32,8 @@ public class Server implements Runnable{
             System.out.println("Servidor escuchando en puerto 24556");
             
         } catch (IOException e) {
-        	System.out.println("No se puede escuchar en el puerto 24556");            
+        	System.out.println("No se puede escuchar en el puerto 24556");
+        	Thread.currentThread().interrupt();
         }
 		
 		isRunning = true;
@@ -46,7 +47,7 @@ public class Server implements Runnable{
 			}
 			ThreadServer t = new ThreadServer(entrante,"Usuario" + connectedUsers);
 			
-			Jugador j = new Jugador();
+			Jugador j = new Jugador(new Punto2D(0, 0));
 			j.setId(lastId);
 			
 			t.setJugador(j);
@@ -62,6 +63,7 @@ public class Server implements Runnable{
 			
 			this.lastId++;
 			this.connectedUsers++;			
+			Mundo.getInstance().setConnections(connections);
 		}
 		
 		//si el juego comenzó enviar info inicial e iniciar update

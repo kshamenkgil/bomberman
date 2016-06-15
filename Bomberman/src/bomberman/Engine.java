@@ -2,7 +2,6 @@ package bomberman;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Hashtable;
 
 public class Engine {
@@ -11,6 +10,7 @@ public class Engine {
 	public static int FPS = 60;
 	public static int MS_PER_UPDATE = 16;
 	private static Engine instancia;
+	private InputHandler input = new InputHandler();
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();	
 	private GameScreen juego;
 	private boolean startUpdate = false;
@@ -30,8 +30,7 @@ public class Engine {
 	
 	public void dispose()
 	{
-		//cerrar muchas cosas y esto		
-		setStartUpdate(false);
+		juego.dispose();
 	}
 	
 	public void inicializarVentana(){
@@ -134,11 +133,7 @@ public class Engine {
 				}
 			}
 			//if(Mundo.getInstance().getJugador().personajeS != null)
-			Mundo.getInstance().getJugador().personajeN.dibujar(g, io, new Punto2D(0, 0));
-			Mundo.getInstance().getJugador().personajeS.dibujar(g, io, new Punto2D(1, 0));
-			Mundo.getInstance().getJugador().personajeE.dibujar(g, io, new Punto2D(2, 0));
-			Mundo.getInstance().getJugador().personajeO.dibujar(g, io, new Punto2D(3, 0));
-			Mundo.getInstance().getJugador().personajeMuerte.dibujar(g, io, new Punto2D(4, 0));
+			Mundo.getInstance().getJugador().dibujar(g, io);			
 
 	}
 	
@@ -153,19 +148,22 @@ public class Engine {
 				}
 			}			
 			
+			
 
 			while(startUpdate)
 			{		
 				
 								
-
-			    //processInput();
+				//procesar input
+				//input.update();			    
 
 			    //update
 				
+				
+				
 				//fin update
 			    
-				  
+				
 				 
 				//repaint
 				juego.repaint();
@@ -177,8 +175,12 @@ public class Engine {
 					e.printStackTrace();
 				}
 				*/				
-			}		
+			}	
+			Bomberman.getInstancia().dispose();
 							
 	}
-		
+
+	public synchronized InputHandler getInput() {
+		return input;
+	}	
 }

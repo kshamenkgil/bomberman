@@ -9,11 +9,13 @@ import java.io.*;
 public class ThreadServer extends Thread {
 	private Socket socket = null;
 	private Jugador jugador = null;
+	private Protocolo protocolo = null;
 	private boolean isRunning = false;
 	public ThreadServer(Socket socket, String name) {
 		super(name);
 		this.socket = socket;
 		this.isRunning = true;
+		this.protocolo = new Protocolo();
 	}
 	
 	public void terminate(){
@@ -28,19 +30,36 @@ public class ThreadServer extends Thread {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+	    /*try {
+			socket.setSoTimeout(1);
+		} catch (SocketException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}*/
+	    
+		protocolo.procesarEntrada();
+		
 		while(isRunning){
+			/*try {
+				Thread.sleep(10);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
 			try {			
 				byte[] message = null;								
 				int length = dIn.readInt();                    // read length of incoming message
 				if(length>0) {
 				    message = new byte[length];
-				    dIn.readFully(message, 0, message.length); // read the message
+				    dIn.readFully(message, 0, message.length); // read the message				    
 				}
 								
-				//dIn.close();
+				protocolo.getColaMensajes().add(message);
 				
-				Protocolo protocolo = new Protocolo();
-				protocolo.procesarEntrada(message, jugador);
+				//dIn.close();
+								
+				//protocolo.procesarEntrada(message, jugador);				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -51,32 +70,39 @@ public class ThreadServer extends Thread {
 	}
 	
 	public void sendData(final byte[] data){
-		new Thread(new Runnable() {
+		try {					
+			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+			dOut.writeInt(data.length); // write length of the message
+			dOut.write(data);           // write the messag			
+			//dOut.close();
+			//PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			//out.println();
+			//out.close();			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
 			
+		}
+		/*new Thread(new Runnable() {			
 			@Override
 			public void run() {
-				try {					
-					DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-					dOut.writeInt(data.length); // write length of the message
-					dOut.write(data);           // write the messag			
-					//dOut.close();
-					//PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-					//out.println();
-					//out.close();			
-				} catch (IOException e) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
+
 			}
-		}).start();
+		}).start();*/
 	}
 	
 	public Jugador getJugador() {
 		return jugador;
 	}
 	
-	public void setJugador(Jugador jugador) {
+	public void setJugador(Jugador jugador) {		
 		this.jugador = jugador;
+		this.protocolo.setJugador(jugador);
 	}
 		
 	
@@ -85,14 +111,7 @@ public class ThreadServer extends Thread {
 	}
 	
 	public void closeSocket(){
-		try {
-			this.socket.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		terminate();
 	}
-
-	
 	
 }

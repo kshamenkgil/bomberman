@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -26,6 +28,7 @@ public class GameScreen extends JFrame {
 		setBackground(Color.BLACK);
 		setTitle("Bomberman");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addKeyListener(new TAdapter());
 		//pantalla centrada respecto a la resolucion actual
 		gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 		setBounds(gd.getDisplayMode().getWidth()/2-Configuracion.getInstancia().getScreenX()/2, gd.getDisplayMode().getHeight()/2 - Configuracion.getInstancia().getScreenY()/2, Configuracion.getInstancia().getScreenX(), Configuracion.getInstancia().getScreenY());
@@ -34,6 +37,7 @@ public class GameScreen extends JFrame {
   		DisplayMode newMode = new DisplayMode(Configuracion.getInstancia().getScreenX(), Configuracion.getInstancia().getScreenY(),oldMode.getBitDepth(),oldMode.getRefreshRate());
 		
 		if(Configuracion.getInstancia().isFullscreen()){
+		    //this.setUndecorated(true);
 			this.setExtendedState(JFrame.MAXIMIZED_BOTH);		
 			gd.setFullScreenWindow(this);
 			gd.setDisplayMode(newMode);
@@ -61,8 +65,21 @@ public class GameScreen extends JFrame {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		gd.setDisplayMode(oldMode);
+		if(Configuracion.getInstancia().isFullscreen())
+			gd.setDisplayMode(oldMode);
 		super.dispose();		
 	}
 	
+	private class TAdapter extends KeyAdapter {
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            Engine.getInstancia().getInput().keyReleased(e);
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+        	Engine.getInstancia().getInput().keyPressed(e);
+        }
+    }
 }

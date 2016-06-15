@@ -26,10 +26,9 @@ public class Cliente {
 	public void closeSocket(){
 		
 		//parar thread recieveData
-		try {
-			runnable.getSocket().close();
+		try {						
 			runnable.terminate();
-			receiver.join();
+			//receiver.join();
 			isReceiving = false;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -49,6 +48,7 @@ public class Cliente {
 	public void recieveData(){
 		//thread que recibe datos del server
 		if(!isReceiving){
+			isReceiving = true;
 			runnable = new Receiver(socket);
 			receiver = new Thread(runnable,"client data receiver thread");		
 			receiver.start();	
@@ -57,19 +57,26 @@ public class Cliente {
 	}
 	
 	public void sendData(final byte[] data){
-		new Thread(new Runnable() {			
+		try {					
+			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
+			dOut.writeInt(data.length); // write length of the message
+			dOut.write(data);           // write the messag			
+			//dOut.close();							
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		/*new Thread(new Runnable() {			
 			@Override
 			public void run() {
-				try {					
-					DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
-					dOut.writeInt(data.length); // write length of the message
-					dOut.write(data);           // write the messag			
-					dOut.close();							
-				} catch (IOException e) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}				
+					e1.printStackTrace();
+				}
+			
 			}			
-		},"client send data thread").start();
+		},"client send data thread").start();*/
 	}
 }

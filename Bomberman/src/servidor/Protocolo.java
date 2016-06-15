@@ -1,5 +1,8 @@
 package servidor;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import bomberman.Jugador;
 
 public class Protocolo {
@@ -37,24 +40,56 @@ public class Protocolo {
 	public static final byte ESTE = 3;
 	public static final byte OESTE = 4;
 	
+	private boolean isRunning = true;
+	private Queue<byte[]> colaMensajes = new LinkedList<>();
+	private Jugador jugador;
+	
 	public Protocolo() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void procesarEntrada(byte[] data, Jugador jugador){
-		byte header = data[0];
-		switch(header){					
-			case COMIENZO_JUEGO:
-				//COMENZAR JUEGO
-				//enviar mapa la primera vez.
-				//enviar posiciones
-				//se puede poner en un metodo y llamarlo
-				
-				break;
-			case MOVIMIENTO:
-				moverJugador(jugador, data[1]);
-				break;
-		}			
+	public synchronized void stop(){
+		isRunning = false;
+	}
+	
+	//public void procesarEntrada(byte[] data, Jugador jugador){		
+	public void procesarEntrada(){
+		new Thread(new Runnable() {
+			public void run() {
+				while(isRunning)
+				{
+					while(colaMensajes.isEmpty()){
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+										
+					byte[] data = colaMensajes.poll();
+					
+					byte header = data[0];
+					switch(header){					
+						case COMIENZO_JUEGO:
+							//COMENZAR JUEGO
+							//enviar mapa la primera vez.
+							//enviar posiciones
+							//se puede poner en un metodo y llamarlo
+							
+							break;
+						case MOVIMIENTO:
+							moverJugador(jugador, data[1]);
+							break;
+							
+						case DESCONEXION:
+							//enviar desconexion a los clientes
+							Mundo.getInstance().desconectarJugador(jugador);
+							isRunning = false;
+					}		
+				}
+			}
+		},"protocolo").start();		
 	}
 	
 	private void moverJugador(Jugador jugador, byte direccion){
@@ -67,6 +102,15 @@ public class Protocolo {
 		data[2] = direccion;
 		
 		Mundo.getInstance().actualizarPosicion(jugador, data);
+		System.out.println(jugador.getPosicion());
 	}
-		
+	
+	public Queue<byte[]> getColaMensajes() {
+		return colaMensajes;
+	}
+
+	public void setJugador(Jugador jugador) {
+		this.jugador = jugador;
+	}
+	
 }

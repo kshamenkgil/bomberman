@@ -23,10 +23,20 @@ public class Receiver implements Runnable{
 	@Override
 	public void run() {
 		Protocolo p = new Protocolo();
-		while(running){
-			DataInputStream dIn;
-			try {
-				dIn = new DataInputStream(socket.getInputStream());
+		DataInputStream dIn = null;
+		try {			
+			dIn = new DataInputStream(socket.getInputStream());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		while(running){			
+			/*try {
+				Thread.sleep(100);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
+			try {				
 				int length = dIn.readInt();                    // read length of incoming message
 				if(length>0) {
 				    byte[] message = new byte[length];
@@ -38,6 +48,12 @@ public class Receiver implements Runnable{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}				
-		}				
+		}
+		try {
+			this.socket.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}		    
 }

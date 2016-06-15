@@ -5,7 +5,7 @@ import java.awt.image.ImageObserver;
 
 public class Tile {
 	private Sprite tileSprite; 
-	private double width, height; // 32x32, 64x64 , etc	
+	//private double width, height; // 32x32, 64x64 , etc	
 	private boolean seRompe;
 	private boolean colisionable;
 	
@@ -18,7 +18,7 @@ public class Tile {
 
 	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
-		tileSprite.dibujar(g, io, pos);
+		tileSprite.dibujarTile(g, io, pos);
 	}
 	
 	public boolean isColisionable() {

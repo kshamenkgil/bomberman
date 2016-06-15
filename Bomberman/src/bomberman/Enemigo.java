@@ -2,6 +2,10 @@ package bomberman;
 
 public class Enemigo extends Personaje {
 
+	public Enemigo(Punto2D posicion) {
+		super(posicion);
+	}
+	
 	@Override
 	public void atacar() {
 		// TODO Auto-generated method stub

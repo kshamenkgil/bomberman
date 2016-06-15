@@ -11,9 +11,9 @@ public class ClienteMuevePersonaje {
 	@Test
 	public void ClienteMuevePersonajeEste(){
 				
-		Jugador j = new Jugador();
+		Jugador j = new Jugador(new Punto2D(10, 15));
 		j.setPosicion(new Punto2D(10, 15));
-		j.setId(2);
+		j.setId((byte) 2);
 		Mundo.getInstance().getJugadores().add(j);
 		
 		Protocolo p = new Protocolo();
