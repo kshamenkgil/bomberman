@@ -13,8 +13,7 @@ public class Sprite {
 	private long lastTiempo;
 	private int tileWidth;
 	private int tileHeight;
-	private boolean dibujar;
-	
+	private boolean dibujar;	
 	
 	public Sprite(String textura, boolean loop) {
 		this.looping = loop;
@@ -25,7 +24,7 @@ public class Sprite {
 		this.actualImg = 0;
 		this.lastTiempo = Engine.MS_PER_UPDATE;
 		this.dibujar = false;
-		this.looping = false;
+		this.looping = false;				
 	}
 
 	public void dibujarTile(Graphics2D g, ImageObserver io, Punto2D pos){
@@ -40,7 +39,7 @@ public class Sprite {
 				}*/
 				//dibujar			
 				
-				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);
+				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
 				g.drawImage(img, (int)pos.getX()*this.tileWidth, (int)pos.getY()*this.tileHeight, io);
 				
 				this.tiempo++;
@@ -61,6 +60,7 @@ public class Sprite {
 		//}
 	}
 	
+	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
 		//if(this.dibujar){
 			if(this.looping){
@@ -73,7 +73,7 @@ public class Sprite {
 				}*/
 				//dibujar			
 				
-				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);
+				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
 				g.drawImage(img, (int)pos.getX(), (int)pos.getY(), io);
 				
 				this.tiempo++;
@@ -87,7 +87,7 @@ public class Sprite {
 				}
 			}else{		
 				//dibujar esto
-				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);
+				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
 				g.drawImage(img, (int)pos.getX(), (int)pos.getY(), io);
 				
 			}

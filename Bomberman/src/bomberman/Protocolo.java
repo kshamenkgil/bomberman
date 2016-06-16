@@ -1,5 +1,9 @@
 package bomberman;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 public class Protocolo {
 	/*
 	 * Protocolo
@@ -27,7 +31,8 @@ public class Protocolo {
 	public static final byte DESCONEXION = 8;
 	public static final byte GET_POTENCIADOR = 9;
 	public static final byte CONEXION = 10;
-		
+	public static final byte JSON = 123;
+	
 	//Direcciones
 	public static final byte NORTE = 1;
 	public static final byte SUR = 2;
@@ -67,7 +72,17 @@ public class Protocolo {
 					Mundo.getInstance().getJugadores().remove(j1);
 				}
 				break;
+			case JSON:
+				parseJSON(new String(data));				
+				break;
 		}			
+	}
+	
+	private void parseJSON(String json){
+		JsonParser parser = new JsonParser();
+		JsonObject o = parser.parse(json).getAsJsonObject();
+		
+		System.out.println(o.get("header"));
 	}
 	
 	private void moverJugador(byte[] data){

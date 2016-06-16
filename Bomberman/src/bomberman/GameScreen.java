@@ -27,6 +27,7 @@ public class GameScreen extends JFrame {
 		setResizable(false);
 		setBackground(Color.BLACK);
 		setTitle("Bomberman");
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addKeyListener(new TAdapter());
 		//pantalla centrada respecto a la resolucion actual
@@ -37,11 +38,12 @@ public class GameScreen extends JFrame {
   		DisplayMode newMode = new DisplayMode(Configuracion.getInstancia().getScreenX(), Configuracion.getInstancia().getScreenY(),oldMode.getBitDepth(),oldMode.getRefreshRate());
 		
 		if(Configuracion.getInstancia().isFullscreen()){
-		    //this.setUndecorated(true);
+		    this.setUndecorated(true);
 			this.setExtendedState(JFrame.MAXIMIZED_BOTH);		
 			gd.setFullScreenWindow(this);
 			gd.setDisplayMode(newMode);
 			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+			this.setAlwaysOnTop(true);
 		}
 			//gd.setDisplayMode(new DisplayMode(Configuracion.getInstancia().getScreenX(), Configuracion.getInstancia().getScreenY(), gd.getDisplayMode().getBitDepth(), gd.getDisplayMode().getRefreshRate()));
 		
@@ -55,7 +57,7 @@ public class GameScreen extends JFrame {
 				g2d.dispose();				
 			}
 		};
-		contentPane.setBackground(Color.BLACK);				
+		contentPane.setBackground(new Color(80, 160, 1));				
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setSize(new Dimension(Configuracion.getInstancia().getScreenX(), Configuracion.getInstancia().getScreenY()));
 		contentPane.setLayout(new BorderLayout(0, 0));

@@ -2,6 +2,7 @@ package bomberman;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Hashtable;
 
 public class Engine {
@@ -148,11 +149,14 @@ public class Engine {
 				}
 			}			
 			
-			
-
+			/*long previous = Calendar.getInstance().getTimeInMillis();
+			long lag = 0;*/						
 			while(startUpdate)
-			{		
-				
+			{				
+				/*long current = Calendar.getInstance().getTimeInMillis();
+				long elapsed = current - previous;				
+				previous = current;				
+				lag+=elapsed;*/
 								
 				//procesar input
 				//input.update();			    
@@ -163,18 +167,22 @@ public class Engine {
 				
 				//fin update
 			    
-				
+				/*while (lag >= MS_PER_UPDATE)
+				{
+					lag-= MS_PER_UPDATE;
+							
+				}*/
 				 
 				//repaint
 				juego.repaint();
 				
-				/*try {
-					Thread.sleep(elapsed);
+								
+				/*try {				
+					Thread.sleep(Engine.MS_PER_UPDATE);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-				*/				
+				}*/
 			}	
 			Bomberman.getInstancia().dispose();
 							

@@ -33,13 +33,14 @@ public class Protocolo {
 	public static final byte DESCONEXION = 8;
 	public static final byte GET_POTENCIADOR = 9;
 	public static final byte CONEXION = 10;
+	public static final byte JSON = 123;
 	
 	//Direcciones
 	public static final byte NORTE = 1;
 	public static final byte SUR = 2;
 	public static final byte ESTE = 3;
 	public static final byte OESTE = 4;
-	
+		
 	private boolean isRunning = true;
 	private Queue<byte[]> colaMensajes = new LinkedList<>();
 	private Jugador jugador;
@@ -85,7 +86,7 @@ public class Protocolo {
 						case DESCONEXION:
 							//enviar desconexion a los clientes
 							Mundo.getInstance().desconectarJugador(jugador);
-							isRunning = false;
+							isRunning = false;				
 					}		
 				}
 			}

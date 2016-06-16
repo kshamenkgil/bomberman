@@ -2,7 +2,10 @@ package servidor;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+
+import com.google.gson.Gson;
 
 import bomberman.Jugador;
 import bomberman.Punto2D;
@@ -59,6 +62,11 @@ public class Server implements Runnable{
 			data[1] = lastId;
 			
 			t.sendData(data);
+						
+			String s = "{'header' : 'jugadores'}";
+			
+			t.sendData(s.getBytes(Charset.forName("UTF-8")));
+			
 			connections.add(t);
 			
 			this.lastId++;

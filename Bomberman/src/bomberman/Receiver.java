@@ -4,6 +4,11 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+/*
+ * 
+ * Habría que usar esto o llamar a leer cada cierto tiempo en el update??
+ * 
+ * */
 public class Receiver implements Runnable{
 	private volatile boolean running = true;
 	private Socket socket = null;
@@ -20,7 +25,6 @@ public class Receiver implements Runnable{
 		return socket;
 	}
 	
-	@Override
 	public void run() {
 		Protocolo p = new Protocolo();
 		DataInputStream dIn = null;

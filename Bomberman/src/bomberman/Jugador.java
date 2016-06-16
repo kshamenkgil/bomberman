@@ -1,17 +1,20 @@
 package bomberman;
 
+import java.awt.Color;
+
 public class Jugador extends Personaje {
 	protected byte id; //aleatorio segun ingreso al servidor	
 	private int vidas; 
 	private int potenciaBomba;
 	private int cantBombas;
-	private byte color;
+	private Color color;
 	
 	public Jugador(Punto2D posicion) {
 		super(posicion);
 		this.vidas = 4;
 		this.potenciaBomba = 10;
-		this.velocidad = 1.0f;			
+		this.velocidad = 1.0f;
+		this.color = Color.WHITE;
 		
 	}	
 		
@@ -62,11 +65,11 @@ public class Jugador extends Personaje {
 		this.cantBombas = cantBombas;
 	}
 	
-	public byte getColor() {
+	public Color getColor() {
 		return color;
 	}
 	
-	public void setColor(byte color) {
+	public void setColor(Color color) {
 		this.color = color;
 	}
 }
