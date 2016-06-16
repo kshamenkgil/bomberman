@@ -19,50 +19,48 @@ public class InputHandler implements KeyListener {
 		keys.put(KeyEvent.VK_LEFT,false);
 		keys.put(KeyEvent.VK_ESCAPE,false);
         
-		new Timer(1, new ActionListener(){
+		/*new Timer(1, new ActionListener(){
             @Override
-            public void actionPerformed(ActionEvent arg0) {
-        		if(keys.get(KeyEvent.VK_UP)){	    
-        			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);
-        	        Mundo.getInstance().getJugador().direccion = Protocolo.NORTE;
-        	        Mundo.getInstance().getJugador().playAnimation();
-        	        Protocolo.moverJugador(Protocolo.NORTE);
-        	    }
-        	    
-        	    if(keys.get(KeyEvent.VK_DOWN)){
-        	        Mundo.getInstance().getJugador().mover(Protocolo.SUR);
-        	        Mundo.getInstance().getJugador().direccion = Protocolo.SUR;
-        	        Mundo.getInstance().getJugador().playAnimation();
-        	        Protocolo.moverJugador(Protocolo.SUR);
-        	    }
-        	    
-        	    if(keys.get(KeyEvent.VK_RIGHT)){
-        	        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);
-        	        Mundo.getInstance().getJugador().direccion = Protocolo.ESTE;
-        	        Mundo.getInstance().getJugador().playAnimation();
-        	        Protocolo.moverJugador(Protocolo.ESTE);
-        	        
-        	    }
-        	    
-        	    if(keys.get(KeyEvent.VK_LEFT)){
-        	        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);
-        	        Mundo.getInstance().getJugador().direccion = Protocolo.OESTE;
-        	        Mundo.getInstance().getJugador().playAnimation();
-        	        Protocolo.moverJugador(Protocolo.OESTE);
-        	    }
-        	    
-        	    if(keys.get(KeyEvent.VK_ESCAPE)){
-        	    	Engine.getInstancia().setStartUpdate(false);
-        	    }
+            public void actionPerformed(ActionEvent arg0) {        		
         	    
             }
-        }).start();
+        }).start();*/
         
 	}
 	
 	public void update(){
-		
-
+		if(keys.get(KeyEvent.VK_UP)){	    
+			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);
+	        Mundo.getInstance().getJugador().direccion = Protocolo.NORTE;
+	        Mundo.getInstance().getJugador().playAnimation();
+	        Protocolo.moverJugador(Protocolo.NORTE);
+	    }
+	    
+	    if(keys.get(KeyEvent.VK_DOWN)){
+	        Mundo.getInstance().getJugador().mover(Protocolo.SUR);
+	        Mundo.getInstance().getJugador().direccion = Protocolo.SUR;
+	        Mundo.getInstance().getJugador().playAnimation();
+	        Protocolo.moverJugador(Protocolo.SUR);
+	    }
+	    
+	    if(keys.get(KeyEvent.VK_RIGHT)){
+	        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);
+	        Mundo.getInstance().getJugador().direccion = Protocolo.ESTE;
+	        Mundo.getInstance().getJugador().playAnimation();
+	        Protocolo.moverJugador(Protocolo.ESTE);
+	        
+	    }
+	    
+	    if(keys.get(KeyEvent.VK_LEFT)){
+	        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);
+	        Mundo.getInstance().getJugador().direccion = Protocolo.OESTE;
+	        Mundo.getInstance().getJugador().playAnimation();
+	        Protocolo.moverJugador(Protocolo.OESTE);
+	    }
+	    
+	    if(keys.get(KeyEvent.VK_ESCAPE)){
+	    	Engine.getInstancia().setStartUpdate(false);
+	    }
 	}
 	
 	@Override

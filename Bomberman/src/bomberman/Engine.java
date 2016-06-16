@@ -35,16 +35,8 @@ public class Engine {
 	}
 	
 	public void inicializarVentana(){
-		/*new Thread(new Runnable() {
-			public void run() {
-				juego = new GameScreen();
-				setStartUpdate(true);
-				juego.setVisible(true);				
-			}
-		}).start();*/
 		
 		addTexturas("ex", new Textura("assets/graficos/bomberman1/tiles/explotable.png"));
-		
 
 		//addTexturas("bl", new Textura("assets/graficos/bomberman1/tiles/bloqueado.png"));
 		
@@ -149,40 +141,33 @@ public class Engine {
 				}
 			}			
 			
-			/*long previous = Calendar.getInstance().getTimeInMillis();
-			long lag = 0;*/						
+			long lastTime = Calendar.getInstance().getTimeInMillis();
+			long lag = 0;
 			while(startUpdate)
 			{				
-				/*long current = Calendar.getInstance().getTimeInMillis();
-				long elapsed = current - previous;				
-				previous = current;				
-				lag+=elapsed;*/
+				long current = Calendar.getInstance().getTimeInMillis();
+				long elapsed = current - lastTime;
+				if(elapsed < 0 || elapsed > Engine.MS_PER_UPDATE)
+					elapsed = 0;
+				
+				try {
+					Thread.sleep(Engine.MS_PER_UPDATE - elapsed);	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 								
 				//procesar input
-				//input.update();			    
+				input.update();			    
 
 			    //update
 				
-				
-				
 				//fin update
 			    
-				/*while (lag >= MS_PER_UPDATE)
-				{
-					lag-= MS_PER_UPDATE;
-							
-				}*/
 				 
 				//repaint
 				juego.repaint();
 				
-								
-				/*try {				
-					Thread.sleep(Engine.MS_PER_UPDATE);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
+				lastTime = current;	
 			}	
 			Bomberman.getInstancia().dispose();
 							

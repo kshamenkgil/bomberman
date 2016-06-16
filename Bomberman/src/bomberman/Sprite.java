@@ -28,70 +28,70 @@ public class Sprite {
 	}
 
 	public void dibujarTile(Graphics2D g, ImageObserver io, Punto2D pos){
-		//if(this.dibujar){
-			if(this.looping){
-				
-				/*try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				//dibujar			
-				
-				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
-				g.drawImage(img, (int)pos.getX()*this.tileWidth, (int)pos.getY()*this.tileHeight, io);
-				
-				this.tiempo++;
-				if(this.tiempo > this.lastTiempo){				
-					this.tiempo = 0;
-								
-					if(actualImg < cantImg-1)
-						actualImg++;
-					else
-						actualImg = 0;
-				}
-			}else{		
-				//dibujar esto
-				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);
-				g.drawImage(img, (int)pos.getX()*this.tileWidth, (int)pos.getY()*this.tileHeight, io);
-				
+		int x = (int)pos.getX()*this.tileWidth;
+		int y = (int)pos.getY()*this.tileHeight;
+		int frameX = (actualImg % cantImg) * this.tileWidth;
+		int frameY = (actualImg / cantImg) * this.tileHeight;
+		
+		if(this.looping){
+			
+			//dibujar			
+			g.drawImage(Engine.getInstancia().getTextura(textura).getImagen(), x, y, x+this.tileWidth, y+this.tileHeight,
+		              frameX, frameY, frameX+this.tileWidth, frameY+this.tileHeight, io);
+			
+			//BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
+			//g.drawImage(img, (int)pos.getX()*this.tileWidth, (int)pos.getY()*this.tileHeight, io);
+			
+			this.tiempo++;
+			if(this.tiempo > this.lastTiempo){				
+				this.tiempo = 0;
+							
+				if(actualImg < cantImg-1)
+					actualImg++;
+				else
+					actualImg = 0;
 			}
-		//}
+		}else{		
+			//dibujar esto
+			g.drawImage(Engine.getInstancia().getTextura(textura).getImagen(), x, y, x+this.tileWidth, y+this.tileHeight,
+		              frameX, frameY, frameX+this.tileWidth, frameY+this.tileHeight, io);
+			
+			//BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);
+			//g.drawImage(img, (int)pos.getX()*this.tileWidth, (int)pos.getY()*this.tileHeight, io);
+			
+		}
 	}
 	
 	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
-		//if(this.dibujar){
-			if(this.looping){
-				
-				/*try {
-					Thread.sleep(20);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}*/
-				//dibujar			
-				
-				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
-				g.drawImage(img, (int)pos.getX(), (int)pos.getY(), io);
-				
-				this.tiempo++;
-				if(this.tiempo > this.lastTiempo){				
-					this.tiempo = 0;
-								
-					if(actualImg < cantImg-1)
-						actualImg++;
-					else
-						actualImg = 0;
-				}
-			}else{		
-				//dibujar esto
-				BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
-				g.drawImage(img, (int)pos.getX(), (int)pos.getY(), io);
-				
+		int x = (int)pos.getX();
+		int y = (int)pos.getY();
+		int frameX = (actualImg % cantImg) * this.tileWidth;
+		int frameY = (actualImg / cantImg) * this.tileHeight;
+		if(this.looping){			
+			//dibujar			
+			g.drawImage(Engine.getInstancia().getTextura(textura).getImagen(), x, y, x+this.tileWidth, y+this.tileHeight,
+		              frameX, frameY, frameX+this.tileWidth, frameY+this.tileHeight, io);
+			//BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
+			//g.drawImage(img, (int)pos.getX(), (int)pos.getY(), io);
+			
+			this.tiempo++;
+			if(this.tiempo > this.lastTiempo){				
+				this.tiempo = 0;
+							
+				if(actualImg < cantImg-1)
+					actualImg++;
+				else
+					actualImg = 0;
 			}
-		//}
+		}else{		
+			//dibujar esto
+			g.drawImage(Engine.getInstancia().getTextura(textura).getImagen(), x, y, x+this.tileWidth, y+this.tileHeight,
+		              frameX, frameY, frameX+this.tileWidth, frameY+this.tileHeight, io);
+			//BufferedImage img = Engine.getInstancia().getTextura(textura).getImagen().getSubimage(this.tileWidth*actualImg, 0, this.tileWidth, this.tileHeight);				
+			//g.drawImage(img, (int)pos.getX(), (int)pos.getY(), io);
+			
+		}
 	}
 	
 	public synchronized void setLooping(boolean looping) {
