@@ -12,6 +12,18 @@ public class InputHandler implements KeyListener {
 	
 	private Hashtable<Integer, Boolean> keys = new Hashtable<Integer,Boolean>();
 	
+	private int stepCounter = 0;
+	
+	private static int C_STEPS = 80;
+	
+	public int getStepCounter() {
+		return stepCounter;
+	}
+	
+	public synchronized void setStepCounter(int stepCounter) {
+		this.stepCounter = stepCounter;
+	}
+	
 	public InputHandler() {
 		keys.put(KeyEvent.VK_UP,false);
 		keys.put(KeyEvent.VK_DOWN,false);
@@ -34,6 +46,11 @@ public class InputHandler implements KeyListener {
 	        Mundo.getInstance().getJugador().direccion = Protocolo.NORTE;
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.NORTE);
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	//        	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_DOWN)){
@@ -41,6 +58,11 @@ public class InputHandler implements KeyListener {
 	        Mundo.getInstance().getJugador().direccion = Protocolo.SUR;
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.SUR);
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	  //      	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_RIGHT)){
@@ -48,7 +70,11 @@ public class InputHandler implements KeyListener {
 	        Mundo.getInstance().getJugador().direccion = Protocolo.ESTE;
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.ESTE);
-	        
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	    //    	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_LEFT)){
@@ -56,6 +82,11 @@ public class InputHandler implements KeyListener {
 	        Mundo.getInstance().getJugador().direccion = Protocolo.OESTE;
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.OESTE);
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	      //  	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_ESCAPE)){

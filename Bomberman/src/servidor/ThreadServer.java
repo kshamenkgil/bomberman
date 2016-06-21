@@ -37,8 +37,7 @@ public class ThreadServer extends Thread {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}*/
-	    
-		protocolo.procesarEntrada();
+	    		
 		
 		while(isRunning){
 			/*try {
@@ -56,7 +55,7 @@ public class ThreadServer extends Thread {
 				}
 								
 				protocolo.getColaMensajes().add(message);
-				
+				protocolo.procesarEntrada();
 				//dIn.close();
 								
 				//protocolo.procesarEntrada(message, jugador);				

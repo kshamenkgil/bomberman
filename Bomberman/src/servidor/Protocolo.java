@@ -55,19 +55,21 @@ public class Protocolo {
 	
 	//public void procesarEntrada(byte[] data, Jugador jugador){		
 	public void procesarEntrada(){
-		new Thread(new Runnable() {
-			public void run() {
-				while(isRunning)
-				{
-					while(colaMensajes.isEmpty()){
+		//new Thread(new Runnable() {
+			//public void run() {
+				//while(isRunning)
+				//{
+					/*while(colaMensajes.isEmpty()){
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-					}
-										
+					}*/
+					if(colaMensajes.isEmpty())
+						return;
+					
 					byte[] data = colaMensajes.poll();
 					
 					byte header = data[0];
@@ -88,9 +90,9 @@ public class Protocolo {
 							Mundo.getInstance().desconectarJugador(jugador);
 							isRunning = false;				
 					}		
-				}
-			}
-		},"protocolo").start();		
+				//}
+			//}
+		//},"protocolo").start();		
 	}
 	
 	private void moverJugador(Jugador jugador, byte direccion){
@@ -102,8 +104,7 @@ public class Protocolo {
 		data[1] = (byte)jugador.getId();
 		data[2] = direccion;
 		
-		Mundo.getInstance().actualizarPosicion(jugador, data);
-		System.out.println(jugador.getPosicion());
+		Mundo.getInstance().actualizarPosicion(jugador, data);	
 	}
 	
 	public Queue<byte[]> getColaMensajes() {
