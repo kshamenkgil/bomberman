@@ -49,7 +49,7 @@ public class Protocolo {
 		byte header = data[0];
 		switch(header){
 			case CONEXION:
-				setParametrosIniciales(data[0]);
+				setParametrosIniciales(data[1]);
 				break;
 			/*case COMIENZO_JUEGO:
 				//COMENZAR JUEGO
@@ -80,14 +80,16 @@ public class Protocolo {
 		}			
 	}
 	
-	private void setParametrosIniciales(byte id) {
+	private void setParametrosIniciales(byte id1) {
+		int id = (int)id1;
+		id = id + 1;
 		Jugador j = new Jugador(new Punto2D(0,0));
 		j.setSprites(new Sprite("p"+id+"n", true),new Sprite("p"+id+"s", true),
 					 new Sprite("p"+id+"e", true),new Sprite("p"+id+"o", true),
 					 new Sprite("p"+id+"m", true));
 		
 		Mundo.getInstance().setJugador(j);
-		Mundo.getInstance().getJugador().id = id;
+		Mundo.getInstance().getJugador().id = id1;
 		
 	}
 
@@ -107,6 +109,9 @@ public class Protocolo {
 				else{
 					Jugador j = new Jugador(new Punto2D(x, y));
 					j.setId(id);
+					j.setSprites(new Sprite("p"+id+"n", true),new Sprite("p"+id+"s", true),
+							 new Sprite("p"+id+"e", true),new Sprite("p"+id+"o", true),
+							 new Sprite("p"+id+"m", true));
 					Mundo.getInstance().getJugadores().add(j);
 				}
 			}

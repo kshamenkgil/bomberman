@@ -50,11 +50,7 @@ public class Bomberman {
 		cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
 		//cambiar por "p"+(id+1)+"s", etc
 		
-		Engine.getInstancia().addTexturas("p1n", new Textura("assets/graficos/bomberman1/personaje/1/norte.png"));
-		Engine.getInstancia().addTexturas("p1s", new Textura("assets/graficos/bomberman1/personaje/1/sur.png"));
-		Engine.getInstancia().addTexturas("p1e", new Textura("assets/graficos/bomberman1/personaje/1/este.png"));
-		Engine.getInstancia().addTexturas("p1o", new Textura("assets/graficos/bomberman1/personaje/1/oeste.png"));
-		Engine.getInstancia().addTexturas("p1m", new Textura("assets/graficos/bomberman1/personaje/1/muerte.png"));
+		Engine.getInstancia().cargarTexturas("bomberman1/");
 				
 		cargarSonidos();
 		cargarMusica();			
