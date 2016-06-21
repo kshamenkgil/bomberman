@@ -1,6 +1,8 @@
 package bomberman;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -47,15 +49,15 @@ public class Protocolo {
 		byte header = data[0];
 		switch(header){
 			case CONEXION:
-				Mundo.getInstance().getJugador().id = data[1];
+				setParametrosIniciales(data[0]);
 				break;
-			case COMIENZO_JUEGO:
+			/*case COMIENZO_JUEGO:
 				//COMENZAR JUEGO
 				//enviar mapa la primera vez.
 				//enviar posiciones
 				//se puede poner en un metodo y llamarlo
 				
-				break;
+				break;*/
 			case MOVIMIENTO:
 				moverJugador(data);
 				break;
@@ -78,11 +80,38 @@ public class Protocolo {
 		}			
 	}
 	
+	private void setParametrosIniciales(byte id) {
+		Jugador j = new Jugador(new Punto2D(0,0));
+		j.setSprites(new Sprite("p"+id+"n", true),new Sprite("p"+id+"s", true),
+					 new Sprite("p"+id+"e", true),new Sprite("p"+id+"o", true),
+					 new Sprite("p"+id+"m", true));
+		
+		Mundo.getInstance().setJugador(j);
+		Mundo.getInstance().getJugador().id = id;
+		
+	}
+
 	private void parseJSON(String json){
 		JsonParser parser = new JsonParser();
 		JsonObject o = parser.parse(json).getAsJsonObject();
-		
-		System.out.println(o.get("header"));
+		if(o.get("header").toString() == "startInfo"){
+			JsonArray ja = o.getAsJsonArray("jugadores");
+			for (JsonElement jsonElement : ja) {				
+				//String nombre = jsonElement.getAsJsonObject().get("name").getAsString();
+				byte id = (byte)jsonElement.getAsJsonObject().get("id").getAsInt();
+				int x = jsonElement.getAsJsonObject().get("x").getAsInt();
+				int y = jsonElement.getAsJsonObject().get("y").getAsInt();				
+				
+				if(id == Mundo.getInstance().getJugador().getId())
+					Mundo.getInstance().getJugador().setPosicion(new Punto2D(x, y));
+				else{
+					Jugador j = new Jugador(new Punto2D(x, y));
+					j.setId(id);
+					Mundo.getInstance().getJugadores().add(j);
+				}
+			}
+		}
+		//System.out.println(o.get("header"));
 	}
 	
 	private void moverJugador(byte[] data){

@@ -62,20 +62,20 @@ public class Server implements Runnable{
 			data[1] = lastId;
 			
 			t.sendData(data);
-						
-			String s = "{'header' : 'jugadores'}";
-			
-			t.sendData(s.getBytes(Charset.forName("UTF-8")));
-			
+												
 			connections.add(t);
 			
 			this.lastId++;
-			this.connectedUsers++;			
-			Mundo.getInstance().setConnections(connections);
+			this.connectedUsers++;
+			if(this.connectedUsers == 2)
+				setRunning(false);
+			//Mundo.getInstance().setConnections(connections);
 		}
 		
 		//si el juego comenzó enviar info inicial e iniciar update
 		Mundo.getInstance().setConnections(connections);
+		Mundo.getInstance().sendStartInfo();
+		
 		
 		update();
 		
@@ -88,6 +88,11 @@ public class Server implements Runnable{
 		}
 	}
 	
+	
+	public synchronized void setRunning(boolean isRunning) {
+		this.isRunning = isRunning;
+	}
+	
 	public ArrayList<ThreadServer> getConnections() {
 		return connections;
 	}
@@ -97,7 +102,10 @@ public class Server implements Runnable{
 	}
 	
 	private void update(){
-		
+		setRunning(true);
+		while(isRunning){
+			
+		}
 	}
 	
 }

@@ -1,4 +1,6 @@
 package bomberman;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
@@ -46,9 +48,11 @@ public class Engine {
 			tiles.add(t);
 		}
 		
+		
+		
 		juego = new GameScreen();
 		juego.setVisible(true);
-		setStartUpdate(true);
+		//setStartUpdate(true);
 		
 	}
 		
@@ -113,8 +117,15 @@ public class Engine {
 		return texturas.get(name);
 	}
 	
+	public void dibujarTexto(String texto, int size, Graphics2D g, Punto2D pos){
+		g.setColor(Color.white);
+		g.setFont(new Font("Arial", 0, size));
+		g.drawString(texto, (int)pos.getX(), (int)pos.getY());
+		//g.setColor(Color.);
+	}
+	
 	public synchronized void dibujar(Graphics2D g, ImageObserver io){		
-							
+									
 			int c = 0;
 			int t = 0;
 			for (Tile tile : tiles) {
@@ -126,7 +137,10 @@ public class Engine {
 				}
 			}
 			//if(Mundo.getInstance().getJugador().personajeS != null)
-			Mundo.getInstance().getJugador().dibujar(g, io);			
+			Mundo.getInstance().getJugador().dibujar(g, io);
+			
+			if(!this.isStartUpdate())
+				dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));
 
 	}
 	

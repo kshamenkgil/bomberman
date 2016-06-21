@@ -58,11 +58,7 @@ public class Bomberman {
 				
 		cargarSonidos();
 		cargarMusica();			
-		
-		Jugador j = new Jugador(new Punto2D(0,0));
-		j.setSprites(new Sprite("p1n", true),new Sprite("p1s", true),new Sprite("p1e", true),new Sprite("p1o", true),new Sprite("p1m", true));
-		Mundo.getInstance().setJugador(j);
-		
+				
 		cliente.recieveData();
 		Engine.getInstancia().inicializarVentana();
 		
