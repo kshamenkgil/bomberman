@@ -85,15 +85,19 @@ public abstract class Personaje {
 		switch(direccion){
 			case Protocolo.NORTE: //cambiar por protocolo.norte
 				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() - (1*this.velocidad));
+				this.direccion = Protocolo.NORTE;				
 				break;
 			case Protocolo.SUR: //cambiar por protocolo.sur
 				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() + (1*this.velocidad));
+				this.direccion = Protocolo.SUR;
 				break;
 			case Protocolo.ESTE: //cambiar por protocolo.este
 				this.posicion = new Punto2D(this.posicion.getX() + (1*this.velocidad), this.posicion.getY());
+				this.direccion = Protocolo.ESTE;
 				break;
 			case Protocolo.OESTE: //cambiar por protocolo.oeste
 				this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());
+				this.direccion = Protocolo.OESTE;
 				break;
 		}		
 	}

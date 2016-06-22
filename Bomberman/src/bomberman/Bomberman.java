@@ -48,6 +48,7 @@ public class Bomberman {
 	
 	public void run() {
 		cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
+			
 		//cambiar por "p"+(id+1)+"s", etc
 		
 		Engine.getInstancia().cargarTexturas("bomberman1/");
@@ -56,10 +57,7 @@ public class Bomberman {
 		cargarMusica();			
 				
 		cliente.recieveData();
-		Engine.getInstancia().inicializarVentana();
-		
-		//reproducir musica
-		MidiPlayer.getInstancia().play("m1", true);
+		Engine.getInstancia().inicializarVentana();			
 		
 		Engine.getInstancia().update();
 		

@@ -42,8 +42,7 @@ public class InputHandler implements KeyListener {
 	
 	public void update(){
 		if(keys.get(KeyEvent.VK_UP)){	    
-			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.NORTE;
+			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.NORTE);
 	        stepCounter++;
@@ -54,8 +53,7 @@ public class InputHandler implements KeyListener {
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_DOWN)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.SUR);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.SUR;
+	        Mundo.getInstance().getJugador().mover(Protocolo.SUR);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.SUR);
 	        stepCounter++;
@@ -66,8 +64,7 @@ public class InputHandler implements KeyListener {
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_RIGHT)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.ESTE;
+	        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.ESTE);
 	        stepCounter++;
@@ -78,8 +75,7 @@ public class InputHandler implements KeyListener {
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_LEFT)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.OESTE;
+	        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.OESTE);
 	        stepCounter++;
@@ -102,6 +98,7 @@ public class InputHandler implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		Mundo.getInstance().getJugador().stopAnimating();
+		Protocolo.moverJugador(Protocolo.IDLE);
 		keys.put(e.getKeyCode(),false);		
 	}
 

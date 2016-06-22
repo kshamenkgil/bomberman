@@ -140,6 +140,9 @@ public class Engine {
 			}
 			//if(Mundo.getInstance().getJugador().personajeS != null)
 			Mundo.getInstance().getJugador().dibujar(g, io);
+			for (Jugador j : Mundo.getInstance().getJugadores()) {
+				j.dibujar(g, io);
+			}
 			
 		}else{
 			dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));
@@ -157,6 +160,9 @@ public class Engine {
 					e.printStackTrace();
 				}
 			}			
+			
+			//reproducir musica
+			MidiPlayer.getInstancia().play("m1", true);
 			
 			long lastTime = Calendar.getInstance().getTimeInMillis();
 			long lag = 0;

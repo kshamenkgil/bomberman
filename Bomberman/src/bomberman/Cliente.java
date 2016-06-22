@@ -15,10 +15,12 @@ public class Cliente {
 			this.socket = new Socket(host, port);
 			this.isReceiving = false;
 		} catch (UnknownHostException e) {			
-			e.printStackTrace();
+			e.printStackTrace();			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch block		
 			e.printStackTrace();
+			System.out.println("NO SE PUDO CONECTAR CON EL SERVIDOR");
+			System.exit(0);
 		}
 		
 	}
@@ -56,11 +58,12 @@ public class Cliente {
 		
 	}
 	
-	public void sendData(final byte[] data){
+	public synchronized void sendData(final byte[] data){
 		try {					
 			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
 			dOut.writeInt(data.length); // write length of the message
-			dOut.write(data);           // write the messag			
+			dOut.write(data);           // write the messag
+			dOut.flush();
 			//dOut.close();							
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

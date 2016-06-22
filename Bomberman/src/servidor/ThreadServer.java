@@ -47,7 +47,8 @@ public class ThreadServer extends Thread {
 				e1.printStackTrace();
 			}*/
 			try {			
-				byte[] message = null;								
+				byte[] message = null;
+				
 				int length = dIn.readInt();                    // read length of incoming message
 				if(length>0) {
 				    message = new byte[length];
@@ -62,7 +63,13 @@ public class ThreadServer extends Thread {
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace();			
+				try {
+					Mundo.getInstance().desconectarJugador(jugador);
+					isRunning = false;		
+				} catch (Exception e2) {
+					e.printStackTrace();
+				}				
 			}  
 		}
 		closeSocket();
