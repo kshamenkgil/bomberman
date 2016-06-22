@@ -10,6 +10,8 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -62,6 +64,13 @@ public class GameScreen extends JFrame {
 		contentPane.setSize(new Dimension(Configuracion.getInstancia().getScreenX(), Configuracion.getInstancia().getScreenY()));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
+		
+		this.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent windowEvent) {
+		    	Engine.getInstancia().setStartUpdate(false);
+		    }
+		});
 	}
 	
 	@Override

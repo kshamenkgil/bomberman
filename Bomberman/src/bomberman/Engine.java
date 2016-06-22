@@ -11,12 +11,15 @@ public class Engine {
 	//public static int TILE_WIDTH = 16;
 	//public static int TILE_HEIGHT = 16;
 	public static int FPS = 60;
-	public static int MS_PER_UPDATE = 16;
+	public static long MS_PER_UPDATE = 16;
 	private static Engine instancia;
 	private InputHandler input = new InputHandler();
 	private ArrayList<Tile> tiles = new ArrayList<Tile>();	
 	private GameScreen juego;
 	private boolean startUpdate = false;
+	private int fpsCounter = 0;
+	private int fps;
+	private long fpsTime = 0;
 	//private boolean isRunning = false;
 	private Hashtable<String, Textura> texturas = new Hashtable<String,Textura>();
 	public static Engine getInstancia() {
@@ -38,7 +41,7 @@ public class Engine {
 	
 	public void inicializarVentana(){
 		
-		addTexturas("ex", new Textura("assets/graficos/bomberman1/tiles/explotable.png"));
+		//addTexturas("ex", new Textura("assets/graficos/bomberman1/tiles/explotable.png"));
 
 		//addTexturas("bl", new Textura("assets/graficos/bomberman1/tiles/bloqueado.png"));
 		
@@ -120,34 +123,38 @@ public class Engine {
 	
 	public void dibujarTexto(String texto, int size, Graphics2D g, Punto2D pos){
 		g.setColor(Color.white);
-		g.setFont(new Font("Arial", 0, size));
+		g.setFont(new Font("Arial", Font.BOLD, size));
 		g.drawString(texto, (int)pos.getX(), (int)pos.getY());
 		//g.setColor(Color.);
 	}
 	
 	public synchronized void dibujar(Graphics2D g, ImageObserver io){		
-			
-		if(this.isStartUpdate()){
-			int c = 0;
-			int t = 0;
-			for (Tile tile : tiles) {
-				tile.dibujar(g, io, new Punto2D(c, t));
-				c++;
-				if(c == 25){
-					c= 0;
-					t++;
-				}
+			//mapa
+			if(this.isStartUpdate()){
+				int c = 0;
+				int t = 0;
+				for (Tile tile : tiles) {
+					tile.dibujar(g, io, new Punto2D(c, t));
+					c++;
+					if(c == 25){
+						c= 0;
+						t++;
+					}
 			}
-			//if(Mundo.getInstance().getJugador().personajeS != null)
+			
+			//jugadores
 			Mundo.getInstance().getJugador().dibujar(g, io);
 			for (Jugador j : Mundo.getInstance().getJugadores()) {
 				j.dibujar(g, io);
 			}
 			
+			//fps			
+			dibujarTexto("FPS: " + fps, 16, g, new Punto2D(10, 18));
+			
 		}else{
 			dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));
 		}
-
+				
 	}
 	
 	public void update(){
@@ -170,8 +177,15 @@ public class Engine {
 			{				
 				long current = Calendar.getInstance().getTimeInMillis();
 				long elapsed = current - lastTime;
-				if(elapsed < 0 || elapsed > Engine.MS_PER_UPDATE)
+				
+				fpsTime += elapsed;
+				
+				
+				if(elapsed < 0 )
 					elapsed = 0;
+				
+				if(elapsed > Engine.MS_PER_UPDATE)
+					elapsed = Engine.MS_PER_UPDATE;
 				
 				try {
 					Thread.sleep(Engine.MS_PER_UPDATE - elapsed);	
@@ -190,7 +204,14 @@ public class Engine {
 				//repaint
 				juego.repaint();
 				
-				lastTime = current;	
+				lastTime = current;
+				
+				if(fpsTime >= 1000){
+					fps = fpsCounter;
+					fpsTime = 0;
+					fpsCounter = 0;
+				}
+				fpsCounter++;
 			}	
 			Bomberman.getInstancia().dispose();
 							
