@@ -47,7 +47,8 @@ public class ThreadServer extends Thread {
 				e1.printStackTrace();
 			}*/
 			try {			
-				byte[] message = null;								
+				byte[] message = null;
+				
 				int length = dIn.readInt();                    // read length of incoming message
 				if(length>0) {
 				    message = new byte[length];
@@ -55,15 +56,20 @@ public class ThreadServer extends Thread {
 				}
 								
 				protocolo.getColaMensajes().add(message);
-				protocolo.procesarEntrada();
-				
+				protocolo.procesarEntrada();				
 				//dIn.close();
 								
 				//protocolo.procesarEntrada(message, jugador);				
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				e.printStackTrace();			
+				try {
+					Mundo.getInstance().desconectarJugador(jugador);
+					isRunning = false;		
+				} catch (Exception e2) {
+					e.printStackTrace();
+				}				
 			}  
 		}
 		closeSocket();
@@ -73,7 +79,8 @@ public class ThreadServer extends Thread {
 		try {					
 			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
 			dOut.writeInt(data.length); // write length of the message
-			dOut.write(data);           // write the messag			
+			dOut.write(data);           // write the messag
+			dOut.flush();
 			//dOut.close();
 			//PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 			//out.println();

@@ -1,5 +1,6 @@
 package servidor;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import bomberman.Enemigo;
@@ -15,6 +16,30 @@ public class Mundo {
 		//cargar enemigos y bloques que se pueden romper
 	}
 	
+	public synchronized void sendStartInfo(){
+		int index = 1;
+		String s = "{'header' : 'startInfo','jugadores':[";
+		for (ThreadServer t : connections) {			
+			s+="{'name':'Jugador";
+			s+=t.getJugador().getId();
+			s+="', 'id':";
+			s+=t.getJugador().getId();
+			s+=", 'x':";
+			s+=t.getJugador().getPosicion().getX();
+			s+=", 'y':";
+			s+=t.getJugador().getPosicion().getY();
+			s+="}";
+			if(index != connections.size())
+				s+=",";
+			index++;
+		}
+		s+="]}";
+		
+		for (ThreadServer ts : connections) {
+			ts.sendData(s.getBytes(Charset.forName("UTF-8")));
+		}
+	}
+	
 	//thread safe
 	public static Mundo getInstance() {
 		return MundoHolder.INSTANCE;			
@@ -28,7 +53,7 @@ public class Mundo {
 		this.connections = connections;
 	}
 	
-	public void desconectarJugador(Jugador jugador){
+	public synchronized void desconectarJugador(Jugador jugador){
 		
 		ThreadServer t1 = null;
 		
@@ -47,7 +72,7 @@ public class Mundo {
 		connections.remove(t1);
 	}
 	
-	public void actualizarPosicion(Jugador jugador, byte[] data){
+	public synchronized void actualizarPosicion(Jugador jugador, byte[] data){
 		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);

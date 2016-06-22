@@ -1,6 +1,8 @@
 package bomberman;
 
-import com.google.gson.Gson;
+//import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -38,6 +40,7 @@ public class Protocolo {
 	public static final byte SUR = 2;
 	public static final byte ESTE = 3;
 	public static final byte OESTE = 4;
+	public static final byte IDLE = 5;
 	
 	public Protocolo() {
 		// TODO Auto-generated constructor stub
@@ -47,15 +50,15 @@ public class Protocolo {
 		byte header = data[0];
 		switch(header){
 			case CONEXION:
-				Mundo.getInstance().getJugador().id = data[1];
+				setParametrosIniciales(data[1]);
 				break;
-			case COMIENZO_JUEGO:
+			/*case COMIENZO_JUEGO:
 				//COMENZAR JUEGO
 				//enviar mapa la primera vez.
 				//enviar posiciones
 				//se puede poner en un metodo y llamarlo
 				
-				break;
+				break;*/
 			case MOVIMIENTO:
 				moverJugador(data);
 				break;
@@ -78,17 +81,59 @@ public class Protocolo {
 		}			
 	}
 	
+	private void setParametrosIniciales(byte id1) {
+		int id = (int)id1;
+		id = id + 1;
+		Jugador j = new Jugador(new Punto2D(0,0));
+		j.setSprites(new Sprite("p"+id+"n", true),new Sprite("p"+id+"s", true),
+					 new Sprite("p"+id+"e", true),new Sprite("p"+id+"o", true),
+					 new Sprite("p"+id+"m", true));
+		
+		Mundo.getInstance().setJugador(j);
+		Mundo.getInstance().getJugador().id = id1;
+		
+	}
+
 	private void parseJSON(String json){
 		JsonParser parser = new JsonParser();
 		JsonObject o = parser.parse(json).getAsJsonObject();
-		
-		System.out.println(o.get("header"));
+		if(o.get("header").getAsString().compareTo("startInfo") == 0){			
+			JsonArray ja = o.getAsJsonArray("jugadores");
+			for (JsonElement jsonElement : ja) {				
+				//String nombre = jsonElement.getAsJsonObject().get("name").getAsString();
+				byte id = (byte)jsonElement.getAsJsonObject().get("id").getAsInt();
+				int x = jsonElement.getAsJsonObject().get("x").getAsInt();
+				int y = jsonElement.getAsJsonObject().get("y").getAsInt();				
+				
+				if(id == Mundo.getInstance().getJugador().getId())
+					Mundo.getInstance().getJugador().setPosicion(new Punto2D(x, y));
+				else{
+					Jugador j = new Jugador(new Punto2D(x, y));
+					j.setId(id);
+					int idd = id + 1;
+					j.setSprites(new Sprite("p"+idd+"n", true),new Sprite("p"+idd+"s", true),
+							 new Sprite("p"+idd+"e", true),new Sprite("p"+idd+"o", true),
+							 new Sprite("p"+idd+"m", true));
+					Mundo.getInstance().getJugadores().add(j);
+				}
+			}
+			Engine.getInstancia().setStartUpdate(true);
+		}
+		//System.out.println(o.get("header"));
 	}
 	
-	private void moverJugador(byte[] data){
-		for (Jugador jugador : Mundo.getInstance().getJugadores()) {
-			if(jugador.id == data[1])
+	private void moverJugador(byte[] data){		
+		for (Jugador jugador : Mundo.getInstance().getJugadores()) {							
+			if(jugador.id == data[1]){
+				
+				if(data[2] == Protocolo.IDLE){
+					jugador.stopAnimating();
+					return;
+				}
+				
 				jugador.mover(data[2]);
+				jugador.playAnimation();
+			}			
 		}
 	}
 	

@@ -71,25 +71,29 @@ public class Protocolo {
 						return;
 					
 					byte[] data = colaMensajes.poll();
-					
-					byte header = data[0];
-					switch(header){					
-						case COMIENZO_JUEGO:
-							//COMENZAR JUEGO
-							//enviar mapa la primera vez.
-							//enviar posiciones
-							//se puede poner en un metodo y llamarlo
-							
-							break;
-						case MOVIMIENTO:
-							moverJugador(jugador, data[1]);
-							break;
-							
-						case DESCONEXION:
-							//enviar desconexion a los clientes
-							Mundo.getInstance().desconectarJugador(jugador);
-							isRunning = false;				
-					}		
+					try {
+						byte header = data[0];
+						switch(header){					
+							case COMIENZO_JUEGO:
+								//COMENZAR JUEGO
+								//enviar mapa la primera vez.
+								//enviar posiciones
+								//se puede poner en un metodo y llamarlo
+								
+								break;
+							case MOVIMIENTO:
+								moverJugador(jugador, data[1]);
+								break;
+								
+							case DESCONEXION:
+								//enviar desconexion a los clientes
+								Mundo.getInstance().desconectarJugador(jugador);
+								isRunning = false;				
+						}	
+					} catch (Exception e) {
+						e.printStackTrace();
+						System.out.println("problema con el paquete");
+					}
 				//}
 			//}
 		//},"protocolo").start();		
@@ -104,8 +108,7 @@ public class Protocolo {
 		data[1] = (byte)jugador.getId();
 		data[2] = direccion;
 		
-		Mundo.getInstance().actualizarPosicion(jugador, data);
-
+		Mundo.getInstance().actualizarPosicion(jugador, data);	
 	}
 	
 	public Queue<byte[]> getColaMensajes() {

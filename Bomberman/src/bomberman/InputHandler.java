@@ -12,6 +12,18 @@ public class InputHandler implements KeyListener {
 	
 	private Hashtable<Integer, Boolean> keys = new Hashtable<Integer,Boolean>();
 	
+	private int stepCounter = 0;
+	
+	private static int C_STEPS = 80;
+	
+	public int getStepCounter() {
+		return stepCounter;
+	}
+	
+	public synchronized void setStepCounter(int stepCounter) {
+		this.stepCounter = stepCounter;
+	}
+	
 	public InputHandler() {
 		keys.put(KeyEvent.VK_UP,false);
 		keys.put(KeyEvent.VK_DOWN,false);
@@ -30,32 +42,47 @@ public class InputHandler implements KeyListener {
 	
 	public void update(){
 		if(keys.get(KeyEvent.VK_UP)){	    
-			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.NORTE;
+			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.NORTE);
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	//        	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_DOWN)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.SUR);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.SUR;
+	        Mundo.getInstance().getJugador().mover(Protocolo.SUR);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.SUR);
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	  //      	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_RIGHT)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.ESTE;
+	        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.ESTE);
-	        
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	    //    	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_LEFT)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);
-	        Mundo.getInstance().getJugador().direccion = Protocolo.OESTE;
+	        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.OESTE);
+	        stepCounter++;
+	        if(stepCounter >= C_STEPS){
+	      //  	SonidoManager.getInstancia().playSound("pasos");
+	        	setStepCounter(0);
+	        }
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_ESCAPE)){
@@ -71,6 +98,7 @@ public class InputHandler implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		Mundo.getInstance().getJugador().stopAnimating();
+		Protocolo.moverJugador(Protocolo.IDLE);
 		keys.put(e.getKeyCode(),false);		
 	}
 
