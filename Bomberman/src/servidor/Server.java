@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
 
+import bomberman.Engine;
 import bomberman.Jugador;
 import bomberman.Punto2D;
 
@@ -37,6 +38,7 @@ public class Server implements Runnable{
         }
 		
 		isRunning = true;
+		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(50, 50), 10);
 		while(isRunning){
 			Socket entrante = null;
 			try {
@@ -51,16 +53,17 @@ public class Server implements Runnable{
 			
 			switch(lastId){
 				case 0:
-					p = new Punto2D(0, 0);
+					p = new Punto2D(1*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
 					break;
 				case 1:
-					p = new Punto2D(25, 0);
+					p = new Punto2D((mAG.getMap().getSize().getX()-2)*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
 					break;
 				case 2:
-					p = new Punto2D(0, 18);
+					
+					p = new Punto2D(1*Engine.TILE_WIDTH, (mAG.getMap().getSize().getY()-2)*Engine.TILE_HEIGHT);
 					break;
 				case 3:
-					p = new Punto2D(25, 18);
+					p = new Punto2D((mAG.getMap().getSize().getX()-2)*Engine.TILE_WIDTH, (mAG.getMap().getSize().getY()-2)*Engine.TILE_HEIGHT);					
 					break;
 			}
 			
@@ -81,14 +84,13 @@ public class Server implements Runnable{
 			
 			this.lastId++;
 			this.connectedUsers++;
-			if(this.connectedUsers == 2)
+			if(this.connectedUsers == 4)
 				setRunning(false);
 			//Mundo.getInstance().setConnections(connections);
 		}
 		
 		//si el juego comenzó enviar info inicial e iniciar update
-		Mundo.getInstance().setConnections(connections);
-		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(100, 100), 10);
+		Mundo.getInstance().setConnections(connections);		
 		//mAG.saveMap();
 		Mundo.getInstance().setMap(mAG.getMap());
 		Mundo.getInstance().sendMapa();

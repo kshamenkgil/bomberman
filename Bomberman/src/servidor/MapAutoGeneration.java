@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
@@ -66,20 +65,25 @@ public class MapAutoGeneration {
 								break;
 						}
 					}else{
-						t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), null);
+							t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), null);
 					}
+					potCounter++;
 				}else{
-					t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), null);
+					if(hasPotenciador == 0)
+						t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), null);
+					else
+						t = new TileMap(new Tile(false, false, null), null);
 				}
 				
-				if(x == 1 && y == 1){
+												
+				if(x <= 4 && x >= 1 && y >= 1 && y <= 4 && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
+					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);							
+				}else if(x >= (size.getX()-2)-4 && x <= size.getX()-2 && y >= 1 && y <= 4 && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
 					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);				
-				}else if(x == size.getX()-2 && y == 1){
+				}else if(x <= 4 && x >= 1 && y >= (size.getY()-2)-4 && y <= (size.getY()-2) && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
 					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);
-				}else if(x == 1 && y == size.getY()-2){
-					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);				
-				}else if(x == size.getX()-2 && y == size.getY()-2){					
-					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);				
+				}else if(x >= (size.getX()-2)-4 && x <= size.getX()-2 && y >= (size.getY()-2)-4 && y <= (size.getY()-2) && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
+					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);							
 				}else if(x == 0 || x == size.getX()-1){
 					tileMap[x][y] = new TileMap(new Tile(false, true, new Sprite("bl", false, true)), null);
 				}else if(y == 0 || y == size.getY()-1){

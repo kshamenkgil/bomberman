@@ -35,6 +35,7 @@ public class Bomberman {
 		MidiPlayer.getInstancia().close();
 		SonidoManager.getInstancia().dispose();
 		Engine.getInstancia().dispose();
+		System.exit(0);
 	}
 	
 	private void cargarMusica(){

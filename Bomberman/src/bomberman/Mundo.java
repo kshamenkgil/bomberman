@@ -13,7 +13,7 @@ public class Mundo {
 	private ArrayList<Enemigo> enemigos;			
 	
 	public void setMap(Mapa map) {
-		this.map = map;
+		this.map = map;		
 	}	
 	
 	public ArrayList<Jugador> getJugadores() {

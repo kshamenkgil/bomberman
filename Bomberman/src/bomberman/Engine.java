@@ -3,23 +3,35 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
-import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Hashtable;
 
 public class Engine {
-	//public static int TILE_WIDTH = 16;
-	//public static int TILE_HEIGHT = 16;
+	public static int TILE_WIDTH = 32;
+	public static int TILE_HEIGHT = 32;	
 	public static int FPS = 60;
 	public static long MS_PER_UPDATE = 16;
+	
+	private float offsetMaxX = 0;
+	private float offsetMaxY = 0;
+	private float offsetMinX = 0;
+	private float offsetMinY = 0;
+	
+	
+	
+	private float camX = 0;
+	private float camY = 0;
+	
 	private static Engine instancia;
 	private InputHandler input = new InputHandler();
-	private ArrayList<Tile> tiles = new ArrayList<Tile>();	
+	
 	private GameScreen juego;
 	private boolean startUpdate = false;
 	private int fpsCounter = 0;
 	private int fps;
 	private long fpsTime = 0;
+	
 	//private boolean isRunning = false;
 	private Hashtable<String, Textura> texturas = new Hashtable<String,Textura>();
 	public static Engine getInstancia() {
@@ -45,11 +57,11 @@ public class Engine {
 
 		//addTexturas("bl", new Textura("assets/graficos/bomberman1/tiles/bloqueado.png"));
 		
-		for (int i = 0; i < 475; i++) {
+		/*for (int i = 0; i < 475; i++) {
 			Tile t = new Tile(true, true, new Sprite("ex", false));		
 			t.getTileSprite().setLooping(false);
 			tiles.add(t);
-		}
+		}*/
 		
 		
 		
@@ -129,19 +141,14 @@ public class Engine {
 		//g.setColor(Color.);
 	}
 	
-	public synchronized void dibujar(Graphics2D g, ImageObserver io){		
-			//mapa
-			if(this.isStartUpdate()){
-				int c = 0;
-				int t = 0;
-				for (Tile tile : tiles) {
-					if(tile != null)
-						tile.dibujar(g, io, new Punto2D(c, t));
-					c++;
-					if(c == 25){
-						c= 0;
-						t++;
-					}
+	public synchronized void dibujar(Graphics2D g, ImageObserver io){
+		//mapa
+		if(this.isStartUpdate()){
+			g.translate(-camX, -camY);
+			for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
+				for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
+					Mundo.getInstance().getMap().getMapa()[x][y].getTile().dibujar(g, io, new Punto2D(x, y));
+				}
 			}
 			
 			//jugadores
@@ -156,66 +163,83 @@ public class Engine {
 		}else{
 			dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));
 		}
-				
+		
 	}
 	
-	public void update(){
+	public void update(){		
 		
-			while(!Engine.getInstancia().isStartUpdate()){
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}			
+		while(!Engine.getInstancia().isStartUpdate()){
+			try {
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}			
+		
+		offsetMaxX = (float) (Mundo.getInstance().getMap().getSize().x*TILE_WIDTH - Configuracion.getInstancia().getScreenX());
+		offsetMaxY = (float) (Mundo.getInstance().getMap().getSize().y*TILE_HEIGHT - Configuracion.getInstancia().getScreenY());
+		
+		//reproducir musica
+		//MidiPlayer.getInstancia().play("m1", true);
+		
+		long lastTime = Calendar.getInstance().getTimeInMillis();
+		//long lag = 0;
+		while(startUpdate)
+		{
+			long current = Calendar.getInstance().getTimeInMillis();
+			long elapsed = current - lastTime;
 			
-			//reproducir musica
-			MidiPlayer.getInstancia().play("m1", true);
+			fpsTime += elapsed;
 			
-			long lastTime = Calendar.getInstance().getTimeInMillis();
-			//long lag = 0;
-			while(startUpdate)
-			{				
-				long current = Calendar.getInstance().getTimeInMillis();
-				long elapsed = current - lastTime;
-				
-				fpsTime += elapsed;
-				
-				
-				if(elapsed < 0 )
-					elapsed = 0;
-				
-				if(elapsed > Engine.MS_PER_UPDATE)
-					elapsed = Engine.MS_PER_UPDATE;
-				
-				try {
-					Thread.sleep(Engine.MS_PER_UPDATE - elapsed);	
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-								
-				//procesar input
-				input.update();			    
+			
+			if(elapsed < 0 )
+				elapsed = 0;
+			
+			if(elapsed > Engine.MS_PER_UPDATE)
+				elapsed = Engine.MS_PER_UPDATE;
+			
+			try {
+				Thread.sleep(Engine.MS_PER_UPDATE - elapsed);	
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+							
+			//procesar input
+			input.update();			    
 
-			    //update
-				
-				//fin update
-			    
-				 
-				//repaint
-				juego.repaint();
-				
-				lastTime = current;
-				
-				if(fpsTime >= 1000){
-					fps = fpsCounter;
-					fpsTime = 0;
-					fpsCounter = 0;
-				}
-				fpsCounter++;
-			}	
-			Bomberman.getInstancia().dispose();
+		    //update
+
+			camX = (float)Mundo.getInstance().getJugador().getPosicion().getX() - Configuracion.getInstancia().getScreenX() / 2;
+			camY = (float)Mundo.getInstance().getJugador().getPosicion().getY() - Configuracion.getInstancia().getScreenY() / 2;	
+						
+			if(camX > offsetMaxX)
+			    camX = offsetMaxX;
+			else if(camX < offsetMinX)
+			    camX = offsetMinX;
+			
+			if(camY > offsetMaxY)
+			    camY = offsetMaxY;
+			else if(camY < offsetMinY)
+			    camY = offsetMinY;
+
+			
+			//fin update
+		    
+			 
+			//repaint
+			juego.repaint();
+			
+			lastTime = current;
+			
+			if(fpsTime >= 1000){
+				fps = fpsCounter;
+				fpsTime = 0;
+				fpsCounter = 0;
+			}
+			fpsCounter++;
+		}	
+		Bomberman.getInstancia().dispose();
 							
 	}
 

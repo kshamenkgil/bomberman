@@ -18,7 +18,8 @@ public class Tile {
 
 	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
-		tileSprite.dibujarTile(g, io, pos);
+		if(tileSprite != null)
+			tileSprite.dibujarTile(g, io, pos);
 	}
 	
 	public boolean isColisionable() {
