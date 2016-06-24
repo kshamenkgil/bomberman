@@ -28,8 +28,16 @@ public class Tile {
 	public Sprite getTileSprite() {
 		return tileSprite;
 	}	
-		
+	
+	public void setTileSprite(Sprite tileSprite) {
+		this.tileSprite = tileSprite;
+	}
+	
 	public boolean isSeRompe() {
 		return seRompe;
 	}
+	
+
+	
+	
 }

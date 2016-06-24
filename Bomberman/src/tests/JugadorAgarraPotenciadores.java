@@ -14,7 +14,7 @@ public class JugadorAgarraPotenciadores {
 		Jugador p1 = new Jugador(new Punto2D(0, 0));
 		Assert.assertEquals(4, p1.getVidas());
 		
-		Potenciador vidaExtra = new VidaExtra();
+		Potenciador vidaExtra = new VidaExtra("potv");
 		vidaExtra.potenciar(p1);
 		
 		Assert.assertEquals(5, p1.getVidas());				
@@ -29,7 +29,7 @@ public class JugadorAgarraPotenciadores {
 		Jugador p1 = new Jugador(new Punto2D(0, 0));
 		Assert.assertEquals(10.0f, p1.getPotenciaBomba(),0.001);
 		
-		Potenciador bombaMasPotente = new BombaMasPotente();
+		Potenciador bombaMasPotente = new BombaMasPotente("potb");
 		bombaMasPotente.potenciar(p1);
 		
 		Assert.assertEquals(20.0f, p1.getPotenciaBomba(),0.001);				
@@ -44,7 +44,7 @@ public class JugadorAgarraPotenciadores {
 		Jugador p1 = new Jugador(new Punto2D(0, 0));
 		Assert.assertEquals(10.0f, p1.getVelocidad(),0.001);
 		
-		Potenciador correrMasRapido = new CorrerMasRapido();
+		Potenciador correrMasRapido = new CorrerMasRapido("potr");
 		correrMasRapido.potenciar(p1);
 		
 		Assert.assertEquals(11.0f, p1.getVelocidad(),0.001);				

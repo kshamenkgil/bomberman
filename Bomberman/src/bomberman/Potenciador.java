@@ -1,10 +1,14 @@
 package bomberman;
 
 public abstract class Potenciador {
-	protected int textura;
+	protected String textura;
 	
-	public int getTextura() {
+	public String getTextura() {
 		return textura;
+	}
+	
+	public Potenciador(String textura) {
+		this.textura = textura;
 	}
 	
 	public abstract void potenciar(Jugador jugador);

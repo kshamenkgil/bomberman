@@ -3,17 +3,44 @@ package servidor;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import bomberman.Enemigo;
 import bomberman.Jugador;
-import bomberman.Tile;
+import bomberman.Mapa;
+import bomberman.Punto2D;
 
 public class Mundo {
 	private ArrayList<Enemigo> enemigos;
-	private ArrayList<Tile> bloquesRompibles;
+	/*private ArrayList<Tile> bloquesRompibles;
+	private ArrayList<Tile> bloqueados;*/
+	private Mapa map;
 	private ArrayList<ThreadServer> connections;
 	
-	public static void cargar(){
+	public void cargar(){
 		//cargar enemigos y bloques que se pueden romper
+		Punto2D size = new Punto2D(100, 100);
+		this.map = new MapAutoGeneration(size, 10).getMap();
+	}
+
+	public void setMap(Mapa map) {
+		this.map = map;
+	}
+	
+	public synchronized void sendMapa(){
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DSerializer())				
+				.registerTypeAdapter(bomberman.Potenciador.class, new bomberman.PotenciadorSerializer())
+				.registerTypeAdapter(bomberman.Tile.class, new bomberman.TileSerializer())
+				.registerTypeAdapter(bomberman.TileMap.class, new bomberman.TileMapSerializer())
+				.registerTypeAdapter(bomberman.Mapa.class, new bomberman.MapSerializer())
+				.create();
+		
+		String mapa = gson.toJson(this.map);		
+		for (ThreadServer ts : connections) {
+			ts.sendData(mapa.getBytes(Charset.forName("UTF-8")));
+		}		
 	}
 	
 	public synchronized void sendStartInfo(){

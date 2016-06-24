@@ -1,7 +1,6 @@
 package bomberman;
 
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
 public class Sprite {
@@ -14,8 +13,11 @@ public class Sprite {
 	private int tileWidth;
 	private int tileHeight;
 	private boolean dibujar;	
+	private boolean hasToLoadSizes;
+	
 	
 	public Sprite(String textura, boolean loop) {
+		this.hasToLoadSizes = false;
 		this.looping = loop;
 		this.textura = textura;
 		this.tileHeight = Engine.getInstancia().getTextura(textura).getImagen().getHeight();
@@ -26,7 +28,32 @@ public class Sprite {
 		this.dibujar = false;
 		this.looping = false;				
 	}
+	
+	public Sprite(String textura, boolean loop, boolean hasToLoadSizes) {
+		this.hasToLoadSizes = hasToLoadSizes;
+		this.looping = loop;
+		this.textura = textura;
+		//this.tileHeight = Engine.getInstancia().getTextura(textura).getImagen().getHeight();
+		//this.tileWidth = this.tileHeight;
+		//this.cantImg = Engine.getInstancia().getTextura(textura).getImagen().getWidth() / this.tileWidth;
+		this.actualImg = 0;
+		this.lastTiempo = Engine.MS_PER_UPDATE;
+		this.dibujar = false;
+		this.looping = false;				
+	}
 
+	public boolean HasToLoadSizes() {
+		return hasToLoadSizes;
+	}
+	
+	public void setSizes() {
+		this.tileHeight = Engine.getInstancia().getTextura(textura).getImagen().getHeight();
+		this.tileWidth = this.tileHeight;
+		this.cantImg = Engine.getInstancia().getTextura(textura).getImagen().getWidth() / this.tileWidth;
+	}
+	
+	
+	
 	public void dibujarTile(Graphics2D g, ImageObserver io, Punto2D pos){
 		int x = (int)pos.getX()*this.tileWidth;
 		int y = (int)pos.getY()*this.tileHeight;

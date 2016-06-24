@@ -8,14 +8,13 @@ public class Mundo {
 	private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
 	
 	private Mapa map;
-	private ArrayList<Tile> bloquesRompibles;
+	//private ArrayList<Tile> bloquesRompibles;
 	
-	private ArrayList<Enemigo> enemigos;
-			
+	private ArrayList<Enemigo> enemigos;			
 	
-	public static void cargar(){
-		//cargar enemigos y bloques que se pueden romper
-	}
+	public void setMap(Mapa map) {
+		this.map = map;
+	}	
 	
 	public ArrayList<Jugador> getJugadores() {
 		return jugadores;
@@ -35,10 +34,6 @@ public class Mundo {
 	
 	public Mapa getMap() {
 		return map;
-	}
-	
-	public ArrayList<Tile> getBloquesRompibles() {
-		return bloquesRompibles;
 	}
 	
 	//thread safe

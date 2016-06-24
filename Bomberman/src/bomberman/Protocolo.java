@@ -1,5 +1,7 @@
 package bomberman;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 //import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -97,7 +99,7 @@ public class Protocolo {
 	private void parseJSON(String json){
 		JsonParser parser = new JsonParser();
 		JsonObject o = parser.parse(json).getAsJsonObject();
-		if(o.get("header").getAsString().compareTo("startInfo") == 0){			
+		if(o.get("header").getAsString().compareTo("startInfo") == 0){
 			JsonArray ja = o.getAsJsonArray("jugadores");
 			for (JsonElement jsonElement : ja) {				
 				//String nombre = jsonElement.getAsJsonObject().get("name").getAsString();
@@ -118,8 +120,18 @@ public class Protocolo {
 				}
 			}
 			Engine.getInstancia().setStartUpdate(true);
-		}
-		//System.out.println(o.get("header"));
+		}else if(o.get("header").getAsString().compareTo("mapa") == 0){
+			Gson gson = new GsonBuilder()
+					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
+					.registerTypeAdapter(bomberman.Potenciador.class, new bomberman.PotenciadorDeserializer())
+					.registerTypeAdapter(bomberman.Tile.class, new bomberman.TileDeserializer())
+					.registerTypeAdapter(bomberman.TileMap.class, new bomberman.TileMapDeserializer())
+					.registerTypeAdapter(bomberman.Mapa.class, new bomberman.MapDeserializer())
+					.create();
+			
+			Mundo.getInstance().setMap(gson.fromJson(json, Mapa.class));
+			//System.out.println("test");
+		}		
 	}
 	
 	private void moverJugador(byte[] data){		

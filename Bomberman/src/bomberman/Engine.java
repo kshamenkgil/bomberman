@@ -102,6 +102,7 @@ public class Engine {
 		
 		//potenciadores
 		addTexturas("potb", new Textura("assets/graficos/"+set+"potenciadores/bomba.png"));
+		addTexturas("potmb", new Textura("assets/graficos/"+set+"potenciadores/bomba.png"));
 		addTexturas("potv", new Textura("assets/graficos/"+set+"potenciadores/vida.png"));
 		addTexturas("potc", new Textura("assets/graficos/"+set+"potenciadores/correr.png"));
 		//addTexturas("potmb", new Textura("assets/graficos/"+set+"potenciadores/masbomba.png"));
@@ -134,7 +135,8 @@ public class Engine {
 				int c = 0;
 				int t = 0;
 				for (Tile tile : tiles) {
-					tile.dibujar(g, io, new Punto2D(c, t));
+					if(tile != null)
+						tile.dibujar(g, io, new Punto2D(c, t));
 					c++;
 					if(c == 25){
 						c= 0;
@@ -172,7 +174,7 @@ public class Engine {
 			MidiPlayer.getInstancia().play("m1", true);
 			
 			long lastTime = Calendar.getInstance().getTimeInMillis();
-			long lag = 0;
+			//long lag = 0;
 			while(startUpdate)
 			{				
 				long current = Calendar.getInstance().getTimeInMillis();

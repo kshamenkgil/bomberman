@@ -88,6 +88,10 @@ public class Server implements Runnable{
 		
 		//si el juego comenzó enviar info inicial e iniciar update
 		Mundo.getInstance().setConnections(connections);
+		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(100, 100), 10);
+		//mAG.saveMap();
+		Mundo.getInstance().setMap(mAG.getMap());
+		Mundo.getInstance().sendMapa();
 		Mundo.getInstance().sendStartInfo();
 		
 		

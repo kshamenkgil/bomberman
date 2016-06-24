@@ -13,6 +13,10 @@ public class TileMap {
 		return potenciador;
 	}
 	
+	public void setPotenciador(Potenciador potenciador) {
+		this.potenciador = potenciador;
+	}
+	
 	public Tile getTile() {
 		return tile;
 	}
