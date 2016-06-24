@@ -16,9 +16,9 @@ public class TileDeserializer implements JsonDeserializer<Tile> {
 			boolean colisionable = jsonObject.get("c").getAsBoolean();
 			Punto2D pos = context.deserialize(jsonObject.get("Pos"),Punto2D.class);			
 			if(seRompe && colisionable)
-				return new Tile(seRompe, colisionable, new Sprite("ex", true),pos);
+				return new Tile(seRompe, colisionable, new Sprite("ex", false),pos);
 			else if(colisionable)
-				return new Tile(seRompe, colisionable, new Sprite("bl", true),pos);
+				return new Tile(seRompe, colisionable, new Sprite("bl", false),pos);
 			else
 				return new Tile(seRompe, colisionable, null,pos);
 		}

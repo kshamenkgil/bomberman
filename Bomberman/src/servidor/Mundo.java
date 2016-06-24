@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import bomberman.Bomba;
 import bomberman.Enemigo;
 import bomberman.Jugador;
 import bomberman.Mapa;
@@ -16,8 +17,16 @@ public class Mundo {
 	private ArrayList<Enemigo> enemigos;	
 	private Mapa map;
 	private ArrayList<ThreadServer> connections;
-	
+	private ArrayList<Bomba> bombas = new ArrayList<Bomba>();	
 	private int connectedUsers = 0; 
+	
+	public ArrayList<Bomba> getBombas() {
+		return bombas;
+	}
+	
+	public void setBombas(ArrayList<Bomba> bombas) {
+		this.bombas = bombas;
+	}
 	
 	public int getConnectedUsers() {
 		return connectedUsers;

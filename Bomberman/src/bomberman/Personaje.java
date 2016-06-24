@@ -15,6 +15,7 @@ public abstract class Personaje {
 	protected Punto2D posicion;
 	protected Punto2D posicionRelativa;
 	protected float velocidad; 	
+	private int tolerancia = 3;
 	
 	public Personaje(Punto2D posicion, Punto2D posicionRelativa) {
 		this.posicion = posicion;
@@ -148,46 +149,32 @@ public abstract class Personaje {
 							if(direccion == Protocolo.ESTE)
 								return true;
 					}
-				}
-			/*	switch(direccion){
-					case Protocolo.NORTE:
-						//if(t.getPosicion().getY() < posicion.y)
-							if(t.getTileSprite() != null)
-								if(getBounds().intersects(t.getBounds()) && t.isColisionable())
-									if(posicion.y <= t.getPosicion().getY() - (t.getTileSprite().getTileHeight()/2))//Hit was from below the brick
-										return true;									
-						break;
-					case Protocolo.SUR:
-						//if(t.getPosicion().getY() > posicion.y)
-							if(t.getTileSprite() != null)
-								if(getBounds().intersects(t.getBounds()) && t.isColisionable())
-									if(posicion.y >= t.getPosicion().getY() + (t.getTileSprite().getTileHeight()/2))//Hit was from above the brick
-										return true;
-						break;
-					case Protocolo.ESTE:						
-							if(t.getTileSprite() != null)
-								if(getBounds().intersects(t.getBounds()) && t.isColisionable())
-									if(posicion.x >t.getPosicion().getX())//Hit was on right
-										return true;
-						break;	
-					case Protocolo.OESTE:
-						//if(t.getPosicion().getX() < posicion.x)
-							if(t.getTileSprite() != null)
-								if(getBounds().intersects(t.getBounds()) && t.isColisionable()){
-									if(posicion.x < t.getPosicion().getX())//Hit was on left
-										return true;									
-										  
-								}									
-						break;
-				}		*/		
-			}
+				}	
+			}			
+		}
+		
+		for (Bomba bomba : Mundo.getInstance().getBombas()) {			
+				if(getBounds().intersects(bomba.getBounds())){
+					if(posicion.y <= bomba.getPosicion().getY() - (bomba.getBombaSprite().getTileHeight()/2))//Hit was from below the brick
+						if(direccion == Protocolo.SUR)
+							return true;
+					if(posicion.y >= bomba.getPosicion().getY() + (bomba.getBombaSprite().getTileHeight()/2))//Hit was from above the brick
+						if(direccion == Protocolo.NORTE)
+							return true;
+					if(posicion.x >bomba.getPosicion().getX())//Hit was on right
+						if(direccion == Protocolo.OESTE)
+							return true;
+					if(posicion.x < bomba.getPosicion().getX())//Hit was on left
+						if(direccion == Protocolo.ESTE)
+							return true;
+				}			
 		}
 				
 		return false;
 	}
 		
 	public Rectangle getBounds(){		
-		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),Engine.TILE_WIDTH,Engine.TILE_HEIGHT);//(int)personajeN.getTileHeight(),(int)personajeN.getTileWidth());
+		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),Engine.TILE_WIDTH-tolerancia,Engine.TILE_HEIGHT-tolerancia);//(int)personajeN.getTileHeight(),(int)personajeN.getTileWidth());
 	}
 	
 	public float getVelocidad() {

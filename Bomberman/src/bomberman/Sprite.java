@@ -26,7 +26,7 @@ public class Sprite {
 		this.actualImg = 0;
 		this.lastTiempo = Engine.MS_PER_UPDATE;
 		this.dibujar = false;
-		this.looping = false;				
+		this.looping = loop;				
 	}
 	
 	public Sprite(String textura, boolean loop, boolean hasToLoadSizes) {
@@ -39,7 +39,7 @@ public class Sprite {
 		this.actualImg = 0;
 		this.lastTiempo = Engine.MS_PER_UPDATE;
 		this.dibujar = false;
-		this.looping = false;				
+		this.looping = loop;				
 	}
 
 	public boolean HasToLoadSizes() {

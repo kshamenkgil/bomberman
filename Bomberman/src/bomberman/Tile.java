@@ -10,6 +10,7 @@ public class Tile {
 	private boolean seRompe;
 	private boolean colisionable;
 	private Punto2D posicion;
+	private int tolerancia = 5;
 	
 	public Tile(boolean seRompe, boolean colisionable, Sprite tileSprite, Punto2D posicion) {
 		this.seRompe = seRompe;
@@ -44,7 +45,7 @@ public class Tile {
 	}
 
 	public Rectangle getBounds(){
-		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),(int)tileSprite.getTileHeight(),(int)tileSprite.getTileWidth());
+		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),(int)tileSprite.getTileHeight()-tolerancia,(int)tileSprite.getTileWidth()-tolerancia);
 	}
 	
 }

@@ -9,6 +9,7 @@ public class Jugador extends Personaje {
 	private int vidas; 
 	private int potenciaBomba;
 	private int cantBombas;
+	private int cantBombasActual;
 	private Color color;
 	private String nombre = "Prueba";
 	
@@ -18,9 +19,19 @@ public class Jugador extends Personaje {
 		this.potenciaBomba = 10;
 		this.velocidad = 1.0f;
 		this.color = Color.WHITE;
+		this.cantBombas = 1;
+		this.cantBombasActual = 0;
 		
 	}	
 		
+	public synchronized void setCantBombasActual(int cantBombasActual) {
+		this.cantBombasActual = cantBombasActual;
+	}
+	
+	public int getCantBombasActual() {
+		return cantBombasActual;
+	}
+	
 	public void dibujar(Graphics2D g ,ImageObserver io){		
 		super.dibujar(g, io);
 		Color color;
@@ -55,9 +66,12 @@ public class Jugador extends Personaje {
 	}
 	
 	@Override
-	public void atacar() {
-		// TODO Auto-generated method stub
-		
+	public synchronized void atacar() { // poner bomba
+		if(getCantBombasActual() < getCantBombas()){
+			setCantBombasActual(cantBombasActual+1);
+			Mundo.getInstance().getBombas().add(new Bomba(1, 1, posicion, this));
+			//Mundo.getInstance().
+		}		
 	}
 	
 	public byte getId() {
@@ -88,7 +102,7 @@ public class Jugador extends Personaje {
 		return cantBombas;
 	}
 	
-	public void setCantBombas(int cantBombas) {
+	public synchronized void setCantBombas(int cantBombas) {
 		this.cantBombas = cantBombas;
 	}
 	

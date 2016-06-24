@@ -111,6 +111,15 @@ public class Engine {
 		addTexturas("e1m", new Textura(set+"enemigos/1/muerte.png"));*/
 				
 		//bomba
+		addTexturas("bomba", new Textura("assets/graficos/"+set+"Bombas/BOMBA.png"));
+		addTexturas("eabajo", new Textura("assets/graficos/"+set+"Bombas/EXPLOSION_ABAJO.png"));
+		addTexturas("earriba", new Textura("assets/graficos/"+set+"Bombas/EXPLOSION_ARRIBA.png"));
+		addTexturas("eder", new Textura("assets/graficos/"+set+"Bombas/EXPLOSION_DER.png"));
+		addTexturas("ehoriz", new Textura("assets/graficos/"+set+"Bombas/EXPLOSION_HORIZ.png"));
+		addTexturas("eizq", new Textura("assets/graficos/"+set+"Bombas/EXPLOSION_IZQ.png"));
+		addTexturas("emedio", new Textura("assets/graficos/"+set+"Bombas/EXPLOSION_MEDIO.png"));
+		addTexturas("evertic", new Textura("assets/graficos/"+set+"Bombas/EXPLOSION_VERTIC.png"));
+		
 		
 		//potenciadores
 		addTexturas("potb", new Textura("assets/graficos/"+set+"potenciadores/bomba.png"));
@@ -156,6 +165,10 @@ public class Engine {
 				for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
 					Mundo.getInstance().getMap().getMapa()[x][y].getTile().dibujar(g, io, new Punto2D(x, y));
 				}
+			}
+			
+			for (Bomba bomba : Mundo.getInstance().getBombas()) {				
+				bomba.dibujarBomba(g,io);
 			}
 			
 			//jugadores

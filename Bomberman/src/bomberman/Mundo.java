@@ -6,11 +6,24 @@ public class Mundo {
 	
 	private Jugador jugador;
 	private ArrayList<Jugador> jugadores = new ArrayList<Jugador>();
+	private ArrayList<Bomba> bombas = new ArrayList<Bomba>();
 	
 	private Mapa map;
 	//private ArrayList<Tile> bloquesRompibles;
 	
 	private ArrayList<Enemigo> enemigos;			
+	
+	public ArrayList<Bomba> getBombas() {
+		return bombas;
+	}
+	
+	public void setBombas(ArrayList<Bomba> bombas) {
+		this.bombas = bombas;
+	}
+	
+	public void setJugadores(ArrayList<Jugador> jugadores) {
+		this.jugadores = jugadores;
+	}
 	
 	public void setMap(Mapa map) {
 		this.map = map;		
