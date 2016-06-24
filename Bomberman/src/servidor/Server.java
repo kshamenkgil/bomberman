@@ -84,14 +84,15 @@ public class Server implements Runnable{
 			
 			this.lastId++;
 			this.connectedUsers++;
-			if(this.connectedUsers == 4)
+			if(this.connectedUsers == 2)
 				setRunning(false);
-			//Mundo.getInstance().setConnections(connections);
+			
 		}
 		
 		//si el juego comenzó enviar info inicial e iniciar update
-		Mundo.getInstance().setConnections(connections);		
-		//mAG.saveMap();
+		Mundo.getInstance().setConnections(connections);
+		Mundo.getInstance().setConnectedUsers(connectedUsers);
+		//mAG.saveMap(); //se guarda el mapa
 		Mundo.getInstance().setMap(mAG.getMap());
 		Mundo.getInstance().sendMapa();
 		Mundo.getInstance().sendStartInfo();

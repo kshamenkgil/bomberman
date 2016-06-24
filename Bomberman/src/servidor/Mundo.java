@@ -12,11 +12,19 @@ import bomberman.Mapa;
 import bomberman.Punto2D;
 
 public class Mundo {
-	private ArrayList<Enemigo> enemigos;
-	/*private ArrayList<Tile> bloquesRompibles;
-	private ArrayList<Tile> bloqueados;*/
+	private ArrayList<Enemigo> enemigos;	
 	private Mapa map;
 	private ArrayList<ThreadServer> connections;
+	
+	private int connectedUsers = 0; 
+	
+	public int getConnectedUsers() {
+		return connectedUsers;
+	}
+	
+	public synchronized void setConnectedUsers(int connectedUsers) {
+		this.connectedUsers = connectedUsers;
+	}
 	
 	public void cargar(){
 		//cargar enemigos y bloques que se pueden romper
@@ -97,6 +105,7 @@ public class Mundo {
 		
 		t1.closeSocket();
 		connections.remove(t1);
+		setConnectedUsers(connectedUsers-1);
 	}
 	
 	public synchronized void actualizarPosicion(Jugador jugador, byte[] data){

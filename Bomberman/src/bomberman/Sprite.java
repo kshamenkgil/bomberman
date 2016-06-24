@@ -53,6 +53,13 @@ public class Sprite {
 	}
 	
 	
+	public int getTileWidth() {
+		return tileWidth;
+	}
+	
+	public int getTileHeight() {
+		return tileHeight;
+	}
 	
 	public void dibujarTile(Graphics2D g, ImageObserver io, Punto2D pos){
 		int x = (int)pos.getX()*this.tileWidth;

@@ -141,6 +141,13 @@ public class Engine {
 		//g.setColor(Color.);
 	}
 	
+	public void dibujarTexto(String texto, int size, Color color ,Graphics2D g, Punto2D pos){
+		g.setColor(color);
+		g.setFont(new Font("Arial", Font.BOLD, size));
+		g.drawString(texto, (int)pos.getX(), (int)pos.getY());
+		//g.setColor(Color.);
+	}
+	
 	public synchronized void dibujar(Graphics2D g, ImageObserver io){
 		//mapa
 		if(this.isStartUpdate()){
