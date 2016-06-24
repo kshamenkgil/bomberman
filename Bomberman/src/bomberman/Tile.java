@@ -1,6 +1,7 @@
 package bomberman;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
 public class Tile {
@@ -8,14 +9,18 @@ public class Tile {
 	//private double width, height; // 32x32, 64x64 , etc	
 	private boolean seRompe;
 	private boolean colisionable;
+	private Punto2D posicion;
 	
-	
-	public Tile(boolean seRompe, boolean colisionable, Sprite tileSprite) {
+	public Tile(boolean seRompe, boolean colisionable, Sprite tileSprite, Punto2D posicion) {
 		this.seRompe = seRompe;
 		this.colisionable = colisionable;
 		this.tileSprite = tileSprite;
+		this.posicion = posicion;
 	}
 
+	public Punto2D getPosicion() {
+		return posicion;
+	}
 	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
 		if(tileSprite != null)
@@ -37,8 +42,9 @@ public class Tile {
 	public boolean isSeRompe() {
 		return seRompe;
 	}
-	
 
-	
+	public Rectangle getBounds(){
+		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),(int)tileSprite.getTileHeight(),(int)tileSprite.getTileWidth());
+	}
 	
 }

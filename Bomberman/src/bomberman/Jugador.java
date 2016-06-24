@@ -12,8 +12,8 @@ public class Jugador extends Personaje {
 	private Color color;
 	private String nombre = "Prueba";
 	
-	public Jugador(Punto2D posicion) {
-		super(posicion);
+	public Jugador(Punto2D posicion, Punto2D posicionRelativa) {
+		super(posicion,posicionRelativa);
 		this.vidas = 4;
 		this.potenciaBomba = 10;
 		this.velocidad = 1.0f;

@@ -12,6 +12,7 @@ import bomberman.Mapa;
 import bomberman.Punto2D;
 
 public class Mundo {
+	private static Mundo instance;
 	private ArrayList<Enemigo> enemigos;	
 	private Mapa map;
 	private ArrayList<ThreadServer> connections;
@@ -63,6 +64,10 @@ public class Mundo {
 			s+=t.getJugador().getPosicion().getX();
 			s+=", 'y':";
 			s+=t.getJugador().getPosicion().getY();
+			s+=", 'rx':";
+			s+=t.getJugador().getPosicionRelativa().getX();
+			s+=", 'ry':";
+			s+=t.getJugador().getPosicionRelativa().getY();
 			s+="}";
 			if(index != connections.size())
 				s+=",";
@@ -75,14 +80,22 @@ public class Mundo {
 		}
 	}
 	
-	//thread safe
+	
 	public static Mundo getInstance() {
+		if(instance == null)
+			instance = new Mundo();
+		
+		return instance;
+	}
+	
+	//thread safe
+	/*public static Mundo getInstance() {
 		return MundoHolder.INSTANCE;			
 	}
 		
 	private static class MundoHolder {
         static final Mundo INSTANCE = new Mundo();
-    }	   
+    }*/	   
     
 	public void setConnections(ArrayList<ThreadServer> connections) {
 		this.connections = connections;

@@ -15,7 +15,7 @@ public class Punto2DDeserializer implements JsonDeserializer<Punto2D> {
 		final JsonObject jsonObject = json.getAsJsonObject();
 		
 		final JsonElement jsonX = jsonObject.get("x");
-		final JsonElement jsonY = jsonObject.get("x");
+		final JsonElement jsonY = jsonObject.get("y");
 		final double x = jsonX.getAsDouble();
 		final double y = jsonY.getAsDouble();				
 		

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import bomberman.Engine;
 import bomberman.Jugador;
+import bomberman.Mapa;
 import bomberman.Punto2D;
 
 public class Server implements Runnable{
@@ -50,24 +51,28 @@ public class Server implements Runnable{
 			ThreadServer t = new ThreadServer(entrante,"Usuario" + connectedUsers);
 			
 			Punto2D p = new Punto2D(0, 0);
+			Punto2D pR = new Punto2D(0, 0);
 			
 			switch(lastId){
 				case 0:
 					p = new Punto2D(1*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
+					pR = new Punto2D(1, 1);
 					break;
 				case 1:
 					p = new Punto2D((mAG.getMap().getSize().getX()-2)*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
+					pR = new Punto2D((mAG.getMap().getSize().getX()-2), 1);
 					break;
 				case 2:
-					
+					pR = new Punto2D(1, (mAG.getMap().getSize().getY()-2));
 					p = new Punto2D(1*Engine.TILE_WIDTH, (mAG.getMap().getSize().getY()-2)*Engine.TILE_HEIGHT);
 					break;
 				case 3:
 					p = new Punto2D((mAG.getMap().getSize().getX()-2)*Engine.TILE_WIDTH, (mAG.getMap().getSize().getY()-2)*Engine.TILE_HEIGHT);					
+					pR = new Punto2D((mAG.getMap().getSize().getX()-2), (mAG.getMap().getSize().getY()-2));
 					break;
 			}
 			
-			Jugador j = new Jugador(p);
+			Jugador j = new Jugador(p,pR);
 			j.setId(lastId);	
 			
 			t.setJugador(j);
@@ -93,7 +98,9 @@ public class Server implements Runnable{
 		Mundo.getInstance().setConnections(connections);
 		Mundo.getInstance().setConnectedUsers(connectedUsers);
 		//mAG.saveMap(); //se guarda el mapa
-		Mundo.getInstance().setMap(mAG.getMap());
+		Mapa tMap = mAG.getMap();
+		Mundo.getInstance().setMap(tMap);
+		bomberman.Mundo.getInstance().setMap(tMap);
 		Mundo.getInstance().sendMapa();
 		Mundo.getInstance().sendStartInfo();
 		

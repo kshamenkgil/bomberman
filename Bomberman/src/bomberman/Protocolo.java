@@ -86,7 +86,7 @@ public class Protocolo {
 	private void setParametrosIniciales(byte id1) {
 		int id = (int)id1;
 		id = id + 1;
-		Jugador j = new Jugador(new Punto2D(0,0));
+		Jugador j = new Jugador(new Punto2D(0,0),new Punto2D(0,0));
 		j.setSprites(new Sprite("p"+id+"n", true),new Sprite("p"+id+"s", true),
 					 new Sprite("p"+id+"e", true),new Sprite("p"+id+"o", true),
 					 new Sprite("p"+id+"m", true));
@@ -106,11 +106,15 @@ public class Protocolo {
 				byte id = (byte)jsonElement.getAsJsonObject().get("id").getAsInt();
 				int x = jsonElement.getAsJsonObject().get("x").getAsInt();
 				int y = jsonElement.getAsJsonObject().get("y").getAsInt();				
+				int rx = jsonElement.getAsJsonObject().get("rx").getAsInt();
+				int ry = jsonElement.getAsJsonObject().get("ry").getAsInt();
 				
-				if(id == Mundo.getInstance().getJugador().getId())
+				if(id == Mundo.getInstance().getJugador().getId()){
 					Mundo.getInstance().getJugador().setPosicion(new Punto2D(x, y));
+					Mundo.getInstance().getJugador().setPosicionRelativa(new Punto2D(rx, ry));
+				}
 				else{
-					Jugador j = new Jugador(new Punto2D(x, y));
+					Jugador j = new Jugador(new Punto2D(x, y),new Punto2D(rx, ry));
 					j.setId(id);
 					int idd = id + 1;
 					j.setSprites(new Sprite("p"+idd+"n", true),new Sprite("p"+idd+"s", true),

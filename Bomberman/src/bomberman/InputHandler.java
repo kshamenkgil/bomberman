@@ -39,9 +39,9 @@ public class InputHandler implements KeyListener {
         }).start();*/
         
 	}
-	
+		
 	public void update(){
-		if(keys.get(KeyEvent.VK_UP)){	    
+		if(keys.get(KeyEvent.VK_UP)){			
 			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.NORTE);

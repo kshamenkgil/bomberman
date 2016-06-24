@@ -1,6 +1,7 @@
 package bomberman;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
 
@@ -12,12 +13,22 @@ public abstract class Personaje {
 	protected Sprite personajeMuerte;
 	protected byte direccion;
 	protected Punto2D posicion;
-	protected float velocidad; 
+	protected Punto2D posicionRelativa;
+	protected float velocidad; 	
 	
-	public Personaje(Punto2D posicion) {
+	public Personaje(Punto2D posicion, Punto2D posicionRelativa) {
 		this.posicion = posicion;
 		this.direccion = Protocolo.ESTE;
 		this.velocidad = 1f;
+		this.posicionRelativa = posicionRelativa;
+	}
+		
+	public void setPosicionRelativa(Punto2D posicionRelativa) {
+		this.posicionRelativa = posicionRelativa;
+	}
+	
+	public Punto2D getPosicionRelativa() {
+		return posicionRelativa;
 	}
 	
 	public abstract void atacar();
@@ -84,22 +95,99 @@ public abstract class Personaje {
 	public synchronized void mover(int direccion){ // norte sur este oeste
 		switch(direccion){
 			case Protocolo.NORTE: //cambiar por protocolo.norte
-				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() - (1*this.velocidad));
-				this.direccion = Protocolo.NORTE;				
+				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y-1))){
+				this.direccion = Protocolo.NORTE;		
+				if(!colision(direccion)){
+					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() - (1*this.velocidad));
+							
+				}
 				break;
 			case Protocolo.SUR: //cambiar por protocolo.sur
-				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() + (1*this.velocidad));
+				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y+1))){
 				this.direccion = Protocolo.SUR;
+				if(!colision(direccion)){
+					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() + (1*this.velocidad));
+					
+				}
 				break;
 			case Protocolo.ESTE: //cambiar por protocolo.este
-				this.posicion = new Punto2D(this.posicion.getX() + (1*this.velocidad), this.posicion.getY());
+				//if(!colision(new Punto2D(posicionRelativa.x+1, posicionRelativa.y))){
 				this.direccion = Protocolo.ESTE;
+				if(!colision(direccion)){
+					this.posicion = new Punto2D(this.posicion.getX() + (1*this.velocidad), this.posicion.getY());
+					
+				}
 				break;
 			case Protocolo.OESTE: //cambiar por protocolo.oeste
-				this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());
+				//if(!colision(new Punto2D(posicionRelativa.x-1, posicionRelativa.y))){
 				this.direccion = Protocolo.OESTE;
+				if(!colision(direccion)){
+					this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());
+					
+				}
 				break;
 		}		
+	}
+	
+	public boolean colision(int direccion) {
+		for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
+			for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
+				Tile t = Mundo.getInstance().getMap().getMapa()[x][y].getTile();
+				if(t.getTileSprite() != null){
+					if(getBounds().intersects(t.getBounds()) && t.isColisionable()){
+						if(posicion.y <= t.getPosicion().getY() - (t.getTileSprite().getTileHeight()/2))//Hit was from below the brick
+							if(direccion == Protocolo.SUR)
+								return true;
+						if(posicion.y >= t.getPosicion().getY() + (t.getTileSprite().getTileHeight()/2))//Hit was from above the brick
+							if(direccion == Protocolo.NORTE)
+								return true;
+						if(posicion.x >t.getPosicion().getX())//Hit was on right
+							if(direccion == Protocolo.OESTE)
+								return true;
+						if(posicion.x < t.getPosicion().getX())//Hit was on left
+							if(direccion == Protocolo.ESTE)
+								return true;
+					}
+				}
+			/*	switch(direccion){
+					case Protocolo.NORTE:
+						//if(t.getPosicion().getY() < posicion.y)
+							if(t.getTileSprite() != null)
+								if(getBounds().intersects(t.getBounds()) && t.isColisionable())
+									if(posicion.y <= t.getPosicion().getY() - (t.getTileSprite().getTileHeight()/2))//Hit was from below the brick
+										return true;									
+						break;
+					case Protocolo.SUR:
+						//if(t.getPosicion().getY() > posicion.y)
+							if(t.getTileSprite() != null)
+								if(getBounds().intersects(t.getBounds()) && t.isColisionable())
+									if(posicion.y >= t.getPosicion().getY() + (t.getTileSprite().getTileHeight()/2))//Hit was from above the brick
+										return true;
+						break;
+					case Protocolo.ESTE:						
+							if(t.getTileSprite() != null)
+								if(getBounds().intersects(t.getBounds()) && t.isColisionable())
+									if(posicion.x >t.getPosicion().getX())//Hit was on right
+										return true;
+						break;	
+					case Protocolo.OESTE:
+						//if(t.getPosicion().getX() < posicion.x)
+							if(t.getTileSprite() != null)
+								if(getBounds().intersects(t.getBounds()) && t.isColisionable()){
+									if(posicion.x < t.getPosicion().getX())//Hit was on left
+										return true;									
+										  
+								}									
+						break;
+				}		*/		
+			}
+		}
+				
+		return false;
+	}
+		
+	public Rectangle getBounds(){		
+		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),Engine.TILE_WIDTH,Engine.TILE_HEIGHT);//(int)personajeN.getTileHeight(),(int)personajeN.getTileWidth());
 	}
 	
 	public float getVelocidad() {

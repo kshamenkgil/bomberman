@@ -13,6 +13,7 @@ import com.google.gson.GsonBuilder;
 
 import bomberman.BombaMasPotente;
 import bomberman.CorrerMasRapido;
+import bomberman.Engine;
 import bomberman.MapSerializer;
 import bomberman.Mapa;
 import bomberman.MasDeUnaBomba;
@@ -52,42 +53,42 @@ public class MapAutoGeneration {
 					if(hasPotenciador == 1){
 						switch (op) {
 							case 0:
-								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), new BombaMasPotente("potb"));
+								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), new BombaMasPotente("potb"));
 								break;				
 							case 1:
-								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), new CorrerMasRapido("potc"));
+								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), new CorrerMasRapido("potc"));
 								break;
 							case 2:
-								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), new MasDeUnaBomba("potmb"));
+								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), new MasDeUnaBomba("potmb"));
 								break;
 							case 3:
-								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), new VidaExtra("potv"));
+								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), new VidaExtra("potv"));
 								break;
 						}
 					}else{
-							t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), null);
+							t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 					}
 					potCounter++;
 				}else{
 					if(hasPotenciador == 0)
-						t = new TileMap(new Tile(true, true, new Sprite("ex", false, true)), null);
+						t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 					else
-						t = new TileMap(new Tile(false, false, null), null);
+						t = new TileMap(new Tile(false, false, null,new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 				}
 				
 												
 				if(x <= 4 && x >= 1 && y >= 1 && y <= 4 && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
-					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);							
+					tileMap[x][y] = new TileMap(new Tile(false, false, null,new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);							
 				}else if(x >= (size.getX()-2)-4 && x <= size.getX()-2 && y >= 1 && y <= 4 && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
-					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);				
+					tileMap[x][y] = new TileMap(new Tile(false, false, null,new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);				
 				}else if(x <= 4 && x >= 1 && y >= (size.getY()-2)-4 && y <= (size.getY()-2) && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
-					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);
+					tileMap[x][y] = new TileMap(new Tile(false, false, null,new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 				}else if(x >= (size.getX()-2)-4 && x <= size.getX()-2 && y >= (size.getY()-2)-4 && y <= (size.getY()-2) && x != 0 && x != size.getX()-1 && y != 0 && y != size.getY()-1){
-					tileMap[x][y] = new TileMap(new Tile(false, false, null), null);							
+					tileMap[x][y] = new TileMap(new Tile(false, false, null,new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);							
 				}else if(x == 0 || x == size.getX()-1){
-					tileMap[x][y] = new TileMap(new Tile(false, true, new Sprite("bl", false, true)), null);
+					tileMap[x][y] = new TileMap(new Tile(false, true, new Sprite("bl", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 				}else if(y == 0 || y == size.getY()-1){
-					tileMap[x][y] = new TileMap(new Tile(false, true, new Sprite("bl", false, true)), null);
+					tileMap[x][y] = new TileMap(new Tile(false, true, new Sprite("bl", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 				}else{
 					tileMap[x][y] = t;
 				}
