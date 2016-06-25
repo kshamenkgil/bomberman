@@ -58,9 +58,8 @@ public class Server implements Runnable{
 					p = new Punto2D(1*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
 					pR = new Punto2D(1, 1);
 					break;
-				case 1:
-					p = new Punto2D(1*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
-					//p = new Punto2D((mAG.getMap().getSize().getX()-2)*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
+				case 1:					
+					p = new Punto2D((mAG.getMap().getSize().getX()-2)*Engine.TILE_WIDTH, 1*Engine.TILE_HEIGHT);
 					pR = new Punto2D((mAG.getMap().getSize().getX()-2), 1);
 					break;
 				case 2:
