@@ -16,10 +16,10 @@ public class Jugador extends Personaje {
 	public Jugador(Punto2D posicion, Punto2D posicionRelativa) {
 		super(posicion,posicionRelativa);
 		this.vidas = 4;
-		this.potenciaBomba = 10;
+		this.potenciaBomba = 1;
 		this.velocidad = 1.0f;
 		this.color = Color.WHITE;
-		this.cantBombas = 1;
+		this.cantBombas = 10;
 		this.cantBombasActual = 0;
 		
 	}	
@@ -68,11 +68,16 @@ public class Jugador extends Personaje {
 	@Override
 	public synchronized void atacar() { // poner bomba
 		if(getCantBombasActual() < getCantBombas()){
+			int x = (int)((posicion.x/Engine.TILE_WIDTH)+0.9);
+			int y = (int)((posicion.y/Engine.TILE_HEIGHT)+0.9);
+			if(Mundo.getInstance().getMap().getMapa()[x][y].getTile().isColisionable() || Mundo.getInstance().getMap().getMapa()[x][y].getTile().hayBomba())
+				return;			
 			setCantBombasActual(cantBombasActual+1);
-			Bomba bomba = new Bomba(1, 1, posicion, this);
+			Mundo.getInstance().getMap().getMapa()[x][y].getTile().setHayBomba(true);
+			Bomba bomba = new Bomba(1, 1, new Punto2D(x*Engine.TILE_WIDTH,y*Engine.TILE_HEIGHT), this);
 			Mundo.getInstance().getBombas().add(bomba);
 			Protocolo.enviarBomba(bomba);
-		}		
+		}
 	}
 	
 	public byte getId() {

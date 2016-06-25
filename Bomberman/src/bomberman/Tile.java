@@ -9,6 +9,7 @@ public class Tile {
 	//private double width, height; // 32x32, 64x64 , etc	
 	private boolean seRompe;
 	private boolean colisionable;
+	private boolean hayBomba = false;
 	private Punto2D posicion;
 	private int tolerancia = 5;
 	
@@ -47,5 +48,20 @@ public class Tile {
 	public Rectangle getBounds(){
 		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),(int)tileSprite.getTileHeight()-tolerancia,(int)tileSprite.getTileWidth()-tolerancia);
 	}
+
+	public synchronized boolean hayBomba() {
+		return hayBomba;
+	}
+
+	public void setHayBomba(boolean hayBomba) {
+		this.hayBomba = hayBomba;
+	}
 	
+	public synchronized void setSeRompe(boolean seRompe) {
+		this.seRompe = seRompe;
+	}
+	
+	public synchronized void setColisionable(boolean colisionable) {
+		this.colisionable = colisionable;
+	}
 }
