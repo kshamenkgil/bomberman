@@ -3,7 +3,15 @@ package servidor;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import bomberman.Bomba;
 import bomberman.Jugador;
+import bomberman.Mapa;
+import servidor.Mundo;
 
 public class Protocolo {
 	/*
@@ -73,12 +81,8 @@ public class Protocolo {
 					byte[] data = colaMensajes.poll();
 					try {
 						byte header = data[0];
-						switch(header){					
-							case COMIENZO_JUEGO:
-								//COMENZAR JUEGO
-								//enviar mapa la primera vez.
-								//enviar posiciones
-								//se puede poner en un metodo y llamarlo
+						switch(header){	
+							case COLOCO_BOMBA:
 								
 								break;
 							case MOVIMIENTO:
@@ -88,7 +92,12 @@ public class Protocolo {
 							case DESCONEXION:
 								//enviar desconexion a los clientes
 								Mundo.getInstance().desconectarJugador(jugador);
-								isRunning = false;				
+								isRunning = false;
+								break;
+								
+							case JSON:
+								parseJSON(new String(data));				
+								break;
 						}	
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -99,6 +108,22 @@ public class Protocolo {
 		//},"protocolo").start();		
 	}
 	
+	private void parseJSON(String json) {
+		JsonParser parser = new JsonParser();
+		JsonObject o = parser.parse(json).getAsJsonObject();
+		if(o.get("header").getAsString().compareTo("bomba") == 0){
+			Gson gson = new GsonBuilder()
+					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
+					.registerTypeAdapter(bomberman.Bomba.class, new servidor.BombaDeserializer())
+					.create();
+			Bomba bomba = gson.fromJson(json, Bomba.class);
+			bomba.explotar(Bomba.tiempoExplosion);
+			Mundo.getInstance().getBombas().add(bomba);
+			Mundo.getInstance().enviarBomba(json,bomba.getJugadorPlantoBomba().getId());
+			
+		}		
+	}
+
 	private void moverJugador(Jugador jugador, byte direccion){
 		jugador.mover(direccion);
 		

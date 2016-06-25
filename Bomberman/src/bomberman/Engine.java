@@ -167,7 +167,7 @@ public class Engine {
 				}
 			}
 			
-			for (Bomba bomba : Mundo.getInstance().getBombas()) {				
+			for (Bomba bomba : Mundo.getInstance().getBombas()) {
 				bomba.dibujarBomba(g,io);
 			}
 			

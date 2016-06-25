@@ -106,6 +106,10 @@ public class Mundo {
         static final Mundo INSTANCE = new Mundo();
     }*/	   
     
+	public ArrayList<ThreadServer> getConnections() {
+		return connections;
+	}
+	
 	public void setConnections(ArrayList<ThreadServer> connections) {
 		this.connections = connections;
 	}
@@ -134,6 +138,13 @@ public class Mundo {
 		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);
+		}
+	}
+
+	public synchronized void enviarBomba(String json,byte id) {
+		for (ThreadServer t: connections) {
+ 			if(t.getJugador().getId() != id)
+				t.sendData(json.getBytes(Charset.forName("UTF-8")));
 		}
 	}
 	

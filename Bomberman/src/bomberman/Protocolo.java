@@ -1,5 +1,7 @@
 package bomberman;
 
+import java.nio.charset.Charset;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 //import com.google.gson.Gson;
@@ -135,7 +137,15 @@ public class Protocolo {
 			
 			Mundo.getInstance().setMap(gson.fromJson(json, Mapa.class));
 			//System.out.println("test");
-		}		
+		}else if(o.get("header").getAsString().compareTo("bomba") == 0){
+			Gson gson = new GsonBuilder()
+					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
+					.registerTypeAdapter(bomberman.Bomba.class, new bomberman.BombaDeserializer())
+					.create();
+			
+			Bomba bomba = gson.fromJson(json, Bomba.class);			
+			Mundo.getInstance().getBombas().add(bomba);			
+		}	
 	}
 	
 	private void moverJugador(byte[] data){		
@@ -152,6 +162,17 @@ public class Protocolo {
 			}			
 		}
 	}
+
+	public static void enviarBomba(Bomba bomba){
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DSerializer())				
+				.registerTypeAdapter(bomberman.Bomba.class, new bomberman.BombaSerializer())
+				.create();
+		
+		String json = gson.toJson(bomba);
+		
+		Bomberman.getInstancia().getCliente().sendData(json.getBytes(Charset.forName("UTF-8")));
+	}	
 	
 	public static void moverJugador(byte direccion){
 		byte[] t = new byte[2];

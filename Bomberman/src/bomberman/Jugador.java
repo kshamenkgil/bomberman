@@ -69,8 +69,9 @@ public class Jugador extends Personaje {
 	public synchronized void atacar() { // poner bomba
 		if(getCantBombasActual() < getCantBombas()){
 			setCantBombasActual(cantBombasActual+1);
-			Mundo.getInstance().getBombas().add(new Bomba(1, 1, posicion, this));
-			//Mundo.getInstance().
+			Bomba bomba = new Bomba(1, 1, posicion, this);
+			Mundo.getInstance().getBombas().add(bomba);
+			Protocolo.enviarBomba(bomba);
 		}		
 	}
 	
