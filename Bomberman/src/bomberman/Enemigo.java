@@ -2,8 +2,8 @@ package bomberman;
 
 public class Enemigo extends Personaje {
 
-	public Enemigo(Punto2D posicion) {
-		super(posicion);
+	public Enemigo(Punto2D posicion, Punto2D posicionRelativa) {
+		super(posicion, posicionRelativa);
 	}
 	
 	@Override

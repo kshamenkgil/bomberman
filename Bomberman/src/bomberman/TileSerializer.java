@@ -12,7 +12,8 @@ public class TileSerializer implements JsonSerializer<Tile> {
 		public JsonElement serialize(Tile tile, Type arg1, JsonSerializationContext arg2) {
 			final JsonObject jsonObject = new JsonObject();
 	        //jsonObject.addProperty("seRompe", tile.isSeRompe());
-	        //jsonObject.addProperty("colisionable", tile.isColisionable());	        
+	        //jsonObject.addProperty("colisionable", tile.isColisionable());
+			jsonObject.add("Pos", arg2.serialize(tile.getPosicion()));
 			jsonObject.addProperty("sR", tile.isSeRompe());
 	        jsonObject.addProperty("c", tile.isColisionable());
 

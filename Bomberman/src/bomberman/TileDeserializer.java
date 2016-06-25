@@ -14,12 +14,13 @@ public class TileDeserializer implements JsonDeserializer<Tile> {
 			JsonObject jsonObject = json.getAsJsonObject();
 			boolean seRompe = jsonObject.get("sR").getAsBoolean();
 			boolean colisionable = jsonObject.get("c").getAsBoolean();
+			Punto2D pos = context.deserialize(jsonObject.get("Pos"),Punto2D.class);			
 			if(seRompe && colisionable)
-				return new Tile(seRompe, colisionable, new Sprite("ex", true));
+				return new Tile(seRompe, colisionable, new Sprite("ex", false),pos);
 			else if(colisionable)
-				return new Tile(seRompe, colisionable, new Sprite("bl", true));
+				return new Tile(seRompe, colisionable, new Sprite("bl", false),pos);
 			else
-				return new Tile(seRompe, colisionable, null);
+				return new Tile(seRompe, colisionable, null,pos);
 		}
 	
 /*		@Override

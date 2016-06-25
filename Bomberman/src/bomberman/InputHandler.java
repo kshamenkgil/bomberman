@@ -30,6 +30,7 @@ public class InputHandler implements KeyListener {
 		keys.put(KeyEvent.VK_RIGHT,false);
 		keys.put(KeyEvent.VK_LEFT,false);
 		keys.put(KeyEvent.VK_ESCAPE,false);
+		keys.put(KeyEvent.VK_SPACE,false);
         
 		/*new Timer(1, new ActionListener(){
             @Override
@@ -39,9 +40,9 @@ public class InputHandler implements KeyListener {
         }).start();*/
         
 	}
-	
+		
 	public void update(){
-		if(keys.get(KeyEvent.VK_UP)){	    
+		if(keys.get(KeyEvent.VK_UP)){			
 			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
 	        Mundo.getInstance().getJugador().playAnimation();
 	        Protocolo.moverJugador(Protocolo.NORTE);
@@ -83,6 +84,10 @@ public class InputHandler implements KeyListener {
 	      //  	SonidoManager.getInstancia().playSound("pasos");
 	        	setStepCounter(0);
 	        }
+	    }
+	    
+	    if(keys.get(KeyEvent.VK_SPACE)){	        
+	        Mundo.getInstance().getJugador().atacar();
 	    }
 	    
 	    if(keys.get(KeyEvent.VK_ESCAPE)){

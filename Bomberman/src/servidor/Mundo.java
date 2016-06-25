@@ -6,17 +6,27 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import bomberman.Bomba;
 import bomberman.Enemigo;
 import bomberman.Jugador;
 import bomberman.Mapa;
 import bomberman.Punto2D;
 
 public class Mundo {
+	private static Mundo instance;
 	private ArrayList<Enemigo> enemigos;	
 	private Mapa map;
 	private ArrayList<ThreadServer> connections;
-	
+	private ArrayList<Bomba> bombas = new ArrayList<Bomba>();	
 	private int connectedUsers = 0; 
+	
+	public ArrayList<Bomba> getBombas() {
+		return bombas;
+	}
+	
+	public void setBombas(ArrayList<Bomba> bombas) {
+		this.bombas = bombas;
+	}
 	
 	public int getConnectedUsers() {
 		return connectedUsers;
@@ -63,6 +73,10 @@ public class Mundo {
 			s+=t.getJugador().getPosicion().getX();
 			s+=", 'y':";
 			s+=t.getJugador().getPosicion().getY();
+			s+=", 'rx':";
+			s+=t.getJugador().getPosicionRelativa().getX();
+			s+=", 'ry':";
+			s+=t.getJugador().getPosicionRelativa().getY();
 			s+="}";
 			if(index != connections.size())
 				s+=",";
@@ -75,15 +89,27 @@ public class Mundo {
 		}
 	}
 	
-	//thread safe
+	
 	public static Mundo getInstance() {
+		if(instance == null)
+			instance = new Mundo();
+		
+		return instance;
+	}
+	
+	//thread safe
+	/*public static Mundo getInstance() {
 		return MundoHolder.INSTANCE;			
 	}
 		
 	private static class MundoHolder {
         static final Mundo INSTANCE = new Mundo();
-    }	   
+    }*/	   
     
+	public ArrayList<ThreadServer> getConnections() {
+		return connections;
+	}
+	
 	public void setConnections(ArrayList<ThreadServer> connections) {
 		this.connections = connections;
 	}
@@ -112,6 +138,13 @@ public class Mundo {
 		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);
+		}
+	}
+
+	public synchronized void enviarBomba(String json,byte id) {
+		for (ThreadServer t: connections) {
+ 			if(t.getJugador().getId() != id)
+				t.sendData(json.getBytes(Charset.forName("UTF-8")));
 		}
 	}
 	
