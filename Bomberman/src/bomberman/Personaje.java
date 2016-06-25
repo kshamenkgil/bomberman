@@ -102,7 +102,7 @@ public abstract class Personaje {
 					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() - (1*this.velocidad));
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()+5);
+					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()+0);
 				break;
 			case Protocolo.SUR: //cambiar por protocolo.sur
 				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y+1))){
@@ -112,7 +112,7 @@ public abstract class Personaje {
 					
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()-5);
+					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()-0);
 				break;
 			case Protocolo.ESTE: //cambiar por protocolo.este
 				//if(!colision(new Punto2D(posicionRelativa.x+1, posicionRelativa.y))){
@@ -122,7 +122,7 @@ public abstract class Personaje {
 					
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX()-5, this.posicion.getY());
+					this.posicion = new Punto2D(this.posicion.getX()-0, this.posicion.getY());
 				break;
 			case Protocolo.OESTE: //cambiar por protocolo.oeste
 				//if(!colision(new Punto2D(posicionRelativa.x-1, posicionRelativa.y))){
@@ -132,7 +132,7 @@ public abstract class Personaje {
 					
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX()+5, this.posicion.getY());
+					this.posicion = new Punto2D(this.posicion.getX()+0, this.posicion.getY());
 				break;
 		}		
 	}
