@@ -7,7 +7,7 @@ import java.awt.image.ImageObserver;
 public class Bomba {
 	private Sprite bombaSprite;
 	private int potencia;
-	public static float tiempoExplosion = 5;
+	public static float tiempoExplosion = 2;
 	private Punto2D posicion; //no deberia tambien tener atributo ubicacion?
 	private Jugador jugadorPlantoBomba;
 	private int tolerancia = 5;
@@ -61,6 +61,10 @@ public class Bomba {
 		return tiempoExplosion;
 	}
 	
+	public boolean isTerminoExplosion() {
+		return terminoExplosion;
+	}
+	
 	public synchronized void setTerminoExplosion(boolean terminoExplosion) {
 		this.terminoExplosion = terminoExplosion;
 	}
@@ -71,20 +75,18 @@ public class Bomba {
 	
 	public void dibujarExplosion(Graphics2D g, ImageObserver io){				
 		
-		if(explosion.getExplosionMedio().getActualImg() == explosion.getExplosionMedio().getCantImg()){
+		if(explosion.getExplosionMedio().isPasoUnCiclo()){
 			terminoExplosion = true;			
 		}				
 		
-		if(terminoExplosion){					
+		if(terminoExplosion){			
 			//sacar el hayBomba();
 			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setHayBomba(false);
-			//incrementar cant bombas
-			for (Jugador jugador : Mundo.getInstance().getJugadores()) {
-				if(jugador.getId() == this.jugadorPlantoBomba.getId())
-					jugador.setCantBombasActual(jugador.getCantBombasActual()-1);
+			//incrementar cant bombas			
+			if(Mundo.getInstance().getJugador().getId() == this.jugadorPlantoBomba.getId()){
+				Mundo.getInstance().getJugador().setCantBombasActual(Mundo.getInstance().getJugador().getCantBombasActual()-1);
 			}
-			//remover la bomba
-			Mundo.getInstance().getBombas().remove(this);
+			//remover la bomba			
 		}else{
 			explosion.dibujar(g, io);
 		}
@@ -106,6 +108,7 @@ public class Bomba {
 	}
 	
 	public Rectangle getBounds(){
-		return new Rectangle((int)this.posicion.getX(),(int)this.posicion.getY(),(int)this.bombaSprite.getTileHeight()-tolerancia,(int)this.bombaSprite.getTileWidth()-tolerancia);
+		//return new Rectangle((int)this.posicion.getX(),(int)this.posicion.getY(),(int)this.bombaSprite.getTileHeight()-tolerancia,(int)this.bombaSprite.getTileWidth()-tolerancia);
+		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),Engine.TILE_WIDTH-tolerancia,Engine.TILE_HEIGHT-tolerancia);
 	}
 }

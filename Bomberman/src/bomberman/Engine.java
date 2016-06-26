@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 
@@ -167,8 +167,11 @@ public class Engine {
 				}
 			}
 			
-			for (Bomba bomba : Mundo.getInstance().getBombas()) {
-				bomba.dibujarBomba(g,io);
+			if(!Mundo.getInstance().getBombas().isEmpty()){
+				for (Bomba bomba : Mundo.getInstance().getBombas()) {
+					if(bomba != null)
+						bomba.dibujarBomba(g,io);
+				}
 			}
 			
 			//jugadores
@@ -230,7 +233,7 @@ public class Engine {
 			input.update();			    
 
 		    //update
-
+			
 			camX = (float)Mundo.getInstance().getJugador().getPosicion().getX() - Configuracion.getInstancia().getScreenX() / 2;
 			camY = (float)Mundo.getInstance().getJugador().getPosicion().getY() - Configuracion.getInstancia().getScreenY() / 2;	
 						
@@ -244,7 +247,13 @@ public class Engine {
 			else if(camY < offsetMinY)
 			    camY = offsetMinY;
 
+			Bomba b = null;
+			for (Bomba bomba : Mundo.getInstance().getBombas()) {
+				if(bomba.isTerminoExplosion())
+					b = bomba;
+			}
 			
+			Mundo.getInstance().getBombas().remove(b);
 			//fin update
 		    
 			 

@@ -125,15 +125,15 @@ public class Protocolo {
 	}
 
 	private void moverJugador(Jugador jugador, byte direccion){
-		jugador.mover(direccion);
-		
-		//H+ID+D
-		byte[] data = new byte[3];
-		data[0] = Protocolo.MOVIMIENTO;
-		data[1] = (byte)jugador.getId();
-		data[2] = direccion;
-		
-		Mundo.getInstance().actualizarPosicion(jugador, data);	
+		if(jugador.moverServidor(direccion)){	
+			//H+ID+D
+			byte[] data = new byte[3];
+			data[0] = Protocolo.MOVIMIENTO;
+			data[1] = (byte)jugador.getId();
+			data[2] = direccion;
+			
+			Mundo.getInstance().actualizarPosicion(jugador, data);
+		}
 	}
 	
 	public Queue<byte[]> getColaMensajes() {

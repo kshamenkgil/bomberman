@@ -194,6 +194,14 @@ public class Protocolo {
 				jugador.playAnimation();
 			}			
 		}
+		if(data[1] == Mundo.getInstance().getJugador().getId()){
+			if(data[2] == Protocolo.IDLE){
+				Mundo.getInstance().getJugador().stopAnimating();
+				return;
+			}
+			Mundo.getInstance().getJugador().mover(data[2]);	        
+			Mundo.getInstance().getJugador().playAnimation();
+		}
 	}
 
 	public static void enviarBomba(Bomba bomba){

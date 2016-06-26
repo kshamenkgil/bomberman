@@ -87,7 +87,7 @@ public abstract class Personaje {
 	}
 	
 	private void dibujarMuerte(Graphics2D g ,ImageObserver io){
-		if(!personajeMuerte.isLooping())
+		if(personajeMuerte.isPasoUnCiclo())
 			return;
 		
 		if(personajeMuerte.getCantImg() != personajeMuerte.getActualImg())
@@ -122,42 +122,74 @@ public abstract class Personaje {
 			case Protocolo.NORTE: //cambiar por protocolo.norte
 				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y-1))){
 				this.direccion = Protocolo.NORTE;		
+				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() - (1*this.velocidad));
+				break;
+			case Protocolo.SUR: //cambiar por protocolo.sur
+				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y+1))){
+				this.direccion = Protocolo.SUR;								
+				this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() + (1*this.velocidad));				
+				break;
+			case Protocolo.ESTE: //cambiar por protocolo.este
+				//if(!colision(new Punto2D(posicionRelativa.x+1, posicionRelativa.y))){
+				this.direccion = Protocolo.ESTE;				
+				this.posicion = new Punto2D(this.posicion.getX() + (1*this.velocidad), this.posicion.getY());
+				break;
+			case Protocolo.OESTE: //cambiar por protocolo.oeste
+				//if(!colision(new Punto2D(posicionRelativa.x-1, posicionRelativa.y))){
+				this.direccion = Protocolo.OESTE;				
+				this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());					
+				break;
+		}
+	}		
+	
+	
+	public synchronized boolean moverServidor(int direccion){ // norte sur este oeste
+		switch(direccion){
+			case Protocolo.NORTE: //cambiar por protocolo.norte
+				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y-1))){
+				this.direccion = Protocolo.NORTE;		
 				if(!colision(direccion)){
 					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() - (1*this.velocidad));
+					return true;
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()+0);
-				break;
+					return false;
+					//this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()+0);				
 			case Protocolo.SUR: //cambiar por protocolo.sur
 				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y+1))){
 				this.direccion = Protocolo.SUR;				
 				if(!colision(direccion)){
 					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() + (1*this.velocidad));
 					
+					return true;
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()-0);
-				break;
+					return false;
+					//this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY()-0);				
 			case Protocolo.ESTE: //cambiar por protocolo.este
 				//if(!colision(new Punto2D(posicionRelativa.x+1, posicionRelativa.y))){
 				this.direccion = Protocolo.ESTE;
 				if(!colision(direccion)){
 					this.posicion = new Punto2D(this.posicion.getX() + (1*this.velocidad), this.posicion.getY());
 					
+					return true;
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX()-0, this.posicion.getY());
-				break;
+					return false;
+					//this.posicion = new Punto2D(this.posicion.getX()-0, this.posicion.getY());				
 			case Protocolo.OESTE: //cambiar por protocolo.oeste
 				//if(!colision(new Punto2D(posicionRelativa.x-1, posicionRelativa.y))){
 				this.direccion = Protocolo.OESTE;
 				if(!colision(direccion)){
 					this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());					
+					return true;
 				}
 				else
-					this.posicion = new Punto2D(this.posicion.getX()+0, this.posicion.getY());
-				break;
-		}		
+					return false;
+					//this.posicion = new Punto2D(this.posicion.getX()+0, this.posicion.getY());
+			
+		}	
+		return true;
 	}
 	
 	public boolean colision(int direccion) {

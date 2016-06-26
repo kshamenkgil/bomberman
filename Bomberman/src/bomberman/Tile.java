@@ -35,18 +35,19 @@ public class Tile {
 	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
 		if(tileSprite != null){
-			if(tileSprite.getActualImg() == tileSprite.getCantImg()){
+			if(tileSprite.isPasoUnCiclo()){
 				Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setColisionable(false);
 				Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
-				tileSprite = null;			
+				tileSprite = null;
 			}
 			
-			if(isExploto()){
-				tileSprite.setLooping(true);
-			}
+			if(tileSprite != null)
+				if(isExploto())				
+					tileSprite.setLooping(true);
 			
-			//if(tileSprite != null)
-			tileSprite.dibujarTile(g, io, pos);
+			
+			if(tileSprite != null)
+				tileSprite.dibujarTile(g, io, pos);
 		}
 	}
 	
@@ -67,7 +68,8 @@ public class Tile {
 	}
 
 	public Rectangle getBounds(){
-		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),(int)tileSprite.getTileHeight()-tolerancia,(int)tileSprite.getTileWidth()-tolerancia);
+//		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),(int)tileSprite.getTileHeight()-tolerancia,(int)tileSprite.getTileWidth()-tolerancia);
+		return new Rectangle((int)posicion.getX(),(int)posicion.getY(),Engine.TILE_WIDTH-tolerancia,Engine.TILE_HEIGHT-tolerancia);
 	}
 
 	public synchronized boolean hayBomba() {

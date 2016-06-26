@@ -17,6 +17,7 @@ public class TileMapDeserializer implements JsonDeserializer<TileMap> {
 		
 		final JsonElement tile = jsonObject.get("T");
 		Tile t = context.deserialize(tile,Tile.class);
+		
 		Potenciador p = null;
 		final JsonElement potenciador = jsonObject.get("P");		
 		if(potenciador != null)

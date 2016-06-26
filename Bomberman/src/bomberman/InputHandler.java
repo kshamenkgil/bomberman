@@ -36,8 +36,8 @@ public class InputHandler implements KeyListener {
 	public void update(){
 		if(!Mundo.getInstance().getJugador().isMuerto()){
 			if(keys.get(KeyEvent.VK_UP)){			
-				Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
-		        Mundo.getInstance().getJugador().playAnimation();
+				/*Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
+		        Mundo.getInstance().getJugador().playAnimation();*/
 		        Protocolo.moverJugador(Protocolo.NORTE);
 		        stepCounter++;
 		        if(stepCounter >= C_STEPS){
@@ -47,8 +47,8 @@ public class InputHandler implements KeyListener {
 		    }
 		    
 		    if(keys.get(KeyEvent.VK_DOWN)){
-		        Mundo.getInstance().getJugador().mover(Protocolo.SUR);	        
-		        Mundo.getInstance().getJugador().playAnimation();
+		        /*Mundo.getInstance().getJugador().mover(Protocolo.SUR);	        
+		        Mundo.getInstance().getJugador().playAnimation();*/
 		        Protocolo.moverJugador(Protocolo.SUR);
 		        stepCounter++;
 		        if(stepCounter >= C_STEPS){
@@ -58,8 +58,8 @@ public class InputHandler implements KeyListener {
 		    }
 		    
 		    if(keys.get(KeyEvent.VK_RIGHT)){
-		        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);	        
-		        Mundo.getInstance().getJugador().playAnimation();
+		        /*Mundo.getInstance().getJugador().mover(Protocolo.ESTE);	        
+		        Mundo.getInstance().getJugador().playAnimation();*/
 		        Protocolo.moverJugador(Protocolo.ESTE);
 		        stepCounter++;
 		        if(stepCounter >= C_STEPS){
@@ -69,8 +69,8 @@ public class InputHandler implements KeyListener {
 		    }
 		    
 		    if(keys.get(KeyEvent.VK_LEFT)){
-		        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);	        
-		        Mundo.getInstance().getJugador().playAnimation();
+		       /* Mundo.getInstance().getJugador().mover(Protocolo.OESTE);	        
+		        Mundo.getInstance().getJugador().playAnimation();*/
 		        Protocolo.moverJugador(Protocolo.OESTE);
 		        stepCounter++;
 		        if(stepCounter >= C_STEPS){
@@ -96,7 +96,7 @@ public class InputHandler implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		Mundo.getInstance().getJugador().stopAnimating();
+		//Mundo.getInstance().getJugador().stopAnimating();
 		Protocolo.moverJugador(Protocolo.IDLE);
 		keys.put(e.getKeyCode(),false);		
 	}

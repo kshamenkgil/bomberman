@@ -14,7 +14,7 @@ public class Sprite {
 	private int tileHeight;
 	private boolean dibujar;	
 	private boolean hasToLoadSizes;
-	
+	private boolean pasoUnCiclo = false;	
 	
 	public Sprite(String textura, boolean loop) {
 		this.hasToLoadSizes = false;
@@ -24,9 +24,13 @@ public class Sprite {
 		this.tileWidth = this.tileHeight;
 		this.cantImg = Engine.getInstancia().getTextura(textura).getImagen().getWidth() / this.tileWidth;
 		this.actualImg = 0;
-		this.lastTiempo = Engine.MS_PER_UPDATE;
+		this.lastTiempo = Engine.MS_PER_UPDATE / 2;
 		this.dibujar = false;
 		this.looping = loop;				
+	}
+	
+	public void setLastTiempo(long lastTiempo) {
+		this.lastTiempo = lastTiempo;
 	}
 	
 	public Sprite(String textura, boolean loop, boolean hasToLoadSizes) {
@@ -42,6 +46,11 @@ public class Sprite {
 		this.looping = loop;				
 	}
 
+	
+	public boolean isPasoUnCiclo() {
+		return pasoUnCiclo;
+	}
+	
 	public boolean HasToLoadSizes() {
 		return hasToLoadSizes;
 	}
@@ -82,8 +91,10 @@ public class Sprite {
 							
 				if(actualImg < cantImg-1)
 					actualImg++;
-				else
+				else{
+					pasoUnCiclo = true;
 					actualImg = 0;
+				}
 			}
 		}else{		
 			//dibujar esto
@@ -115,8 +126,10 @@ public class Sprite {
 							
 				if(actualImg < cantImg-1)
 					actualImg++;
-				else
+				else{
+					pasoUnCiclo = true;
 					actualImg = 0;
+				}
 			}
 		}else{		
 			//dibujar esto

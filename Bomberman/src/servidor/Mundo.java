@@ -150,7 +150,7 @@ public class Mundo {
 	
 	public synchronized void actualizarPosicion(Jugador jugador, byte[] data){
 		for (ThreadServer t: connections) {
- 			if(t.getJugador().getId() != jugador.getId())
+ 			//if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);
 		}
 	}

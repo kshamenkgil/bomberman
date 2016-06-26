@@ -67,6 +67,9 @@ public class Jugador extends Personaje {
 	
 	@Override
 	public synchronized void atacar() { // poner bomba
+		if(getCantBombasActual() < 0)
+			setCantBombas(0);
+		
 		if(getCantBombasActual() < getCantBombas()){
 			int x = (int)((posicion.x/Engine.TILE_WIDTH)+0.9);
 			int y = (int)((posicion.y/Engine.TILE_HEIGHT)+0.9);

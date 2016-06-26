@@ -13,39 +13,39 @@ public class Mundo {
 	
 	private ArrayList<Enemigo> enemigos;			
 	
-	public ArrayList<Bomba> getBombas() {
+	public synchronized ArrayList<Bomba> getBombas() {
 		return bombas;
 	}
 	
-	public void setBombas(ArrayList<Bomba> bombas) {
+	public synchronized void setBombas(ArrayList<Bomba> bombas) {
 		this.bombas = bombas;
 	}
 	
-	public void setJugadores(ArrayList<Jugador> jugadores) {
+	public synchronized void setJugadores(ArrayList<Jugador> jugadores) {
 		this.jugadores = jugadores;
 	}
 	
-	public void setMap(Mapa map) {
+	public synchronized void setMap(Mapa map) {
 		this.map = map;		
 	}	
 	
-	public ArrayList<Jugador> getJugadores() {
+	public synchronized ArrayList<Jugador> getJugadores() {
 		return jugadores;
 	}
 	
-	public Jugador getJugador() {
+	public synchronized Jugador getJugador() {
 		return jugador;
 	}
 	
-	public void setJugador(Jugador jugador) {
+	public synchronized void setJugador(Jugador jugador) {
 		this.jugador = jugador;
 	}
 	
-	public ArrayList<Enemigo> getEnemigos() {
+	public synchronized ArrayList<Enemigo> getEnemigos() {
 		return enemigos;
 	}
 	
-	public Mapa getMap() {
+	public synchronized Mapa getMap() {
 		return map;
 	}
 	
