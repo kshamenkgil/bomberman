@@ -1,8 +1,14 @@
-package bomberman;
+package servidor;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import bomberman.Jugador;
+import bomberman.Punto2D;
+import bomberman.Sprite;
 
 public class Bomba {
 	private Sprite bombaSprite;
@@ -49,7 +55,23 @@ public class Bomba {
 	}
 	
 	public void explotar(float tiempoExplocion){
+	Mundo.getInstance().getBombas();
 		
+		Timer t = new Timer();
+		t.schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+            	Bomba b = null;
+            	for (Bomba bomba : Mundo.getInstance().getBombas()) {
+            		if(bomba.getPosicion() == posicion)
+            			b = bomba;
+				}
+            	
+            	Mundo.getInstance().getBombas().remove(b);
+            	this.cancel();
+            }
+        }, 1000);
 	}
 	
 	public void dibujarExplosion(){

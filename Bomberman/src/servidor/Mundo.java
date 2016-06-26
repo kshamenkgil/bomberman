@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import bomberman.Bomba;
 import bomberman.Enemigo;
 import bomberman.Jugador;
 import bomberman.Mapa;
@@ -146,6 +145,10 @@ public class Mundo {
  			if(t.getJugador().getId() != id)
 				t.sendData(json.getBytes(Charset.forName("UTF-8")));
 		}
+	}
+	
+	public Mapa getMap() {
+		return map;
 	}
 	
 }

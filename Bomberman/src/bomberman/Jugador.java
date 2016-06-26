@@ -16,10 +16,10 @@ public class Jugador extends Personaje {
 	public Jugador(Punto2D posicion, Punto2D posicionRelativa) {
 		super(posicion,posicionRelativa);
 		this.vidas = 4;
-		this.potenciaBomba = 1;
+		this.potenciaBomba = 10;
 		this.velocidad = 1.0f;
 		this.color = Color.WHITE;
-		this.cantBombas = 10;
+		this.cantBombas = 1;
 		this.cantBombasActual = 0;
 		
 	}	

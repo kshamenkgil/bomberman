@@ -159,7 +159,7 @@ public class Engine {
 	
 	public synchronized void dibujar(Graphics2D g, ImageObserver io){
 		//mapa
-		if(this.isStartUpdate()){
+		if(this.isStartUpdate()){			
 			g.translate(-camX, -camY);
 			for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
 				for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
@@ -177,8 +177,9 @@ public class Engine {
 				j.dibujar(g, io);
 			}
 			
-			//fps			
-			dibujarTexto("FPS: " + fps, 16, g, new Punto2D(10, 18));
+			//fps
+			g.translate(0, 0);
+			//dibujarTexto("FPS: " + fps, 16, g, new Punto2D(10, 18));
 			
 		}else{
 			dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));
