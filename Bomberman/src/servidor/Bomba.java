@@ -74,7 +74,7 @@ public class Bomba {
             	int py;
             	
             	int pot = potencia;
-            	for (Bomba bomba : Mundo.getInstance().getBombas()) {
+            	for (Bomba bomba : Mundo.getInstance().getBombas()) { 
             		if(bomba.getPosicion() == posicion)
             			pot = potencia;
             		//en X positivo
