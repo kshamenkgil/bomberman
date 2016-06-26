@@ -27,12 +27,71 @@ public class Explosion {
 		this.posicion = new Punto2D((int)posicion.getX()/Engine.TILE_WIDTH, (int)posicion.getY()/Engine.TILE_HEIGHT);		
 	}
 	
+	public Sprite getExplosionMedio() {
+		return explosionMedio;
+	}
+	
 	public void dibujar(Graphics2D g, ImageObserver io){		
-		explosionMedio.dibujarTile(g, io, posicion);		
-		for(int x = 0 ; x < potencia; x++);{
-			
-		}
+		float pot = potencia;
 		
+		explosionMedio.dibujarTile(g, io, posicion);
+				
+		
+		//en X positivo
+        while( pot > 0){
+        	if(pot == potencia)
+        		explosionDerecha.dibujarTile(g, io, new Punto2D(posicion.getX()+pot, posicion.getY()));
+        	else
+        		explosionHorizontal.dibujarTile(g, io, new Punto2D(posicion.getX()+pot, posicion.getY()));
+
+        	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()+pot)][(int)(posicion.getY())].getTile().isColisionable())
+        		pot = 0; 
+        	
+        	pot--;
+        }
+        
+        pot = potencia;
+        //en X negativo
+        while( pot > 0){
+        	if(pot == potencia)
+        		explosionIzquierda.dibujarTile(g, io, new Punto2D(posicion.getX()-pot, posicion.getY()));
+        	else
+        		explosionHorizontal.dibujarTile(g, io, new Punto2D(posicion.getX()-pot, posicion.getY()));
+        	
+        	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()-pot)][(int)(posicion.getY())].getTile().isColisionable())
+        		pot = 0;
+        	
+        	pot--;
+        }
+        
+        pot = potencia;        
+        //en Y positivo
+        while( pot > 0){
+        	if(pot == potencia)
+        		explosionAbajo.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()+pot));
+        	else
+        		explosionVertical.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()+pot));        	        	
+        	
+        	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()+pot)].getTile().isColisionable())
+        		pot = 0;
+        	
+        	pot--;
+        }
+        
+        pot = potencia;
+        //en Y negativo
+        while( pot > 0){
+        	if(pot == potencia)
+        		explosionArriba.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()-pot));
+        	else
+        		explosionVertical.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()-pot));
+        	
+        	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()-pot)].getTile().isColisionable())
+        		pot = 0;
+        	
+        	pot--;
+        }
+        
 	}
 	
 }

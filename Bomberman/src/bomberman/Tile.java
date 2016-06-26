@@ -34,18 +34,20 @@ public class Tile {
 	}
 	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
-		if(tileSprite.getActualImg() == tileSprite.getCantImg()){
-			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setColisionable(false);
-			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
-			tileSprite = null;			
-		}
-		
-		if(isExploto()){
-			tileSprite.setLooping(true);
-		}
-		
-		if(tileSprite != null)
+		if(tileSprite != null){
+			if(tileSprite.getActualImg() == tileSprite.getCantImg()){
+				Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setColisionable(false);
+				Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
+				tileSprite = null;			
+			}
+			
+			if(isExploto()){
+				tileSprite.setLooping(true);
+			}
+			
+			//if(tileSprite != null)
 			tileSprite.dibujarTile(g, io, pos);
+		}
 	}
 	
 	public boolean isColisionable() {

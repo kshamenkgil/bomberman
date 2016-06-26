@@ -21,7 +21,7 @@ public class ExplotoBombaDeserializer implements JsonDeserializer<ExplotoBomba> 
 		Punto2D posicionBomba;
 		Byte[] jugadores;						
 		Tile[] tilesAfectados;
-		posicionBomba = context.deserialize(jsonObject.get("pos"),Punto2D.class);
+		posicionBomba = context.deserialize(jsonObject.get("posicion"),Punto2D.class);
 		tilesAfectados = context.deserialize(jsonObject.get("Tiles"), Tile[].class);
 		jugadores = context.deserialize(jsonObject.get("Jugadores"), Byte[].class);
 				

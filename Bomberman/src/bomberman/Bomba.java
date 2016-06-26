@@ -13,12 +13,14 @@ public class Bomba {
 	private int tolerancia = 5;
 	private boolean exploto = false;
 	private boolean terminoExplosion = false;
-	
+	private Explosion explosion;
+
 	public Bomba(int potencia, float tiempoExplosion, Punto2D ubic, Jugador jugadorPlantoBomba, boolean noSprites) {		
 		this.posicion = ubic;
 		this.potencia = potencia;
 		//Bomba.tiempoExplosion = tiempoExplosion;		
 		this.jugadorPlantoBomba = jugadorPlantoBomba;
+		explosion = new Explosion(potencia, ubic);
 	}
 	
 	public Bomba(int potencia, float tiempoExplosion, Punto2D ubic, Jugador jugadorPlantoBomba) {
@@ -27,6 +29,7 @@ public class Bomba {
 		//Bomba.tiempoExplosion = tiempoExplosion;
 		this.bombaSprite = new Sprite("bomba", true);
 		this.jugadorPlantoBomba = jugadorPlantoBomba;
+		explosion = new Explosion(potencia, ubic);
 	}
 	
 	public void setBombaSprite(Sprite bombaSprite) {
@@ -54,16 +57,36 @@ public class Bomba {
 		setExploto(true);
 	}
 	
+	public static float getTiempoExplosion() {
+		return tiempoExplosion;
+	}
+	
+	public synchronized void setTerminoExplosion(boolean terminoExplosion) {
+		this.terminoExplosion = terminoExplosion;
+	}
+	
 	private synchronized void setExploto(boolean exploto) {
 		this.exploto = exploto;
 	}
 	
-	public void dibujarExplosion(Graphics2D g, ImageObserver io){		
+	public void dibujarExplosion(Graphics2D g, ImageObserver io){				
+		
+		if(explosion.getExplosionMedio().getActualImg() == explosion.getExplosionMedio().getCantImg()){
+			terminoExplosion = true;			
+		}				
+		
 		if(terminoExplosion){					
 			//sacar el hayBomba();
 			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setHayBomba(false);
+			//incrementar cant bombas
+			for (Jugador jugador : Mundo.getInstance().getJugadores()) {
+				if(jugador.getId() == this.jugadorPlantoBomba.getId())
+					jugador.setCantBombasActual(jugador.getCantBombasActual()-1);
+			}
 			//remover la bomba
 			Mundo.getInstance().getBombas().remove(this);
+		}else{
+			explosion.dibujar(g, io);
 		}
 	}
 		

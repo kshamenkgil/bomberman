@@ -16,14 +16,24 @@ public abstract class Personaje {
 	protected Punto2D posicionRelativa;
 	protected float velocidad; 	
 	private int tolerancia = 3;
+	protected boolean muerto;
 	
 	public Personaje(Punto2D posicion, Punto2D posicionRelativa) {
 		this.posicion = posicion;
 		this.direccion = Protocolo.ESTE;
 		this.velocidad = 1f;
 		this.posicionRelativa = posicionRelativa;
+		this.muerto = false;
 	}
-		
+	
+	public boolean isMuerto() {
+		return muerto;
+	}
+	
+	public synchronized void setMuerto(boolean muerto) {
+		this.muerto = muerto;
+	}
+	
 	public void setPosicionRelativa(Punto2D posicionRelativa) {
 		this.posicionRelativa = posicionRelativa;
 	}
@@ -76,20 +86,34 @@ public abstract class Personaje {
 		}
 	}
 	
+	private void dibujarMuerte(Graphics2D g ,ImageObserver io){
+		if(!personajeMuerte.isLooping())
+			return;
+		
+		if(personajeMuerte.getCantImg() != personajeMuerte.getActualImg())
+			personajeMuerte.dibujar(g, io, posicion);
+		else
+			personajeMuerte.setLooping(false);
+	}
+	
 	public void dibujar(Graphics2D g ,ImageObserver io){
-		switch(direccion){
-			case Protocolo.NORTE:
-				personajeN.dibujar(g, io, posicion);
-				break;
-			case Protocolo.SUR:
-				personajeS.dibujar(g, io, posicion);
-				break;
-			case Protocolo.ESTE:
-				personajeE.dibujar(g, io, posicion);
-				break;
-			case Protocolo.OESTE:
-				personajeO.dibujar(g, io, posicion);
-				break;
+		if(!isMuerto()){
+			switch(direccion){
+				case Protocolo.NORTE:
+					personajeN.dibujar(g, io, posicion);
+					break;
+				case Protocolo.SUR:
+					personajeS.dibujar(g, io, posicion);
+					break;
+				case Protocolo.ESTE:
+					personajeE.dibujar(g, io, posicion);
+					break;
+				case Protocolo.OESTE:
+					personajeO.dibujar(g, io, posicion);
+					break;
+			}
+		}else{
+			dibujarMuerte(g, io);
 		}
 	}
 	
@@ -128,8 +152,7 @@ public abstract class Personaje {
 				//if(!colision(new Punto2D(posicionRelativa.x-1, posicionRelativa.y))){
 				this.direccion = Protocolo.OESTE;
 				if(!colision(direccion)){
-					this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());
-					
+					this.posicion = new Punto2D(this.posicion.getX() - (1*this.velocidad), this.posicion.getY());					
 				}
 				else
 					this.posicion = new Punto2D(this.posicion.getX()+0, this.posicion.getY());

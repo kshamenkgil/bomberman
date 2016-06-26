@@ -66,6 +66,9 @@ public class Bomba {
 
             @Override
             public void run() {
+            	ExplotoBomba exB = new ExplotoBomba();
+            	exB.setPosicion(posicion);
+            	
             	Bomba b = null;
             	int x = (int)(posicion.getX()/Engine.TILE_WIDTH);
             	int y = (int)(posicion.getY()/Engine.TILE_HEIGHT);
@@ -85,6 +88,7 @@ public class Bomba {
             					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setColisionable(false);
             					//t.setSeRompe(true);
             					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
+            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile());
             					pot=0;
                     		}else
                     			{
@@ -93,6 +97,7 @@ public class Bomba {
                     					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
                     					if(x+pot == px && y == py){
                     						p.getJugador().setVidas(0);
+                    						exB.getJugadoresMuertos().add(p.getJugador().getId());
                     						pot=0;
                     					}
                     				}
@@ -108,6 +113,7 @@ public class Bomba {
             					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)-pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setColisionable(false);
             					//t.setSeRompe(true);
             					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)-pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
+            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile());
             					pot=0;
                     		}else
                 			{
@@ -116,6 +122,7 @@ public class Bomba {
                 					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
                 					if(x-pot == px && y == py){
                 						p.getJugador().setVidas(0);
+                						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 						pot=0;
                 					}
                 				}
@@ -131,7 +138,8 @@ public class Bomba {
             					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)+pot].getTile().setColisionable(false);
             					//t.setSeRompe(true);
             					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)+pot].getTile().setSeRompe(false);
-            					pot=0;
+            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile());
+            					pot = 0;
                     		}else
                 			{
                 				for (ThreadServer p : Mundo.getInstance().getConnections()){
@@ -139,7 +147,7 @@ public class Bomba {
                 					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
                 					if(x == px && y+ pot == py){
                 						p.getJugador().setVidas(0);
-                						pot=0;
+                						exB.getJugadoresMuertos().add(p.getJugador().getId());                						
                 					}
                 				}
                 			}
@@ -154,6 +162,7 @@ public class Bomba {
             					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)-pot].getTile().setColisionable(false);
             					//t.setSeRompe(true);
             					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)-pot].getTile().setSeRompe(false);
+            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile());            					
             					pot=0;
                     		}else
                 			{
@@ -162,7 +171,7 @@ public class Bomba {
                 					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
                 					if(x == px && y-pot == py){
                 						p.getJugador().setVidas(0);
-                						pot=0;
+                						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 					}
                 				}
                 			}
@@ -172,8 +181,10 @@ public class Bomba {
             			b = bomba;
 				}
             	
+            	Mundo.getInstance().sendExplotoBomba(exB);
+            	
             	Mundo.getInstance().getBombas().remove(b);
-            	this.cancel();
+            	//this.cancel();
             }
         }, 5000);
 	}

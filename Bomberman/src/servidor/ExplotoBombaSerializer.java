@@ -20,7 +20,7 @@ public class ExplotoBombaSerializer implements JsonSerializer<ExplotoBomba> {
 		JsonArray jugadores = new JsonArray();
 		jsonObject.addProperty("header", "exploto_bomba");    
 		
-        jsonObject.add("pos", context.serialize(bomba.getPosicion()));
+        jsonObject.add("posicion", context.serialize(bomba.getPosicion()));
         
         for (Tile tile : bomba.getTilesAfectados()) {
 			tiles.add(context.serialize(tile));

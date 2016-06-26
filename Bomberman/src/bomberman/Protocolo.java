@@ -149,13 +149,15 @@ public class Protocolo {
 			
 		}else if(o.get("header").getAsString().compareTo("exploto_bomba") == 0){
 			Gson gson = new GsonBuilder()
-				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
+				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())
+				.registerTypeAdapter(bomberman.Tile.class, new bomberman.TileDeserializer())
 				.registerTypeAdapter(bomberman.Bomba.class, new bomberman.BombaDeserializer())
+				.registerTypeAdapter(bomberman.ExplotoBomba.class, new bomberman.ExplotoBombaDeserializer())
 				.create();
 			
 			ExplotoBomba exB = gson.fromJson(json, ExplotoBomba.class);
 			for (Bomba bomba : Mundo.getInstance().getBombas()) {
-				if(bomba.getPosicion() == exB.getPosicion()){
+				if(bomba.getPosicion().equals(exB.getPosicion())){					
 					bomba.explotar();
 				}				
 			}
@@ -164,7 +166,18 @@ public class Protocolo {
 				int x = (int)tileExplotado.getPosicion().getX() / Engine.TILE_WIDTH; 
 				int y = (int)tileExplotado.getPosicion().getY() / Engine.TILE_HEIGHT;
 				Mundo.getInstance().getMap().getMapa()[x][y].getTile().setExploto(true);
-			}					
+			}
+									
+			for (byte id : exB.getJugadoresMuertos()) {
+				for (Jugador jugador : Mundo.getInstance().getJugadores()) {
+					if(jugador.getId() == id){
+						jugador.setMuerto(true);
+					}
+				}
+				if(id == Mundo.getInstance().getJugador().getId())
+					Mundo.getInstance().getJugador().setMuerto(true);
+			}	
+			
 		}
 	}
 	

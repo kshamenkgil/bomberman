@@ -31,65 +31,59 @@ public class InputHandler implements KeyListener {
 		keys.put(KeyEvent.VK_LEFT,false);
 		keys.put(KeyEvent.VK_ESCAPE,false);
 		keys.put(KeyEvent.VK_SPACE,false);
-        
-		/*new Timer(1, new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent arg0) {        		
-        	    
-            }
-        }).start();*/
-        
 	}
 		
 	public void update(){
-		if(keys.get(KeyEvent.VK_UP)){			
-			Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
-	        Mundo.getInstance().getJugador().playAnimation();
-	        Protocolo.moverJugador(Protocolo.NORTE);
-	        stepCounter++;
-	        if(stepCounter >= C_STEPS){
-	//        	SonidoManager.getInstancia().playSound("pasos");
-	        	setStepCounter(0);
-	        }
-	    }
-	    
-	    if(keys.get(KeyEvent.VK_DOWN)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.SUR);	        
-	        Mundo.getInstance().getJugador().playAnimation();
-	        Protocolo.moverJugador(Protocolo.SUR);
-	        stepCounter++;
-	        if(stepCounter >= C_STEPS){
-	  //      	SonidoManager.getInstancia().playSound("pasos");
-	        	setStepCounter(0);
-	        }
-	    }
-	    
-	    if(keys.get(KeyEvent.VK_RIGHT)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);	        
-	        Mundo.getInstance().getJugador().playAnimation();
-	        Protocolo.moverJugador(Protocolo.ESTE);
-	        stepCounter++;
-	        if(stepCounter >= C_STEPS){
-	    //    	SonidoManager.getInstancia().playSound("pasos");
-	        	setStepCounter(0);
-	        }
-	    }
-	    
-	    if(keys.get(KeyEvent.VK_LEFT)){
-	        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);	        
-	        Mundo.getInstance().getJugador().playAnimation();
-	        Protocolo.moverJugador(Protocolo.OESTE);
-	        stepCounter++;
-	        if(stepCounter >= C_STEPS){
-	      //  	SonidoManager.getInstancia().playSound("pasos");
-	        	setStepCounter(0);
-	        }
-	    }
-	    
-	    if(keys.get(KeyEvent.VK_SPACE)){	        
-	        Mundo.getInstance().getJugador().atacar();
-	    }
-	    
+		if(!Mundo.getInstance().getJugador().isMuerto()){
+			if(keys.get(KeyEvent.VK_UP)){			
+				Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
+		        Mundo.getInstance().getJugador().playAnimation();
+		        Protocolo.moverJugador(Protocolo.NORTE);
+		        stepCounter++;
+		        if(stepCounter >= C_STEPS){
+		        	//SonidoManager.getInstancia().playSound("pasos");
+		        	setStepCounter(0);
+		        }
+		    }
+		    
+		    if(keys.get(KeyEvent.VK_DOWN)){
+		        Mundo.getInstance().getJugador().mover(Protocolo.SUR);	        
+		        Mundo.getInstance().getJugador().playAnimation();
+		        Protocolo.moverJugador(Protocolo.SUR);
+		        stepCounter++;
+		        if(stepCounter >= C_STEPS){
+		        	//SonidoManager.getInstancia().playSound("pasos");
+		        	setStepCounter(0);
+		        }
+		    }
+		    
+		    if(keys.get(KeyEvent.VK_RIGHT)){
+		        Mundo.getInstance().getJugador().mover(Protocolo.ESTE);	        
+		        Mundo.getInstance().getJugador().playAnimation();
+		        Protocolo.moverJugador(Protocolo.ESTE);
+		        stepCounter++;
+		        if(stepCounter >= C_STEPS){
+		        	//SonidoManager.getInstancia().playSound("pasos");
+		        	setStepCounter(0);
+		        }
+		    }
+		    
+		    if(keys.get(KeyEvent.VK_LEFT)){
+		        Mundo.getInstance().getJugador().mover(Protocolo.OESTE);	        
+		        Mundo.getInstance().getJugador().playAnimation();
+		        Protocolo.moverJugador(Protocolo.OESTE);
+		        stepCounter++;
+		        if(stepCounter >= C_STEPS){
+		        	//SonidoManager.getInstancia().playSound("pasos");
+		        	setStepCounter(0);
+		        }
+		    }
+		    
+		    if(keys.get(KeyEvent.VK_SPACE)){	        
+		        Mundo.getInstance().getJugador().atacar();
+		    }
+		}
+		
 	    if(keys.get(KeyEvent.VK_ESCAPE)){
 	    	Engine.getInstancia().setStartUpdate(false);
 	    }
