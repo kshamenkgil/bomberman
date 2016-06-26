@@ -10,6 +10,7 @@ public class Tile {
 	private boolean seRompe;
 	private boolean colisionable;
 	private boolean hayBomba = false;
+	private boolean exploto = false;
 	private Punto2D posicion;
 	private int tolerancia = 5;
 	
@@ -19,12 +20,30 @@ public class Tile {
 		this.tileSprite = tileSprite;
 		this.posicion = posicion;
 	}
-
+	
+	public boolean isExploto() {
+		return exploto;
+	}
+	
+	public synchronized void setExploto(boolean exploto) {
+		this.exploto = exploto;
+	}
+	
 	public Punto2D getPosicion() {
 		return posicion;
 	}
 	
 	public void dibujar(Graphics2D g, ImageObserver io, Punto2D pos){
+		if(tileSprite.getActualImg() == tileSprite.getCantImg()){
+			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setColisionable(false);
+			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
+			tileSprite = null;			
+		}
+		
+		if(isExploto()){
+			tileSprite.setLooping(true);
+		}
+		
 		if(tileSprite != null)
 			tileSprite.dibujarTile(g, io, pos);
 	}

@@ -11,7 +11,9 @@ public class Bomba {
 	private Punto2D posicion; //no deberia tambien tener atributo ubicacion?
 	private Jugador jugadorPlantoBomba;
 	private int tolerancia = 5;
-
+	private boolean exploto = false;
+	private boolean terminoExplosion = false;
+	
 	public Bomba(int potencia, float tiempoExplosion, Punto2D ubic, Jugador jugadorPlantoBomba, boolean noSprites) {		
 		this.posicion = ubic;
 		this.potencia = potencia;
@@ -48,18 +50,28 @@ public class Bomba {
 		this.posicion = posicion;
 	}
 	
-	public void explotar(float tiempoExplocion){
-		
+	public synchronized void explotar(){
+		setExploto(true);
 	}
 	
-	public void dibujarExplosion(){
-		
+	private synchronized void setExploto(boolean exploto) {
+		this.exploto = exploto;
+	}
+	
+	public void dibujarExplosion(Graphics2D g, ImageObserver io){		
+		if(terminoExplosion){					
+			//sacar el hayBomba();
+			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setHayBomba(false);
+			//remover la bomba
+			Mundo.getInstance().getBombas().remove(this);
+		}
 	}
 		
-	
 	public void dibujarBomba(Graphics2D g, ImageObserver io){
-		
-		bombaSprite.dibujar(g, io, posicion);
+		if(!exploto)
+			bombaSprite.dibujar(g, io, posicion);
+		else
+			this.dibujarExplosion(g,io);
 	}
 			
 	public Punto2D getPosicion() {
