@@ -128,6 +128,14 @@ public class Sprite {
 		}
 	}
 	
+	public int getCantImg() {
+		return cantImg;
+	}
+	
+	public int getActualImg() {
+		return actualImg;
+	}
+	
 	public synchronized void setLooping(boolean looping) {
 		this.looping = looping;
 	}

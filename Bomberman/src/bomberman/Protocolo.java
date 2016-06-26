@@ -152,9 +152,19 @@ public class Protocolo {
 				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
 				.registerTypeAdapter(bomberman.Bomba.class, new bomberman.BombaDeserializer())
 				.create();
-		
+			
 			ExplotoBomba exB = gson.fromJson(json, ExplotoBomba.class);
-					
+			for (Bomba bomba : Mundo.getInstance().getBombas()) {
+				if(bomba.getPosicion() == exB.getPosicion()){
+					bomba.explotar();
+				}				
+			}
+			
+			for (Tile tileExplotado : exB.getTilesAfectados()) {
+				int x = (int)tileExplotado.getPosicion().getX() / Engine.TILE_WIDTH; 
+				int y = (int)tileExplotado.getPosicion().getY() / Engine.TILE_HEIGHT;
+				Mundo.getInstance().getMap().getMapa()[x][y].getTile().setExploto(true);
+			}					
 		}
 	}
 	
