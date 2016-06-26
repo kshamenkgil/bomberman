@@ -9,6 +9,10 @@ import java.util.TimerTask;
 import bomberman.Jugador;
 import bomberman.Punto2D;
 import bomberman.Sprite;
+import bomberman.Tile;
+import bomberman.TileMap;
+import bomberman.Engine;
+import bomberman.ExplotoBomba;
 
 public class Bomba {
 	private Sprite bombaSprite;
@@ -63,15 +67,115 @@ public class Bomba {
             @Override
             public void run() {
             	Bomba b = null;
+            	int x = (int)(posicion.getX()/Engine.TILE_WIDTH);
+            	int y = (int)(posicion.getY()/Engine.TILE_HEIGHT);
+            	
+            	int px;
+            	int py;
+            	
+            	int pot = potencia;
             	for (Bomba bomba : Mundo.getInstance().getBombas()) {
             		if(bomba.getPosicion() == posicion)
+            			pot = potencia;
+            		//en X positivo
+                    	while( pot > 0){
+                			Tile t = Mundo.getInstance().getMap().getMapa()[x+pot][y].getTile();
+            				if(t.getTileSprite() != null){
+            					//t.setColisionable(false);
+            					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setColisionable(false);
+            					//t.setSeRompe(true);
+            					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
+            					pot=0;
+                    		}else
+                    			{
+                    				for (ThreadServer p : Mundo.getInstance().getConnections()){
+                    					px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);
+                    					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
+                    					if(x+pot == px && y == py){
+                    						p.getJugador().setVidas(0);
+                    						pot=0;
+                    					}
+                    				}
+                    			}
+                    		pot--;
+                    	}
+                    	pot = potencia;
+                    	//en x neg
+                    	while( pot > 0){
+                			Tile t = Mundo.getInstance().getMap().getMapa()[x-pot][y].getTile();
+            				if(t.getTileSprite() != null){
+            					//t.setColisionable(false);
+            					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)-pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setColisionable(false);
+            					//t.setSeRompe(true);
+            					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)-pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
+            					pot=0;
+                    		}else
+                			{
+                				for (ThreadServer p : Mundo.getInstance().getConnections()){
+                					px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);
+                					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
+                					if(x-pot == px && y == py){
+                						p.getJugador().setVidas(0);
+                						pot=0;
+                					}
+                				}
+                			}
+                    		pot--;
+                    	}
+                    	pot = potencia;
+                    	//en Y pos
+                    	while( pot > 0){
+                			Tile t = Mundo.getInstance().getMap().getMapa()[x][y+pot].getTile();
+            				if(t.getTileSprite() != null){
+            					//t.setColisionable(false);
+            					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)+pot].getTile().setColisionable(false);
+            					//t.setSeRompe(true);
+            					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)+pot].getTile().setSeRompe(false);
+            					pot=0;
+                    		}else
+                			{
+                				for (ThreadServer p : Mundo.getInstance().getConnections()){
+                					px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);
+                					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
+                					if(x == px && y+ pot == py){
+                						p.getJugador().setVidas(0);
+                						pot=0;
+                					}
+                				}
+                			}
+                    		pot--;
+                    	}
+                    	pot = potencia;
+                    	//en Y neg
+                    	while( pot > 0){
+                			Tile t = Mundo.getInstance().getMap().getMapa()[x][y-pot].getTile();
+            				if(t.getTileSprite() != null){
+            					//t.setColisionable(false);
+            					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)-pot].getTile().setColisionable(false);
+            					//t.setSeRompe(true);
+            					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)-pot].getTile().setSeRompe(false);
+            					pot=0;
+                    		}else
+                			{
+                				for (ThreadServer p : Mundo.getInstance().getConnections()){
+                					px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);
+                					py = (int)( p.getJugador().getPosicion().getY()/Engine.TILE_WIDTH);
+                					if(x == px && y-pot == py){
+                						p.getJugador().setVidas(0);
+                						pot=0;
+                					}
+                				}
+                			}
+                    		pot--;
+                    	}
+                    		
             			b = bomba;
 				}
             	
             	Mundo.getInstance().getBombas().remove(b);
             	this.cancel();
             }
-        }, 1000);
+        }, 5000);
 	}
 	
 	public void dibujarExplosion(){
