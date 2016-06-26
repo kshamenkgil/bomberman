@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import bomberman.Enemigo;
+import bomberman.ExplotoBomba;
 import bomberman.Jugador;
 import bomberman.Mapa;
 import bomberman.Punto2D;
@@ -44,6 +45,19 @@ public class Mundo {
 	public void setMap(Mapa map) {
 		this.map = map;
 	}
+
+	public synchronized void sendExplotoBomba(ExplotoBomba exB){
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DSerializer())								
+				.registerTypeAdapter(bomberman.Tile.class, new bomberman.TileSerializer())
+				.registerTypeAdapter(bomberman.ExplotoBomba.class, new ExplotoBombaSerializer())
+				.create();
+		
+		String explotoBomba = gson.toJson(exB);
+		for (ThreadServer ts : connections) {
+			ts.sendData(explotoBomba.getBytes(Charset.forName("UTF-8")));
+		}		
+	}
 	
 	public synchronized void sendMapa(){
 		Gson gson = new GsonBuilder()
@@ -59,6 +73,7 @@ public class Mundo {
 			ts.sendData(mapa.getBytes(Charset.forName("UTF-8")));
 		}		
 	}
+		
 	
 	public synchronized void sendStartInfo(){
 		int index = 1;

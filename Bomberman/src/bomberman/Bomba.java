@@ -15,14 +15,14 @@ public class Bomba {
 	public Bomba(int potencia, float tiempoExplosion, Punto2D ubic, Jugador jugadorPlantoBomba, boolean noSprites) {		
 		this.posicion = ubic;
 		this.potencia = potencia;
-		this.tiempoExplosion = tiempoExplosion;		
+		//Bomba.tiempoExplosion = tiempoExplosion;		
 		this.jugadorPlantoBomba = jugadorPlantoBomba;
 	}
 	
 	public Bomba(int potencia, float tiempoExplosion, Punto2D ubic, Jugador jugadorPlantoBomba) {
 		this.posicion = ubic;
 		this.potencia = potencia;
-		this.tiempoExplosion = tiempoExplosion;
+		//Bomba.tiempoExplosion = tiempoExplosion;
 		this.bombaSprite = new Sprite("bomba", true);
 		this.jugadorPlantoBomba = jugadorPlantoBomba;
 	}

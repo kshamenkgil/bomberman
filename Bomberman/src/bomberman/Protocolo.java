@@ -126,6 +126,7 @@ public class Protocolo {
 				}
 			}
 			Engine.getInstancia().setStartUpdate(true);
+			
 		}else if(o.get("header").getAsString().compareTo("mapa") == 0){
 			Gson gson = new GsonBuilder()
 					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
@@ -136,7 +137,7 @@ public class Protocolo {
 					.create();
 			
 			Mundo.getInstance().setMap(gson.fromJson(json, Mapa.class));
-			//System.out.println("test");
+			
 		}else if(o.get("header").getAsString().compareTo("bomba") == 0){
 			Gson gson = new GsonBuilder()
 					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
@@ -144,8 +145,17 @@ public class Protocolo {
 					.create();
 			
 			Bomba bomba = gson.fromJson(json, Bomba.class);			
-			Mundo.getInstance().getBombas().add(bomba);			
-		}	
+			Mundo.getInstance().getBombas().add(bomba);		
+			
+		}else if(o.get("header").getAsString().compareTo("exploto_bomba") == 0){
+			Gson gson = new GsonBuilder()
+				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
+				.registerTypeAdapter(bomberman.Bomba.class, new bomberman.BombaDeserializer())
+				.create();
+		
+			ExplotoBomba exB = gson.fromJson(json, ExplotoBomba.class);
+					
+		}
 	}
 	
 	private void moverJugador(byte[] data){		
