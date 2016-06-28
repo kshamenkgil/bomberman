@@ -154,7 +154,14 @@ public class Mundo {
 				t.sendData(data);
 		}
 	}
-
+	
+	public synchronized void actualizarMuertes(Jugador jugador, byte[] data){
+		for (ThreadServer t: connections) {
+ 			if(t.getJugador().getId() != jugador.getId())
+				t.sendData(data);
+		}
+	}
+	
 	public synchronized void enviarBomba(String json,byte id) {
 		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != id)

@@ -56,15 +56,15 @@ public class Protocolo {
 			case CONEXION:
 				setParametrosIniciales(data[1]);
 				break;
-			/*case COMIENZO_JUEGO:
-				//COMENZAR JUEGO
-				//enviar mapa la primera vez.
-				//enviar posiciones
-				//se puede poner en un metodo y llamarlo
-				
-				break;*/
+			case MURIO_JUGADOR:
+				byte id1 = data[1];
+				for (Jugador j : Mundo.getInstance().getJugadores()) {
+					if(j.getId() == id1)
+						j.setMuerto(true);
+				}
+				break;
 			case MOVIMIENTO:
-				moverJugador(data);
+				moverJugador(data);				
 				break;
 			case DESCONEXION:
 				byte id = data[1];
@@ -178,6 +178,20 @@ public class Protocolo {
 					Mundo.getInstance().getJugador().setMuerto(true);
 			}	
 			
+		}else if(o.get("header").getAsString().compareTo("pos") == 0){
+			Gson gson = new GsonBuilder()
+					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())
+					.registerTypeAdapter(bomberman.Jugador.class, new bomberman.JugadorDeserializer())
+					.create();
+			
+			Jugador offset = gson.fromJson(json, Jugador.class);
+			
+			for (Jugador j : Mundo.getInstance().getJugadores()) {
+				if(j.getId() == offset.id){
+					Punto2D p = new Punto2D(j.getPosicion().getX()+offset.posicion.getX(), j.getPosicion().getY()+offset.posicion.getY());
+					j.setPosicion(p);
+				}
+			}
 		}
 	}
 	
@@ -213,6 +227,13 @@ public class Protocolo {
 		String json = gson.toJson(bomba);
 		
 		Bomberman.getInstancia().getCliente().sendData(json.getBytes(Charset.forName("UTF-8")));
+	}	
+	
+	public static void enviarMuerte(byte id){
+		byte[] t = new byte[2];
+        t[0] = Protocolo.MURIO_JUGADOR;
+        t[1] = id;
+        Bomberman.getInstancia().getCliente().sendData(t);
 	}	
 	
 	public static void moverJugador(byte direccion){

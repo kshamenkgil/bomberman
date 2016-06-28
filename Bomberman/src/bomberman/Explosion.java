@@ -1,6 +1,7 @@
 package bomberman;
 
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
 public class Explosion {
@@ -35,17 +36,24 @@ public class Explosion {
 		float pot = potencia;
 		
 		explosionMedio.dibujarTile(g, io, posicion);
-				
-		
+
 		//en X positivo
         while( pot > 0){
         	if(pot == potencia)
         		explosionDerecha.dibujarTile(g, io, new Punto2D(posicion.getX()+pot, posicion.getY()));
         	else
         		explosionHorizontal.dibujarTile(g, io, new Punto2D(posicion.getX()+pot, posicion.getY()));
-
+        	
         	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()+pot)][(int)(posicion.getY())].getTile().isColisionable())
         		pot = 0; 
+        	else{
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)+pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT-5), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            		if(!Mundo.getInstance().getJugador().isMuerto()){
+            			Mundo.getInstance().getJugador().setMuerto(true);
+            			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
+            		}
+            	}
+        	}
         	
         	pot--;
         }
@@ -56,10 +64,18 @@ public class Explosion {
         	if(pot == potencia)
         		explosionIzquierda.dibujarTile(g, io, new Punto2D(posicion.getX()-pot, posicion.getY()));
         	else
-        		explosionHorizontal.dibujarTile(g, io, new Punto2D(posicion.getX()-pot, posicion.getY()));
+        		explosionHorizontal.dibujarTile(g, io, new Punto2D(posicion.getX()-pot, posicion.getY()));        
         	
         	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()-pot)][(int)(posicion.getY())].getTile().isColisionable())
         		pot = 0;
+        	else{
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)-pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT-5), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            		if(!Mundo.getInstance().getJugador().isMuerto()){
+            			Mundo.getInstance().getJugador().setMuerto(true);
+            			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
+            		}
+            	}
+        	}
         	
         	pot--;
         }
@@ -72,8 +88,17 @@ public class Explosion {
         	else
         		explosionVertical.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()+pot));        	        	
         	
+        	
         	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()+pot)].getTile().isColisionable())
         		pot = 0;
+        	else{
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT-5)+pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            		if(!Mundo.getInstance().getJugador().isMuerto()){
+            			Mundo.getInstance().getJugador().setMuerto(true);
+            			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
+            		}        		
+            	}
+        	}
         	
         	pot--;
         }
@@ -86,8 +111,17 @@ public class Explosion {
         	else
         		explosionVertical.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()-pot));
         	
+        		        	
         	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()-pot)].getTile().isColisionable())
         		pot = 0;
+        	else{
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT-5)-pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            		if(!Mundo.getInstance().getJugador().isMuerto()){
+            			Mundo.getInstance().getJugador().setMuerto(true);
+            			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
+            		}
+            	}            	
+        	}
         	
         	pot--;
         }

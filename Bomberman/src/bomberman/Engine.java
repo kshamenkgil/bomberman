@@ -248,10 +248,11 @@ public class Engine {
 			    camY = offsetMinY;
 
 			Bomba b = null;
-			for (Bomba bomba : Mundo.getInstance().getBombas()) {
-				if(bomba.isTerminoExplosion())
+			for (Bomba bomba : Mundo.getInstance().getBombas()) {				
+				if(bomba.isTerminoExplosion())					
 					b = bomba;
 			}
+						
 			
 			Mundo.getInstance().getBombas().remove(b);
 			//fin update

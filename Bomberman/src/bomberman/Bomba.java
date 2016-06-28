@@ -14,11 +14,12 @@ public class Bomba {
 	private boolean exploto = false;
 	private boolean terminoExplosion = false;
 	private Explosion explosion;
-
+		
+	
 	public Bomba(int potencia, float tiempoExplosion, Punto2D ubic, Jugador jugadorPlantoBomba, boolean noSprites) {		
 		this.posicion = ubic;
 		this.potencia = potencia;
-		//Bomba.tiempoExplosion = tiempoExplosion;		
+		//Bomba.tiempoExplosion = tiempoExplosion;
 		this.jugadorPlantoBomba = jugadorPlantoBomba;
 		explosion = new Explosion(potencia, ubic);
 	}
@@ -30,6 +31,10 @@ public class Bomba {
 		this.bombaSprite = new Sprite("bomba", true);
 		this.jugadorPlantoBomba = jugadorPlantoBomba;
 		explosion = new Explosion(potencia, ubic);
+	}
+		
+	public Explosion getExplosion() {
+		return explosion;
 	}
 	
 	public void setBombaSprite(Sprite bombaSprite) {

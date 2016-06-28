@@ -81,8 +81,8 @@ public class Protocolo {
 					try {
 						byte header = data[0];
 						switch(header){	
-							case COLOCO_BOMBA:
-								
+							case MURIO_JUGADOR:
+								matarJugador(jugador);
 								break;
 							case MOVIMIENTO:
 								moverJugador(jugador, data[1]);
@@ -107,6 +107,13 @@ public class Protocolo {
 		//},"protocolo").start();		
 	}
 	
+	private void matarJugador(Jugador jugador) {		
+		byte[] data = new byte[3];
+		data[0] = Protocolo.MURIO_JUGADOR;
+		data[1] = (byte)jugador.getId();
+		Mundo.getInstance().actualizarMuertes(jugador, data);
+	}
+
 	private void parseJSON(String json) {
 		JsonParser parser = new JsonParser();
 		JsonObject o = parser.parse(json).getAsJsonObject();
@@ -125,7 +132,8 @@ public class Protocolo {
 	}
 
 	private void moverJugador(Jugador jugador, byte direccion){
-		if(jugador.moverServidor(direccion)){	
+		if(jugador.moverServidor(direccion)){
+			
 			//H+ID+D
 			byte[] data = new byte[3];
 			data[0] = Protocolo.MOVIMIENTO;

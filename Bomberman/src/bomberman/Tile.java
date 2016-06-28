@@ -12,7 +12,7 @@ public class Tile {
 	private boolean hayBomba = false;
 	private boolean exploto = false;
 	private Punto2D posicion;
-	private int tolerancia = 5;
+	private int tolerancia = 0;
 	
 	public Tile(boolean seRompe, boolean colisionable, Sprite tileSprite, Punto2D posicion) {
 		this.seRompe = seRompe;

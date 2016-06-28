@@ -53,7 +53,8 @@ public class Jugador extends Personaje {
 				break;
 		}
 		
-		Engine.getInstancia().dibujarTexto(nombre, 8, color, g, new Punto2D(posicion.x, posicion.y-(personajeE.getTileWidth()/4)));
+		if(!isMuerto())
+			Engine.getInstancia().dibujarTexto(nombre, 8, color, g, new Punto2D(posicion.x, posicion.y-(personajeE.getTileWidth()/4)));
 		
 	}
 	
@@ -71,8 +72,9 @@ public class Jugador extends Personaje {
 			setCantBombas(0);
 		
 		if(getCantBombasActual() < getCantBombas()){
-			int x = (int)((posicion.x/Engine.TILE_WIDTH)+0.9);
-			int y = (int)((posicion.y/Engine.TILE_HEIGHT)+0.9);
+			
+			int x = (int)Math.floor((posicion.x+16)/(Engine.TILE_WIDTH));
+			int y = (int)Math.floor((posicion.y+16)/(Engine.TILE_HEIGHT));
 			if(Mundo.getInstance().getMap().getMapa()[x][y].getTile().isColisionable() || Mundo.getInstance().getMap().getMapa()[x][y].getTile().hayBomba())
 				return;			
 			setCantBombasActual(cantBombasActual+1);
