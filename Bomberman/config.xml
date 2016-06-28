@@ -7,7 +7,7 @@
 		</resolucion>
 	</screen>
 	<server>
-		<ip>192.168.1.111</ip>
+		<ip>localhost</ip>
 		<port>24556</port>
 	</server>
 </configuracion>

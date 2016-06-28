@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import bomberman.Bomba;
 import bomberman.Enemigo;
+import bomberman.ExplotoBomba;
 import bomberman.Jugador;
 import bomberman.Mapa;
 import bomberman.Punto2D;
@@ -45,6 +45,19 @@ public class Mundo {
 	public void setMap(Mapa map) {
 		this.map = map;
 	}
+
+	public synchronized void sendExplotoBomba(ExplotoBomba exB){
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DSerializer())								
+				.registerTypeAdapter(bomberman.Tile.class, new bomberman.TileSerializer())
+				.registerTypeAdapter(bomberman.ExplotoBomba.class, new ExplotoBombaSerializer())
+				.create();
+		
+		String explotoBomba = gson.toJson(exB);
+		for (ThreadServer ts : connections) {
+			ts.sendData(explotoBomba.getBytes(Charset.forName("UTF-8")));
+		}		
+	}
 	
 	public synchronized void sendMapa(){
 		Gson gson = new GsonBuilder()
@@ -60,6 +73,7 @@ public class Mundo {
 			ts.sendData(mapa.getBytes(Charset.forName("UTF-8")));
 		}		
 	}
+		
 	
 	public synchronized void sendStartInfo(){
 		int index = 1;
@@ -136,16 +150,27 @@ public class Mundo {
 	
 	public synchronized void actualizarPosicion(Jugador jugador, byte[] data){
 		for (ThreadServer t: connections) {
+ 			//if(t.getJugador().getId() != jugador.getId())
+				t.sendData(data);
+		}
+	}
+	
+	public synchronized void actualizarMuertes(Jugador jugador, byte[] data){
+		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);
 		}
 	}
-
+	
 	public synchronized void enviarBomba(String json,byte id) {
 		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != id)
 				t.sendData(json.getBytes(Charset.forName("UTF-8")));
 		}
+	}
+	
+	public Mapa getMap() {
+		return map;
 	}
 	
 }

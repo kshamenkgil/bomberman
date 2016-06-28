@@ -53,7 +53,8 @@ public class Jugador extends Personaje {
 				break;
 		}
 		
-		Engine.getInstancia().dibujarTexto(nombre, 8, color, g, new Punto2D(posicion.x, posicion.y-(personajeE.getTileWidth()/4)));
+		if(!isMuerto())
+			Engine.getInstancia().dibujarTexto(nombre, 8, color, g, new Punto2D(posicion.x, posicion.y-(personajeE.getTileWidth()/4)));
 		
 	}
 	
@@ -67,12 +68,21 @@ public class Jugador extends Personaje {
 	
 	@Override
 	public synchronized void atacar() { // poner bomba
+		if(getCantBombasActual() < 0)
+			setCantBombas(0);
+		
 		if(getCantBombasActual() < getCantBombas()){
+			
+			int x = (int)Math.floor((posicion.x+16)/(Engine.TILE_WIDTH));
+			int y = (int)Math.floor((posicion.y+16)/(Engine.TILE_HEIGHT));
+			if(Mundo.getInstance().getMap().getMapa()[x][y].getTile().isColisionable() || Mundo.getInstance().getMap().getMapa()[x][y].getTile().hayBomba())
+				return;			
 			setCantBombasActual(cantBombasActual+1);
-			Bomba bomba = new Bomba(1, 1, posicion, this);
+			Mundo.getInstance().getMap().getMapa()[x][y].getTile().setHayBomba(true);
+			Bomba bomba = new Bomba(1, 1, new Punto2D(x*Engine.TILE_WIDTH,y*Engine.TILE_HEIGHT), this);
 			Mundo.getInstance().getBombas().add(bomba);
 			Protocolo.enviarBomba(bomba);
-		}		
+		}
 	}
 	
 	public byte getId() {

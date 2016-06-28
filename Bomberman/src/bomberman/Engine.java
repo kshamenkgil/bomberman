@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.ImageObserver;
-
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 
@@ -159,7 +159,7 @@ public class Engine {
 	
 	public synchronized void dibujar(Graphics2D g, ImageObserver io){
 		//mapa
-		if(this.isStartUpdate()){
+		if(this.isStartUpdate()){			
 			g.translate(-camX, -camY);
 			for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
 				for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
@@ -167,8 +167,11 @@ public class Engine {
 				}
 			}
 			
-			for (Bomba bomba : Mundo.getInstance().getBombas()) {
-				bomba.dibujarBomba(g,io);
+			if(!Mundo.getInstance().getBombas().isEmpty()){
+				for (Bomba bomba : Mundo.getInstance().getBombas()) {
+					if(bomba != null)
+						bomba.dibujarBomba(g,io);
+				}
 			}
 			
 			//jugadores
@@ -177,8 +180,9 @@ public class Engine {
 				j.dibujar(g, io);
 			}
 			
-			//fps			
-			dibujarTexto("FPS: " + fps, 16, g, new Punto2D(10, 18));
+			//fps
+			g.translate(0, 0);
+			//dibujarTexto("FPS: " + fps, 16, g, new Punto2D(10, 18));
 			
 		}else{
 			dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));
@@ -224,12 +228,12 @@ public class Engine {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-							
+						
 			//procesar input
 			input.update();			    
 
 		    //update
-
+			
 			camX = (float)Mundo.getInstance().getJugador().getPosicion().getX() - Configuracion.getInstancia().getScreenX() / 2;
 			camY = (float)Mundo.getInstance().getJugador().getPosicion().getY() - Configuracion.getInstancia().getScreenY() / 2;	
 						
@@ -243,7 +247,14 @@ public class Engine {
 			else if(camY < offsetMinY)
 			    camY = offsetMinY;
 
+			Bomba b = null;
+			for (Bomba bomba : Mundo.getInstance().getBombas()) {				
+				if(bomba.isTerminoExplosion())					
+					b = bomba;
+			}
+						
 			
+			Mundo.getInstance().getBombas().remove(b);
 			//fin update
 		    
 			 

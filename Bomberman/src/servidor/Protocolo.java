@@ -8,7 +8,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import bomberman.Bomba;
 import bomberman.Jugador;
 import bomberman.Mapa;
 import servidor.Mundo;
@@ -82,8 +81,8 @@ public class Protocolo {
 					try {
 						byte header = data[0];
 						switch(header){	
-							case COLOCO_BOMBA:
-								
+							case MURIO_JUGADOR:
+								matarJugador(jugador);
 								break;
 							case MOVIMIENTO:
 								moverJugador(jugador, data[1]);
@@ -108,14 +107,22 @@ public class Protocolo {
 		//},"protocolo").start();		
 	}
 	
+	private void matarJugador(Jugador jugador) {		
+		byte[] data = new byte[3];
+		data[0] = Protocolo.MURIO_JUGADOR;
+		data[1] = (byte)jugador.getId();
+		Mundo.getInstance().actualizarMuertes(jugador, data);
+	}
+
 	private void parseJSON(String json) {
 		JsonParser parser = new JsonParser();
 		JsonObject o = parser.parse(json).getAsJsonObject();
 		if(o.get("header").getAsString().compareTo("bomba") == 0){
 			Gson gson = new GsonBuilder()
 					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())				
-					.registerTypeAdapter(bomberman.Bomba.class, new servidor.BombaDeserializer())
+					.registerTypeAdapter(Bomba.class, new servidor.BombaDeserializer())
 					.create();
+			
 			Bomba bomba = gson.fromJson(json, Bomba.class);
 			bomba.explotar(Bomba.tiempoExplosion);
 			Mundo.getInstance().getBombas().add(bomba);
@@ -125,15 +132,16 @@ public class Protocolo {
 	}
 
 	private void moverJugador(Jugador jugador, byte direccion){
-		jugador.mover(direccion);
-		
-		//H+ID+D
-		byte[] data = new byte[3];
-		data[0] = Protocolo.MOVIMIENTO;
-		data[1] = (byte)jugador.getId();
-		data[2] = direccion;
-		
-		Mundo.getInstance().actualizarPosicion(jugador, data);	
+		if(jugador.moverServidor(direccion)){
+			
+			//H+ID+D
+			byte[] data = new byte[3];
+			data[0] = Protocolo.MOVIMIENTO;
+			data[1] = (byte)jugador.getId();
+			data[2] = direccion;
+			
+			Mundo.getInstance().actualizarPosicion(jugador, data);
+		}
 	}
 	
 	public Queue<byte[]> getColaMensajes() {
