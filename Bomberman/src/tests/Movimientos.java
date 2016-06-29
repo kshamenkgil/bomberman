@@ -53,7 +53,7 @@ public void queElPersonajeSeMueva(){
 	            
 	            
 	 Jugador personaje = new Jugador(new Punto2D(5,5),new Punto2D(5,5));
-	 Tile bomba = new Tile(true,true,new Sprite("ex", false),new Punto2D(5,6));
+	 Tile pared = new Tile(true,true,new Sprite("ex", false),new Punto2D(5,6));
 	 //Tile(boolean seRompe, boolean colisionable, Sprite tileSprite, Punto2D posicion) {
 	 Punto2D punto = new Punto2D(5, 5);
 	 personaje.mover(Protocolo.ESTE);
@@ -75,8 +75,7 @@ public void queElPersonajeSeMueva(){
 	Assert.assertEquals(punto,personaje.mover(1));
 	}
 */
-	
-	
+  
 
  @Test
 public void queNoSeAtravieseUnaBomba() {

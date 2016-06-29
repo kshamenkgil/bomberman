@@ -2,6 +2,7 @@ package tests;
 
 import org.junit.*;
 
+import bomberman.Engine;
 import bomberman.Jugador;
 import bomberman.Punto2D;
 import bomberman.Mundo;
@@ -12,7 +13,7 @@ public class ClienteMuevePersonaje {
 	public void ClienteMuevePersonajeEste(){
 				
 		Jugador j = new Jugador(new Punto2D(10, 15),new Punto2D(10, 15));
-		j.setPosicion(new Punto2D(10, 15));
+		j.setPosicion(new Punto2D(10*Engine.TILE_WIDTH, 15*Engine.TILE_HEIGHT));
 		j.setId((byte) 2);
 		Mundo.getInstance().getJugadores().add(j);
 		
@@ -25,6 +26,6 @@ public class ClienteMuevePersonaje {
 		data[2] = Protocolo.ESTE;
 		
 		p.procesarEntrada(data);
-		Assert.assertEquals(10+(1*1), j.getPosicion().getX(),0.01);
+		Assert.assertEquals(11, j.getPosicion().getX()/Engine.TILE_HEIGHT,0.01);
 	}
 }
