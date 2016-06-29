@@ -156,8 +156,9 @@ public class Protocolo {
 			Mundo.getInstance().actualizarPosicion(jugador, data);
 			int x = (int)Math.floor((jugador.getPosicion().getX()+16)/(Engine.TILE_WIDTH));
 			int y = (int)Math.floor((jugador.getPosicion().getY()+16)/(Engine.TILE_HEIGHT));
-			if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null){
+			if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null){				
 				AgarroPotenciador ap = new AgarroPotenciador(new Punto2D(x, y), Mundo.getInstance().getMap().getMapa()[x][y].getObjeto(), jugador.getId());
+				ap.getPot().potenciar(jugador);				
 				Mundo.getInstance().sendPotenciador(ap);
 				Mundo.getInstance().getMap().getMapa()[x][y].setPotenciador(null);
 			}
