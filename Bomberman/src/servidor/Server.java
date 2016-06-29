@@ -43,12 +43,12 @@ public class Server implements Runnable{
 		
         try {
             serverSocket = new ServerSocket(24556);
-            getPantalla().consola.append("Servidor escuchando en puerto 24556");
+            getPantalla().consola.append("Servidor escuchando en puerto 24556\n");
             //System.out.println("Servidor escuchando en puerto 24556");
             
         } catch (IOException e) {
         	//System.out.println("No se puede escuchar en el puerto 24556");
-        	getPantalla().consola.append("Servidor escuchando en puerto 24556");
+        	getPantalla().consola.append("No se puede escuchar en el puerto 24556\n");
         	Thread.currentThread().interrupt();
         }
 		
@@ -104,10 +104,11 @@ public class Server implements Runnable{
 			t.sendData(data);
 
 			connections.add(t);
-			
+			getPantalla().consola.append("Ingreso jugador con id "+lastId+"\n");
 			this.lastId++;
 			this.connectedUsers++;
 			if(this.connectedUsers == this.cantPlayers)
+				
 				setRunning(false);			
 			
 		}

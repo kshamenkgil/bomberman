@@ -17,6 +17,7 @@ public class PotenciadorDeserializer implements JsonDeserializer<Potenciador> {
 		JsonObject jsonObject = json.getAsJsonObject();
 		String textura = jsonObject.get("textura").getAsString();
 		Potenciador p = null;
+		Punto2D pos = context.deserialize(jsonObject.get("Pos"),Punto2D.class);
 		
 		switch(textura){
 			case "potc":
@@ -32,6 +33,8 @@ public class PotenciadorDeserializer implements JsonDeserializer<Potenciador> {
 				p = new MasDeUnaBomba(textura);
 				break;
 		}
+		
+		p.setPosicion(pos);
 		
 		return p;
 	}		

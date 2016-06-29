@@ -53,6 +53,7 @@ public class ServerScreen extends JFrame {
 		contentPane.add(btnSalir);
 		
 		JTextArea textArea = new JTextArea();		
+		textArea.setEditable(false);
 		textArea.setBounds(32, 12, 378, 186);
 		contentPane.add(textArea);
 		consola = textArea;

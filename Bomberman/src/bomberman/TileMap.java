@@ -8,12 +8,12 @@ public class TileMap {
 		if(obj != null)
 			this.potenciador = obj;
 	}
-	
+			
 	public Potenciador getObjeto() {
 		return potenciador;
 	}
 	
-	public void setPotenciador(Potenciador potenciador) {
+	public synchronized void setPotenciador(Potenciador potenciador) {
 		this.potenciador = potenciador;
 	}
 	

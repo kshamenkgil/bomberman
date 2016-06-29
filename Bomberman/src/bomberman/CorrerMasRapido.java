@@ -2,6 +2,10 @@ package bomberman;
 
 public class CorrerMasRapido extends Potenciador{
 
+	public CorrerMasRapido() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public CorrerMasRapido(String textura) {
 		super(textura);
 	}

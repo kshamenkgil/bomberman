@@ -46,6 +46,11 @@ public class Protocolo {
 	public static final byte OESTE = 4;
 	public static final byte IDLE = 5;
 	
+	//Potenciadores
+	public static final byte BOMBA_MAS_POTENTE = 0;
+	public static final byte CORRER_MAS_RAPIDO = 1;
+	public static final byte MAS_DE_UNA_BOMBA = 2;
+	
 	public Protocolo() {
 		// TODO Auto-generated constructor stub
 	}
@@ -55,6 +60,11 @@ public class Protocolo {
 		switch(header){
 			case CONEXION:
 				setParametrosIniciales(data[1]);
+				break;
+			case GET_POTENCIADOR:
+				byte id0 = data[1];
+				byte pot = data[2];
+				setPotenciador(id0, pot);
 				break;
 			case MURIO_JUGADOR:
 				byte id1 = data[1];
@@ -83,6 +93,33 @@ public class Protocolo {
 				parseJSON(new String(data));				
 				break;
 		}			
+	}
+	
+	private void setPotenciador(byte id, byte pot){
+		Potenciador pote = null;
+		switch(pot){
+			case BOMBA_MAS_POTENTE:
+				pote = new BombaMasPotente();
+				break;
+			case CORRER_MAS_RAPIDO:
+				pote = new CorrerMasRapido();
+				break;
+			case MAS_DE_UNA_BOMBA:
+				pote = new MasDeUnaBomba();
+				break;						
+		}
+		
+		if(Mundo.getInstance().getJugador().getId() == id)
+			pote.potenciar(Mundo.getInstance().getJugador());
+		else{			
+			for (Jugador j : Mundo.getInstance().getJugadores()) {
+				if(j.getId() == id)
+					pote.potenciar(j);
+			}
+		}
+			
+		
+		
 	}
 	
 	private void setParametrosIniciales(byte id1) {
@@ -192,7 +229,28 @@ public class Protocolo {
 					j.setPosicion(p);
 				}
 			}
+		}else if(o.get("header").getAsString().compareTo("agarro_potenciador") == 0){
+			Gson gson = new GsonBuilder()
+					.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DDeserializer())
+					.registerTypeAdapter(bomberman.Potenciador.class, new bomberman.PotenciadorDeserializer())
+					.registerTypeAdapter(bomberman.AgarroPotenciador.class, new bomberman.AgarroPotenciadorDeserializer())
+					.create();
+			
+			AgarroPotenciador ap = gson.fromJson(json, AgarroPotenciador.class);			
+			
+			if(Mundo.getInstance().getJugador().getId() == ap.getId())
+				ap.getPot().potenciar(Mundo.getInstance().getJugador());
+			
+			for (Jugador j : Mundo.getInstance().getJugadores()) {
+				if(j.getId() == ap.getId()){
+					ap.getPot().potenciar(j);
+				}
+			}
+			
+			Mundo.getInstance().getMap().getMapa()[(int)ap.getPos().getX()][(int)ap.getPos().getY()].setPotenciador(null);
+			
 		}
+		
 	}
 	
 	private void moverJugador(byte[] data){		

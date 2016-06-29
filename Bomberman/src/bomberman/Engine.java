@@ -123,10 +123,9 @@ public class Engine {
 		
 		//potenciadores
 		addTexturas("potb", new Textura("assets/graficos/"+set+"potenciadores/bomba.png"));
-		addTexturas("potmb", new Textura("assets/graficos/"+set+"potenciadores/bomba.png"));
+		addTexturas("potmb", new Textura("assets/graficos/"+set+"potenciadores/masbomba.png"));
 		addTexturas("potv", new Textura("assets/graficos/"+set+"potenciadores/vida.png"));
-		addTexturas("potc", new Textura("assets/graficos/"+set+"potenciadores/correr.png"));
-		//addTexturas("potmb", new Textura("assets/graficos/"+set+"potenciadores/masbomba.png"));
+		addTexturas("potc", new Textura("assets/graficos/"+set+"potenciadores/correr.png"));		
 		
 	}
 	
@@ -164,6 +163,8 @@ public class Engine {
 			for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
 				for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
 					Mundo.getInstance().getMap().getMapa()[x][y].getTile().dibujar(g, io, new Punto2D(x, y));
+					if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null)
+						Mundo.getInstance().getMap().getMapa()[x][y].getObjeto().dibujar(g, io, new Punto2D(x, y));
 				}
 			}
 			
@@ -251,10 +252,10 @@ public class Engine {
 			for (Bomba bomba : Mundo.getInstance().getBombas()) {				
 				if(bomba.isTerminoExplosion())					
 					b = bomba;
-			}
-						
+			}			
 			
 			Mundo.getInstance().getBombas().remove(b);
+			
 			//fin update
 		    
 			 

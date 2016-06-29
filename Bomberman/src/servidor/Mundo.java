@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import bomberman.AgarroPotenciador;
 import bomberman.Enemigo;
 import bomberman.ExplotoBomba;
 import bomberman.Jugador;
 import bomberman.Mapa;
+import bomberman.Potenciador;
 import bomberman.Punto2D;
 
 public class Mundo {
@@ -55,6 +57,19 @@ public class Mundo {
 		this.map = map;
 	}
 
+	public synchronized void sendPotenciador(AgarroPotenciador pot){
+		Gson gson = new GsonBuilder()
+				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DSerializer())								
+				.registerTypeAdapter(bomberman.Potenciador.class, new bomberman.PotenciadorSerializer())
+				.registerTypeAdapter(bomberman.AgarroPotenciador.class, new bomberman.AgarroPotenciadorSerializer())
+				.create();
+		
+		String potenciador = gson.toJson(pot);
+		for (ThreadServer ts : connections) {
+			ts.sendData(potenciador.getBytes(Charset.forName("UTF-8")));
+		}		
+	}
+	
 	public synchronized void sendExplotoBomba(ExplotoBomba exB){
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DSerializer())								
@@ -155,6 +170,13 @@ public class Mundo {
 		t1.closeSocket();
 		connections.remove(t1);
 		setConnectedUsers(connectedUsers-1);
+	}
+
+	public synchronized void actualizarPotenciadores(Jugador jugador, byte[] data){
+		for (ThreadServer t: connections) {
+ 			if(t.getJugador().getId() != jugador.getId())
+				t.sendData(data);
+		}
 	}
 	
 	public synchronized void actualizarPosicion(Jugador jugador, byte[] data){
