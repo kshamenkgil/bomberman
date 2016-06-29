@@ -50,7 +50,7 @@ public class Explosion {
         	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()+pot)][(int)(posicion.getY())].getTile().isColisionable())
         		pot = -1; 
         	else{
-            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)+pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT-5), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)+pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
             			Mundo.getInstance().getJugador().setMuerto(true);
             			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
@@ -72,7 +72,7 @@ public class Explosion {
         	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()-pot)][(int)(posicion.getY())].getTile().isColisionable())
         		pot = -1;
         	else{
-            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)-pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT-5), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)-pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
             			Mundo.getInstance().getJugador().setMuerto(true);
             			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
@@ -95,7 +95,7 @@ public class Explosion {
         	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()+pot)].getTile().isColisionable())
         		pot = -1;
         	else{
-            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT-5)+pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT)+pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
             			Mundo.getInstance().getJugador().setMuerto(true);
             			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
@@ -118,7 +118,7 @@ public class Explosion {
         	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()-pot)].getTile().isColisionable())
         		pot = -1;
         	else{
-            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT-5)-pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+            	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT)-pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
             			Mundo.getInstance().getJugador().setMuerto(true);
             			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
