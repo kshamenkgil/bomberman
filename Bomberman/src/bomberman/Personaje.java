@@ -17,6 +17,7 @@ public abstract class Personaje {
 	protected float velocidad; 	
 	private int tolerancia = 0;
 	protected boolean muerto;
+	protected boolean noCollide;
 	
 	public Personaje(Punto2D posicion, Punto2D posicionRelativa) {
 		this.posicion = posicion;
@@ -24,8 +25,16 @@ public abstract class Personaje {
 		this.velocidad = 1f;
 		this.posicionRelativa = posicionRelativa;
 		this.muerto = false;
+		this.noCollide = false;
 	}
-		
+	
+	public boolean isNoCollide() {
+		return noCollide;
+	}
+
+	public synchronized void setNoCollide(boolean noCollide) {
+		this.noCollide = noCollide;
+	}
 	
 	public boolean isMuerto() {
 		return muerto;
@@ -211,6 +220,8 @@ public abstract class Personaje {
 						if(posicion.x < t.getPosicion().getX())//Hit was on left
 							if(direccion == Protocolo.ESTE)
 								return true;
+					}else if(dr.intersects(t.getBounds()) && t.isColisionable() && t.isSeRompe() && isNoCollide()){
+						return false;
 					}
 				}	
 			}			

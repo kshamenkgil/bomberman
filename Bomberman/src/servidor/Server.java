@@ -116,7 +116,7 @@ public class Server implements Runnable{
 		//si el juego comenzó enviar info inicial e iniciar update
 		Mundo.getInstance().setConnections(connections);
 		Mundo.getInstance().setConnectedUsers(connectedUsers);
-		//mAG.saveMap(); //se guarda el mapa
+		mAG.saveMap(); //se guarda el mapa
 		Mapa tMap = mAG.getMap();
 		Mundo.getInstance().setMap(tMap);
 		bomberman.Mundo.getInstance().setMap(tMap);

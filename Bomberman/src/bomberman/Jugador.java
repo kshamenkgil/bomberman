@@ -10,6 +10,7 @@ public class Jugador extends Personaje {
 	private int potenciaBomba;
 	private int cantBombas;
 	private int cantBombasActual;
+	private boolean noCollide;
 	private Color color;
 	private String nombre = "Prueba";
 	
@@ -20,8 +21,7 @@ public class Jugador extends Personaje {
 		this.velocidad = 1.0f;
 		this.color = Color.WHITE;
 		this.cantBombas = 1;
-		this.cantBombasActual = 0;
-		
+		this.cantBombasActual = 0;		
 	}	
 		
 	public void setNombre(String nombre) {
@@ -132,4 +132,5 @@ public class Jugador extends Personaje {
 	public void setColor(Color color) {
 		this.color = color;
 	}
+
 }

@@ -12,7 +12,8 @@ public class CorrerMasRapido extends Potenciador{
 	
 	@Override
 	public void potenciar(Jugador jugador) {
-		jugador.setVelocidad(jugador.getVelocidad()+1.0f);		
+		//jugador.setVelocidad(jugador.getVelocidad()+0.1f);
+		jugador.setNoCollide(true);
 	}
 
 }
