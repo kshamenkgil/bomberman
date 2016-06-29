@@ -40,6 +40,13 @@ public class Explosion {
     	
 		explosionMedio.dibujarTile(g, io, posicion);
 
+    	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT)), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+    		if(!Mundo.getInstance().getJugador().isMuerto()){
+    			Mundo.getInstance().getJugador().setMuerto(true);
+    			Protocolo.enviarMuerte(Mundo.getInstance().getJugador().getId());
+    		}        		
+    	}
+		
 		//en X positivo
         while( pot < potencia +1 && pot > 0 && x+pot <(int) Mundo.getInstance().getMap().getSize().getX()-1){
         	if(pot == potencia)

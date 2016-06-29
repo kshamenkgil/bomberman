@@ -80,6 +80,12 @@ public class Bomba {
             	int pot = 1;
             	for (Bomba bomba : Mundo.getInstance().getBombas()) { 
             		if(bomba.getPosicion() == posicion)
+        				for (ThreadServer p1 : Mundo.getInstance().getConnections()){
+        					if(getBounds(new Punto2D(posicion.getX(),posicion.getY())).intersects(new Rectangle((int)p1.getJugador().getPosicion().getX(), (int)p1.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+        						p1.getJugador().setVidas(0);
+        						exB.getJugadoresMuertos().add(p1.getJugador().getId());
+        					}
+        				}
             			pot =1;
             		//en X positivo
                     	while( pot < potencia +1 && pot != 0 && x+pot <(int) Mundo.getInstance().getMap().getSize().getX()){
