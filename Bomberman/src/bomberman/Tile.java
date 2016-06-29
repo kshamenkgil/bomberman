@@ -38,7 +38,10 @@ public class Tile {
 			if(tileSprite.isPasoUnCiclo()){
 				Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setColisionable(false);
 				Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
-				tileSprite = null;
+				if(Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getObjeto() != null)
+					Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getObjeto().setVisible(true);
+				
+				tileSprite = null;				
 			}
 			
 			if(tileSprite != null)

@@ -2,6 +2,10 @@ package bomberman;
 
 public class MasDeUnaBomba extends Potenciador {
 
+	public MasDeUnaBomba() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public MasDeUnaBomba(String textura) {
 		super(textura);
 	}

@@ -8,8 +8,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import bomberman.AgarroPotenciador;
+import bomberman.Engine;
 import bomberman.Jugador;
 import bomberman.Mapa;
+import bomberman.Punto2D;
 import servidor.Mundo;
 
 public class Protocolo {
@@ -47,8 +50,13 @@ public class Protocolo {
 	public static final byte SUR = 2;
 	public static final byte ESTE = 3;
 	public static final byte OESTE = 4;
-		
-	private boolean isRunning = true;
+	
+	//Potenciadores
+	public static final byte BOMBA_MAS_POTENTE = 0;
+	public static final byte CORRER_MAS_RAPIDO = 1;
+	public static final byte MAS_DE_UNA_BOMBA = 2;
+	
+	//private boolean isRunning = true;
 	private Queue<byte[]> colaMensajes = new LinkedList<>();
 	private Jugador jugador;
 	
@@ -56,9 +64,9 @@ public class Protocolo {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public synchronized void stop(){
+	/*public synchronized void stop(){
 		isRunning = false;
-	}
+	}*/
 	
 	//public void procesarEntrada(byte[] data, Jugador jugador){		
 	public void procesarEntrada(){
@@ -81,6 +89,9 @@ public class Protocolo {
 					try {
 						byte header = data[0];
 						switch(header){	
+							case GET_POTENCIADOR:
+								
+								break;	
 							case MURIO_JUGADOR:
 								matarJugador(jugador);
 								break;
@@ -91,9 +102,10 @@ public class Protocolo {
 							case DESCONEXION:
 								//enviar desconexion a los clientes
 								Mundo.getInstance().desconectarJugador(jugador);
-								isRunning = false;
-								break;
+								if(Mundo.getInstance().getConnectedUsers() == 0)
+									System.exit(0);
 								
+								break;								
 							case JSON:
 								parseJSON(new String(data));				
 								break;
@@ -114,6 +126,7 @@ public class Protocolo {
 		Mundo.getInstance().actualizarMuertes(jugador, data);
 	}
 
+	
 	private void parseJSON(String json) {
 		JsonParser parser = new JsonParser();
 		JsonObject o = parser.parse(json).getAsJsonObject();
@@ -130,10 +143,10 @@ public class Protocolo {
 			
 		}		
 	}
-
+		
+	
 	private void moverJugador(Jugador jugador, byte direccion){
-		if(jugador.moverServidor(direccion)){
-			
+		if(jugador.moverServidor(direccion)){			
 			//H+ID+D
 			byte[] data = new byte[3];
 			data[0] = Protocolo.MOVIMIENTO;
@@ -141,6 +154,14 @@ public class Protocolo {
 			data[2] = direccion;
 			
 			Mundo.getInstance().actualizarPosicion(jugador, data);
+			int x = (int)Math.floor((jugador.getPosicion().getX()+16)/(Engine.TILE_WIDTH));
+			int y = (int)Math.floor((jugador.getPosicion().getY()+16)/(Engine.TILE_HEIGHT));
+			if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null){				
+				AgarroPotenciador ap = new AgarroPotenciador(new Punto2D(x, y), Mundo.getInstance().getMap().getMapa()[x][y].getObjeto(), jugador.getId());
+				ap.getPot().potenciar(jugador);				
+				Mundo.getInstance().sendPotenciador(ap);
+				Mundo.getInstance().getMap().getMapa()[x][y].setPotenciador(null);
+			}
 		}
 	}
 	

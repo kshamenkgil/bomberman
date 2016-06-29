@@ -46,7 +46,7 @@ public class MapAutoGeneration {
 		tileMap = new TileMap[(int)size.getX()][(int)size.getY()];
 		for(int x = 0 ; x < size.getX(); x++){
 			for(int y = 0 ; y < size.getY(); y++){
-				int op = rnd.nextInt(4);
+				int op = rnd.nextInt(3);
 				int hasPotenciador = rnd.nextInt(2);
 				TileMap t = null;
 				if(potCounter < nPotenciadores){
@@ -61,9 +61,9 @@ public class MapAutoGeneration {
 							case 2:
 								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), new MasDeUnaBomba("potmb"));
 								break;
-							case 3:
+							/*case 3:
 								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), new VidaExtra("potv"));
-								break;
+								break;*/
 						}
 					}else{
 							t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);

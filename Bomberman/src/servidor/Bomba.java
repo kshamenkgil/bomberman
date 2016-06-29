@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import bomberman.Jugador;
+//import bomberman.Mundo;
 import bomberman.Punto2D;
 import bomberman.Sprite;
 import bomberman.Tile;
@@ -76,12 +77,18 @@ public class Bomba {
             	int px;
             	int py;
             	
-            	int pot = potencia;
+            	int pot = 1;
             	for (Bomba bomba : Mundo.getInstance().getBombas()) { 
             		if(bomba.getPosicion() == posicion)
-            			pot = potencia;
+        				for (ThreadServer p1 : Mundo.getInstance().getConnections()){
+        					if(getBounds(new Punto2D(posicion.getX(),posicion.getY())).intersects(new Rectangle((int)p1.getJugador().getPosicion().getX(), (int)p1.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+        						p1.getJugador().setVidas(0);
+        						exB.getJugadoresMuertos().add(p1.getJugador().getId());
+        					}
+        				}
+            			pot =1;
             		//en X positivo
-                    	while( pot > 0){
+                    	while( pot < potencia +1 && pot != 0 && x+pot <(int) Mundo.getInstance().getMap().getSize().getX()){
                 			Tile t = Mundo.getInstance().getMap().getMapa()[x+pot][y].getTile();
             				if(t.getTileSprite() != null){
             					if(t.isSeRompe()){
@@ -90,12 +97,12 @@ public class Bomba {
 	            					//t.setSeRompe(true);
 	            					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
 	            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)+pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile());
-	            					pot=0;
+	            					pot=-1;
             					}
                     		}else
                     			{
                     				for (ThreadServer p : Mundo.getInstance().getConnections()){
-                    					if(getBounds().intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                    					if(getBounds(new Punto2D(posicion.getX()+Engine.TILE_WIDTH*pot,posicion.getY())).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
                     						p.getJugador().setVidas(0);
                     						exB.getJugadoresMuertos().add(p.getJugador().getId());
                     					}
@@ -108,11 +115,11 @@ public class Bomba {
                     					}*/
                     				}
                     			}
-                    		pot--;
+                    		pot++;
                     	}
-                    	pot = potencia;
+                    	pot = 1;
                     	//en x neg
-                    	while( pot > 0){
+                    	while( pot < potencia +1 && pot != 0 && x-pot >0){
                 			Tile t = Mundo.getInstance().getMap().getMapa()[x-pot][y].getTile();
             				if(t.getTileSprite() != null){
             					if(t.isSeRompe()){
@@ -121,12 +128,12 @@ public class Bomba {
 	            					//t.setSeRompe(true);
 	            					Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)-pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile().setSeRompe(false);
 	            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)-pot][(int)posicion.getY()/Engine.TILE_HEIGHT].getTile());
-	            					pot=0;
+	            					pot=-1;
             					}
                     		}else
                 			{
                 				for (ThreadServer p : Mundo.getInstance().getConnections()){
-                					if(getBounds().intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                					if(getBounds(new Punto2D(posicion.getX()-Engine.TILE_WIDTH*pot,posicion.getY())).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
                 						p.getJugador().setVidas(0);
                 						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 					}
@@ -139,11 +146,11 @@ public class Bomba {
                 					}*/
                 				}
                 			}
-                    		pot--;
+                    		pot++;
                     	}
-                    	pot = potencia;
+                    	pot = 1;
                     	//en Y pos
-                    	while( pot > 0){
+                    	while( pot < potencia +1 && pot != 0 && y+pot <(int) Mundo.getInstance().getMap().getSize().getY()){
                 			Tile t = Mundo.getInstance().getMap().getMapa()[x][y+pot].getTile();
             				if(t.getTileSprite() != null){
             					if(t.isSeRompe()){
@@ -152,12 +159,12 @@ public class Bomba {
 	            					//t.setSeRompe(true);
 	            					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)+pot].getTile().setSeRompe(false);
 	            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)][(int)posicion.getY()/Engine.TILE_HEIGHT+pot].getTile());
-	            					pot = 0;
+	            					pot = -1;
             					}
                     		}else
                 			{
                 				for (ThreadServer p : Mundo.getInstance().getConnections()){
-                					if(getBounds().intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                					if(getBounds(new Punto2D(posicion.getX(),posicion.getY()+Engine.TILE_WIDTH*pot)).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
                 						p.getJugador().setVidas(0);
                 						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 					}
@@ -169,11 +176,11 @@ public class Bomba {
                 					}*/
                 				}
                 			}
-                    		pot--;
+                    		pot++;
                     	}
-                    	pot = potencia;
+                    	pot = 1;
                     	//en Y neg
-                    	while( pot > 0){
+                    	while( pot < potencia +1 && pot != 0 && y-pot >0){
                 			Tile t = Mundo.getInstance().getMap().getMapa()[x][y-pot].getTile();
             				if(t.getTileSprite() != null){
             					if(t.isSeRompe()){
@@ -182,12 +189,12 @@ public class Bomba {
 	            					//t.setSeRompe(true);
 	            					Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()/Engine.TILE_WIDTH][((int)posicion.getY()/Engine.TILE_HEIGHT)-pot].getTile().setSeRompe(false);
 	            					exB.getTilesAfectados().add(Mundo.getInstance().getMap().getMapa()[((int)posicion.getX()/Engine.TILE_WIDTH)][(int)posicion.getY()/Engine.TILE_HEIGHT-pot].getTile());            					
-	            					pot=0;
+	            					pot=-1;
             					}
                     		}else
                 			{
                 				for (ThreadServer p : Mundo.getInstance().getConnections()){
-                					if(getBounds().intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                					if(getBounds(new Punto2D(posicion.getX(),posicion.getY()-Engine.TILE_WIDTH*pot)).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
                 						p.getJugador().setVidas(0);
                 						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 					}
@@ -199,7 +206,7 @@ public class Bomba {
                 					}*/
                 				}
                 			}
-                    		pot--;
+                    		pot++;
                     	}
                     		
             			b = bomba;
@@ -232,7 +239,11 @@ public class Bomba {
 		return bombaSprite;
 	}
 	
+	public Rectangle getBounds(Punto2D p){
+		return new Rectangle((int)p.getX(),(int)p.getY(),Engine.TILE_WIDTH/2,Engine.TILE_HEIGHT/2);
+	}
+	
 	public Rectangle getBounds(){
-		return new Rectangle((int)this.posicion.getX(),(int)this.posicion.getY(),Engine.TILE_WIDTH,Engine.TILE_HEIGHT);
+		return new Rectangle((int)this.getPosicion().getX(),(int)this.getPosicion().getY(),Engine.TILE_WIDTH,Engine.TILE_HEIGHT);
 	}
 }
