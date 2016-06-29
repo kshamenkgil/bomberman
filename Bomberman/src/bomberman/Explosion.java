@@ -4,6 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.ImageObserver;
 
+
 public class Explosion {
 	
 	private Sprite explosionAbajo;
@@ -33,19 +34,21 @@ public class Explosion {
 	}
 	
 	public void dibujar(Graphics2D g, ImageObserver io){		
-		float pot = potencia;
-		
+		float pot = 1;
+    	int x = (int)(posicion.getX());
+    	int y = (int)(posicion.getY());
+    	
 		explosionMedio.dibujarTile(g, io, posicion);
 
 		//en X positivo
-        while( pot > 0){
+        while( pot < potencia +1 && pot > 0 && x+pot <(int) Mundo.getInstance().getMap().getSize().getX()-1){
         	if(pot == potencia)
         		explosionDerecha.dibujarTile(g, io, new Punto2D(posicion.getX()+pot, posicion.getY()));
         	else
         		explosionHorizontal.dibujarTile(g, io, new Punto2D(posicion.getX()+pot, posicion.getY()));
         	
         	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()+pot)][(int)(posicion.getY())].getTile().isColisionable())
-        		pot = 0; 
+        		pot = -1; 
         	else{
             	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)+pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT-5), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
@@ -55,19 +58,19 @@ public class Explosion {
             	}
         	}
         	
-        	pot--;
+        	pot++;
         }
         
-        pot = potencia;
+        pot = 1;
         //en X negativo
-        while( pot > 0){
+        while( pot < potencia +1 && pot > 0 && x-pot>0){
         	if(pot == potencia)
         		explosionIzquierda.dibujarTile(g, io, new Punto2D(posicion.getX()-pot, posicion.getY()));
         	else
         		explosionHorizontal.dibujarTile(g, io, new Punto2D(posicion.getX()-pot, posicion.getY()));        
         	
         	if(Mundo.getInstance().getMap().getMapa()[(int)(posicion.getX()-pot)][(int)(posicion.getY())].getTile().isColisionable())
-        		pot = 0;
+        		pot = -1;
         	else{
             	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)((posicion.getX()*Engine.TILE_WIDTH)-pot*Engine.TILE_WIDTH), (int)(posicion.getY()*Engine.TILE_HEIGHT-5), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
@@ -77,12 +80,12 @@ public class Explosion {
             	}
         	}
         	
-        	pot--;
+        	pot++;
         }
         
-        pot = potencia;        
+        pot = 1;        
         //en Y positivo
-        while( pot > 0){
+        while( pot < potencia +1 && pot > 0 && y+pot<(int) Mundo.getInstance().getMap().getSize().getY()-1){
         	if(pot == potencia)
         		explosionAbajo.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()+pot));
         	else
@@ -90,7 +93,7 @@ public class Explosion {
         	
         	
         	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()+pot)].getTile().isColisionable())
-        		pot = 0;
+        		pot = -1;
         	else{
             	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT-5)+pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
@@ -100,12 +103,12 @@ public class Explosion {
             	}
         	}
         	
-        	pot--;
+        	pot++;
         }
         
-        pot = potencia;
+        pot = 1;
         //en Y negativo
-        while( pot > 0){
+        while( pot < potencia +1 && pot > 0 && y-pot >0 ){
         	if(pot == potencia)
         		explosionArriba.dibujarTile(g, io, new Punto2D(posicion.getX(), posicion.getY()-pot));
         	else
@@ -113,7 +116,7 @@ public class Explosion {
         	
         		        	
         	if(Mundo.getInstance().getMap().getMapa()[(int)posicion.getX()][(int)(posicion.getY()-pot)].getTile().isColisionable())
-        		pot = 0;
+        		pot = -1;
         	else{
             	if(Mundo.getInstance().getJugador().getBounds().intersects(new Rectangle((int)(posicion.getX()*Engine.TILE_WIDTH), (int)((posicion.getY()*Engine.TILE_HEIGHT-5)-pot*Engine.TILE_WIDTH), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
             		if(!Mundo.getInstance().getJugador().isMuerto()){
@@ -123,7 +126,7 @@ public class Explosion {
             	}            	
         	}
         	
-        	pot--;
+        	pot++;
         }
         
 	}
