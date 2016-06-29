@@ -15,7 +15,7 @@ public class Server implements Runnable{
 	private int connectedUsers;
 	private byte lastId;
 	private ArrayList<ThreadServer> connections = new ArrayList<ThreadServer>();
-	private int cantPlayers = 3;
+	private int cantPlayers = 4;
 	private static ServerScreen pantalla;
 	
 	public static ServerScreen getPantalla() {
@@ -47,7 +47,8 @@ public class Server implements Runnable{
             //System.out.println("Servidor escuchando en puerto 24556");
             
         } catch (IOException e) {
-        	System.out.println("No se puede escuchar en el puerto 24556");
+        	//System.out.println("No se puede escuchar en el puerto 24556");
+        	getPantalla().consola.append("Servidor escuchando en puerto 24556");
         	Thread.currentThread().interrupt();
         }
 		
