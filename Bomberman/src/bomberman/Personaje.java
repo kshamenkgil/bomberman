@@ -208,6 +208,8 @@ public abstract class Personaje {
 				Tile t = Mundo.getInstance().getMap().getMapa()[x][y].getTile();
 				if(t.getTileSprite() != null){
 					if(dr.intersects(t.getBounds()) && t.isColisionable()){
+						if(t.isSeRompe() && isNoCollide())
+							return false;
 						if(posicion.y <= t.getPosicion().getY() - (Engine.TILE_HEIGHT/2))//Hit was from below the brick
 							if(direccion == Protocolo.SUR)
 								return true;
@@ -219,9 +221,7 @@ public abstract class Personaje {
 								return true;
 						if(posicion.x < t.getPosicion().getX())//Hit was on left
 							if(direccion == Protocolo.ESTE)
-								return true;
-					}else if(dr.intersects(t.getBounds()) && t.isColisionable() && t.isSeRompe() && isNoCollide()){
-						return false;
+								return true;					
 					}
 				}	
 			}			
