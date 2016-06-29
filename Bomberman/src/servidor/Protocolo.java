@@ -48,7 +48,7 @@ public class Protocolo {
 	public static final byte ESTE = 3;
 	public static final byte OESTE = 4;
 		
-	private boolean isRunning = true;
+	//private boolean isRunning = true;
 	private Queue<byte[]> colaMensajes = new LinkedList<>();
 	private Jugador jugador;
 	
@@ -56,9 +56,9 @@ public class Protocolo {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public synchronized void stop(){
+	/*public synchronized void stop(){
 		isRunning = false;
-	}
+	}*/
 	
 	//public void procesarEntrada(byte[] data, Jugador jugador){		
 	public void procesarEntrada(){
@@ -91,9 +91,10 @@ public class Protocolo {
 							case DESCONEXION:
 								//enviar desconexion a los clientes
 								Mundo.getInstance().desconectarJugador(jugador);
-								isRunning = false;
-								break;
+								if(Mundo.getInstance().getConnectedUsers() == 0)
+									System.exit(0);
 								
+								break;								
 							case JSON:
 								parseJSON(new String(data));				
 								break;
@@ -114,6 +115,7 @@ public class Protocolo {
 		Mundo.getInstance().actualizarMuertes(jugador, data);
 	}
 
+	
 	private void parseJSON(String json) {
 		JsonParser parser = new JsonParser();
 		JsonObject o = parser.parse(json).getAsJsonObject();

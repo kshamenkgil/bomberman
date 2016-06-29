@@ -18,7 +18,16 @@ public class Mundo {
 	private Mapa map;
 	private ArrayList<ThreadServer> connections;
 	private ArrayList<Bomba> bombas = new ArrayList<Bomba>();	
-	private int connectedUsers = 0; 
+	private int connectedUsers = 0;
+	private int cantPlayers = 0;
+	
+	public int getCantPlayers() {
+		return cantPlayers;
+	}
+	
+	public void setCantPlayers(int cantPlayers) {
+		this.cantPlayers = cantPlayers;
+	}
 	
 	public ArrayList<Bomba> getBombas() {
 		return bombas;
@@ -36,11 +45,11 @@ public class Mundo {
 		this.connectedUsers = connectedUsers;
 	}
 	
-	public void cargar(){
+	/*public void cargar(){
 		//cargar enemigos y bloques que se pueden romper
 		Punto2D size = new Punto2D(100, 100);
 		this.map = new MapAutoGeneration(size, 10).getMap();
-	}
+	}*/
 
 	public void setMap(Mapa map) {
 		this.map = map;

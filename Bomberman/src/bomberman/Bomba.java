@@ -87,11 +87,12 @@ public class Bomba {
 		if(terminoExplosion){			
 			//sacar el hayBomba();
 			Mundo.getInstance().getMap().getMapa()[(int)posicion.x/Engine.TILE_WIDTH][(int)posicion.y/Engine.TILE_HEIGHT].getTile().setHayBomba(false);
-			//incrementar cant bombas			
+			//incrementar cant bombas
 			if(Mundo.getInstance().getJugador().getId() == this.jugadorPlantoBomba.getId()){
-				Mundo.getInstance().getJugador().setCantBombasActual(Mundo.getInstance().getJugador().getCantBombasActual()-1);
+				if(Mundo.getInstance().getJugador().getCantBombasActual() > 0)
+					Mundo.getInstance().getJugador().setCantBombasActual(Mundo.getInstance().getJugador().getCantBombasActual()-1);
 			}
-			//remover la bomba			
+			//remover la bomba
 		}else{
 			explosion.dibujar(g, io);
 		}

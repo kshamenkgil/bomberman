@@ -11,12 +11,13 @@ import bomberman.Punto2D;
 
 public class Server implements Runnable{
 	
-	private boolean isRunning;
+	private static boolean isRunning;
 	private int connectedUsers;
 	private byte lastId;
 	private ArrayList<ThreadServer> connections = new ArrayList<ThreadServer>();
+	private int cantPlayers = 3;
 	public Server() {
-		this.isRunning = false;
+		setRunning(false);
 		this.connectedUsers = 0;
 		this.lastId = 0;
 	}
@@ -39,7 +40,11 @@ public class Server implements Runnable{
         }
 		
 		isRunning = true;
-		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(50, 50), 10);
+		
+		Mundo.getInstance().setCantPlayers(cantPlayers);
+		
+		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 50);
+		
 		while(isRunning){
 			Socket entrante = null;
 			try {
@@ -84,13 +89,13 @@ public class Server implements Runnable{
 			data[1] = lastId;
 			
 			t.sendData(data);
-												
+
 			connections.add(t);
 			
 			this.lastId++;
 			this.connectedUsers++;
-			if(this.connectedUsers == 2)
-				setRunning(false);
+			if(this.connectedUsers == this.cantPlayers)
+				setRunning(false);			
 			
 		}
 		
@@ -110,6 +115,7 @@ public class Server implements Runnable{
 		//cierre del servidor
 		try {
 			serverSocket.close();
+			System.exit(0);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -117,8 +123,8 @@ public class Server implements Runnable{
 	}
 	
 	
-	public synchronized void setRunning(boolean isRunning) {
-		this.isRunning = isRunning;
+	public synchronized static void setRunning(boolean isRunning) {
+		Server.isRunning = isRunning;
 	}
 	
 	public ArrayList<ThreadServer> getConnections() {
