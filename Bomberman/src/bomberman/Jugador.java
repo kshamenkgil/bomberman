@@ -109,15 +109,15 @@ public class Jugador extends Personaje {
 		return vidas;
 	}
 	
-	public void setPotenciaBomba(int potenciaBomba) {
+	public synchronized void setPotenciaBomba(int potenciaBomba) {
 		this.potenciaBomba = potenciaBomba;
 	}
 	
-	public int getPotenciaBomba() {
+	public synchronized int getPotenciaBomba() {
 		return potenciaBomba;
 	}
 	
-	public int getCantBombas() {
+	public synchronized int getCantBombas() {
 		return cantBombas;
 	}
 	
