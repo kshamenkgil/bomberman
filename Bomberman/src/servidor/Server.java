@@ -107,9 +107,8 @@ public class Server implements Runnable{
 			getPantalla().consola.append("Ingreso jugador con id "+lastId+"\n");
 			this.lastId++;
 			this.connectedUsers++;
-			if(this.connectedUsers == this.cantPlayers)
-				
-				setRunning(false);			
+			if(this.connectedUsers == this.cantPlayers)				
+				setRunning(false);
 			
 		}
 		

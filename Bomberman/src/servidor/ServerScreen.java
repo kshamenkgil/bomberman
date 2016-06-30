@@ -49,7 +49,7 @@ public class ServerScreen extends JFrame {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(server != null)
+				//if(server != null)
 					//cerrar server
 				System.exit(0);
 			}
