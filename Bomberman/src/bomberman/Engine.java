@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Hashtable;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class Engine {
 	public static int TILE_WIDTH = 32;
 	public static int TILE_HEIGHT = 32;	
@@ -161,8 +164,8 @@ public class Engine {
 	
 	public synchronized void dibujar(Graphics2D g, ImageObserver io){
 		//mapa
-		if(this.isStartUpdate()){			
-			g.translate(-camX, -camY);
+		if(this.isStartUpdate()){	
+			g.translate(-camX, -camY);			
 			for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
 				for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
 					Mundo.getInstance().getMap().getMapa()[x][y].getTile().dibujar(g, io, new Punto2D(x, y));
@@ -185,11 +188,12 @@ public class Engine {
 			}
 			
 			//fps
-			g.translate(0, 0);
-			//dibujarTexto("FPS: " + fps, 16, g, new Punto2D(10, 18));
-
-			if(Mundo.getInstance().getJugador().isMuerto())
-				getTextura("gameover").dibujarTextura(g, io, new Punto2D(0, 0));
+			//g.translate(0, 0);
+			//dibujarTexto("FPS: " + fps, 16, g, new Punto2D(5+camX, 15+camY));
+			
+			if(Mundo.getInstance().getJugador().isMuerto()){				
+				getTextura("gameover").dibujarTextura(g, io, new Punto2D(camX, camY));
+			}
 			
 			
 		}else{
@@ -208,6 +212,26 @@ public class Engine {
 				e.printStackTrace();
 			}
 		}			
+		
+		
+		/*new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				fps = fpsCounter;
+				//fpsTime = 0;
+				fpsCounter = 0;
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}).start();*/
+		
+		
 		
 		offsetMaxX = (float) (Mundo.getInstance().getMap().getSize().x*TILE_WIDTH - Configuracion.getInstancia().getScreenX());
 		offsetMaxY = (float) (Mundo.getInstance().getMap().getSize().y*TILE_HEIGHT - Configuracion.getInstancia().getScreenY());
@@ -271,11 +295,7 @@ public class Engine {
 			
 			lastTime = current;
 			
-			if(fpsTime >= 1000){
-				fps = fpsCounter;
-				fpsTime = 0;
-				fpsCounter = 0;
-			}
+						
 			fpsCounter++;
 		}	
 		
