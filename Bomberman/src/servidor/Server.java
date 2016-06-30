@@ -56,7 +56,7 @@ public class Server implements Runnable{
 		
 		Mundo.getInstance().setCantPlayers(cantPlayers);
 		
-		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 50);
+		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 0.1);
 		
 		while(isRunning){
 			Socket entrante = null;

@@ -13,7 +13,10 @@ public class CorrerMasRapido extends Potenciador{
 	@Override
 	public void potenciar(Jugador jugador) {
 		//jugador.setVelocidad(jugador.getVelocidad()+0.1f);
-		jugador.setNoCollide(true);
+		if(jugador.isNoCollide()==false)
+			jugador.setNoCollide(true);
+		else
+			jugador.setNoCollide(false);
 	}
 
 }
