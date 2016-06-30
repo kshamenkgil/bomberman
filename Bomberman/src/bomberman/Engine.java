@@ -125,7 +125,10 @@ public class Engine {
 		addTexturas("potb", new Textura("assets/graficos/"+set+"potenciadores/bomba.png"));
 		addTexturas("potmb", new Textura("assets/graficos/"+set+"potenciadores/masbomba.png"));
 		addTexturas("potv", new Textura("assets/graficos/"+set+"potenciadores/vida.png"));
-		addTexturas("potc", new Textura("assets/graficos/"+set+"potenciadores/correr.png"));		
+		addTexturas("potc", new Textura("assets/graficos/"+set+"potenciadores/correr.png"));
+		
+		//Game over
+		addTexturas("gameover", new Textura("assets/graficos/GAME OVER.png"));
 		
 	}
 	
@@ -184,6 +187,10 @@ public class Engine {
 			//fps
 			g.translate(0, 0);
 			//dibujarTexto("FPS: " + fps, 16, g, new Punto2D(10, 18));
+
+			if(Mundo.getInstance().getJugador().isMuerto())
+				getTextura("gameover").dibujarTextura(g, io, new Punto2D(0, 0));
+			
 			
 		}else{
 			dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));

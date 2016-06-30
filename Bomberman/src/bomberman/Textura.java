@@ -1,6 +1,7 @@
 package bomberman;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.*;
@@ -38,6 +39,10 @@ public class Textura {
 	
 	public double getWidth() {
 		return width;
+	}
+	
+	public void dibujarTextura(Graphics2D g, ImageObserver io, Punto2D p){
+		g.drawImage(this.imagen,(int)p.getX(),(int)p.getY(),io);		
 	}
 	
 	public static Image makeColorTransparent(BufferedImage im, final Color color) {
