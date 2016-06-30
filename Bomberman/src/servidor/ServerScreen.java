@@ -34,8 +34,13 @@ public class ServerScreen extends JFrame {
 		JButton btnNewButton = new JButton("Iniciar servidor");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				server = new Server(sc);
-				new Thread(server, "Servidor").start();
+				if(server == null){
+					server = new Server(sc);
+					new Thread(server, "Servidor").start();
+				}else{
+					consola.append("Ya hay una instancia del servidor corriendo!\n");
+				}
+					
 			}
 		});
 		btnNewButton.setBounds(42, 220, 140, 40);
