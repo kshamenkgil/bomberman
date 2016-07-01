@@ -29,23 +29,8 @@ import org.w3c.dom.Node;
 public class pantallaConfiguracion2 extends JFrame {
 
 	private JPanel contentPane;
-	private String resolucionX = "1280";
-	private String resolucionY = "800";  //valores por defecto de configuracion
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					pantallaConfiguracion2 frame = new pantallaConfiguracion2();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private String resolucionX = "800";
+	private String resolucionY = "600";  //valores por defecto de configuracion
 
 	/**
 	 * Create the frame.

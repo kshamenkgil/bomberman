@@ -20,22 +20,6 @@ public class pantallaPrincipal extends JFrame {
 	public JTextField textPuntuacion;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					pantallaPrincipal frame = new pantallaPrincipal();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
 	 * Create the frame.
 	 */
 	public pantallaPrincipal() {
@@ -70,9 +54,18 @@ public class pantallaPrincipal extends JFrame {
 		JButton btnEmpezar = new JButton("Empezar");
 		btnEmpezar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						Bomberman.getInstancia().run();
+					}
+				}).start();
 				
-				Engine.getInstancia().setJuego(new GameScreen());
-				Engine.getInstancia().getJuego().setVisible(true);
+				
+				/*Engine.getInstancia().setJuego(new GameScreen());
+				Engine.getInstancia().getJuego().setVisible(true);*/
 				pantallaPrincipal.this.dispose();  
 			}
 		});
@@ -116,7 +109,7 @@ public class pantallaPrincipal extends JFrame {
 		btnConfiguracion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				pantallaConfiguracion pConfiguracion = new pantallaConfiguracion();
+				pantallaConfiguracion2 pConfiguracion = new pantallaConfiguracion2();
 				pConfiguracion.setVisible(true);
 			}
 		});

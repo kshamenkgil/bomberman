@@ -16,8 +16,11 @@ public class Main {
 			}
 		}
 		
-		if(!serverOnly)
-			Bomberman.getInstancia().run();		
+		if(!serverOnly){
+			pantallaIngreso pantalla = new pantallaIngreso();
+			pantalla.setVisible(true);
+		}
+		
 		
 	}
 

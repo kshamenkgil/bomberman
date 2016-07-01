@@ -66,8 +66,9 @@ public class Engine {
 			t.getTileSprite().setLooping(false);
 			tiles.add(t);
 		}*/
-		pantalla = new pantallaIngreso();
-		pantalla.setVisible(true);
+		juego = new GameScreen();
+		juego.setVisible(true);
+		
 
 		//setStartUpdate(true);
 		
