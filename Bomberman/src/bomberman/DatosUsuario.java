@@ -20,6 +20,6 @@ public class DatosUsuario {
 			
 			return false;
 			
-		}
+		} 
 	
 }

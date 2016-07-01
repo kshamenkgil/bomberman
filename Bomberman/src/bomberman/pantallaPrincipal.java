@@ -73,7 +73,7 @@ public class pantallaPrincipal extends JFrame {
 				
 				Engine.getInstancia().setJuego(new GameScreen());
 				Engine.getInstancia().getJuego().setVisible(true);
-				pantallaPrincipal.this.dispose();
+				pantallaPrincipal.this.dispose();  
 			}
 		});
 		btnEmpezar.setBounds(287, 97, 123, 23);

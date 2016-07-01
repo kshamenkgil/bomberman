@@ -93,7 +93,7 @@ public class pantallaConfiguracion2 extends JFrame {
 			if(eElement.getElementsByTagName("sound").item(0).getTextContent().equals("true")) {
 				chSonido.setSelected(true);
 			}
-		}
+		} 
 		catch (Exception e3) {
 			e3.printStackTrace();
 		}

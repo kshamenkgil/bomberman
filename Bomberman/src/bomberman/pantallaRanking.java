@@ -29,7 +29,7 @@ public class pantallaRanking extends JFrame {
 					e.printStackTrace();
 				}
 			}
-		});
+		}); 
 	}
 
 	/**
