@@ -6,16 +6,23 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import database.Conector;
+
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+
+	
 
 public class pantallaRanking extends JFrame {
 
 	private JPanel contentPane;
-
+	private ArrayList<String>listado= new ArrayList<String>();
+	private Conector con;
 	/**
 	 * Create the frame.
 	 */
@@ -32,7 +39,12 @@ public class pantallaRanking extends JFrame {
 		JComboBox comboRanking = new JComboBox();
 		comboRanking.setBounds(132, 101, 166, 22);
 		contentPane.add(comboRanking);
-		
+		con =  new Conector();
+		con.connect();
+		listado = con.ranking();
+		for (String l : listado){
+			comboRanking.addItem(l);
+		}
 		JLabel lblRanking = new JLabel("Ranking de usuarios:");
 		lblRanking.setBounds(132, 76, 166, 14);
 		contentPane.add(lblRanking);

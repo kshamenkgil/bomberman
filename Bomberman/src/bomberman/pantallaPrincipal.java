@@ -12,12 +12,15 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import database.Conector;
+import database.DatosJugador;
 
 public class pantallaPrincipal extends JFrame {
 
 	private JPanel contentPane;
 	public JTextField textUsuario;
 	public JTextField textPuntuacion;
+	private Conector con;
 
 	/**
 	 * Create the frame.
@@ -75,8 +78,9 @@ public class pantallaPrincipal extends JFrame {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				// Cerrar la aplicacion
+				con = new Conector();
+				con.connect();
+				con.modificarEstado(textUsuario.getText(),0);
 				System.exit(0);
 			}
 		});

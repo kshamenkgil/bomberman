@@ -63,23 +63,11 @@ public class Cliente {
 			DataOutputStream dOut = new DataOutputStream(socket.getOutputStream());
 			dOut.writeInt(data.length); // write length of the message
 			dOut.write(data);           // write the messag
-			dOut.flush();
-			//dOut.close();							
+			dOut.flush();				
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
-		/*new Thread(new Runnable() {			
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			
-			}			
-		},"client send data thread").start();*/
+
 	}
 }

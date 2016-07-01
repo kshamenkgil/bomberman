@@ -14,6 +14,9 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+import database.Conector;
+import database.DatosJugador;
+
 public class pantallaIngreso extends JFrame {
 
 	private JPanel contentPane;
@@ -51,32 +54,27 @@ public class pantallaIngreso extends JFrame {
 		textPassword = new JPasswordField();
 		textPassword.setBounds(159, 104, 86, 20);
 		contentPane.add(textPassword);
-		
-		final DatosUsuario datos = new DatosUsuario();
-		
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				if ( datos.probarPassword() )
+				 Conector con =  new Conector();
+					con.connect();
+				if ( con.confirmarLogin(textUsuario.getText(),new String(textPassword.getPassword())) )
 				{	
+					con.connect();
+					con.modificarEstado(textUsuario.getText(),1);
 					pantallaPrincipal principal = new pantallaPrincipal();
 					principal.setVisible(true);
 					
 					principal.textUsuario.setText( textUsuario.getText());
-					principal.textPuntuacion.setText("12312"); // El valor de la puntuacion deberia obtenerse de la base de datos 
-					
+					principal.textPuntuacion.setText(""+con.puntosJugador(textUsuario.getText())); // El valor de la puntuacion deberia obtenerse de la base de datos 
+
 					// Ademas el boton ingresar deberia actualizar el estado de conexion del usuario en la base de datos
-				}
-				
-				else
-				{
+				}else{
 					JOptionPane.showMessageDialog(null, "Usuario o password incorrectos");
 					
 					textUsuario.setText("");
 					textPassword.setText("");
-				
-				
 				}
 				
 				pantallaIngreso.this.dispose();
@@ -93,7 +91,19 @@ public class pantallaIngreso extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnSalir.setBounds(159, 191, 86, 23);
+		btnSalir.setBounds(60, 157, 86, 23);
 		contentPane.add(btnSalir);
+	
+	JButton btnRegistro = new JButton("Registrarse");
+	btnRegistro.setBounds(260, 157, 130, 23);
+	contentPane.add(btnRegistro);
+	btnRegistro.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent arg0) {
+			
+			PantallaRegistro registro = new PantallaRegistro();
+			registro.setVisible(true);
+			}
+		});
 	}
+
 }

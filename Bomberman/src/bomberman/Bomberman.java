@@ -52,6 +52,7 @@ public class Bomberman {
 			
 		//cambiar por "p"+(id+1)+"s", etc
 		
+		
 		Engine.getInstancia().cargarTexturas("bomberman1/");
 				
 		cargarSonidos();

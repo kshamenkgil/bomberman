@@ -15,7 +15,7 @@ public class Server implements Runnable{
 	private int connectedUsers;
 	private byte lastId;
 	private ArrayList<ThreadServer> connections = new ArrayList<ThreadServer>();
-	private int cantPlayers = 4;
+	private int cantPlayers = 1;
 	private static ServerScreen pantalla;
 	
 	public static ServerScreen getPantalla() {
