@@ -37,20 +37,24 @@ public class MapAutoGeneration {
 	
 	/*private ArrayList<Tile> explotables = new ArrayList<Tile>();
 	private ArrayList<Tile> rompibles = new ArrayList<Tile>();*/
-	public MapAutoGeneration(Punto2D size, int nPotenciadores) {
+	public MapAutoGeneration(Punto2D size, double porcPot, double porcBloq) {
 		long seed = Calendar.getInstance().getTimeInMillis();
 		Random rnd = new Random();
 		rnd.setSeed(seed);
-		int potCounter = 0;
+		//int potCounter = 0;
 		this.size = size; 
 		tileMap = new TileMap[(int)size.getX()][(int)size.getY()];
 		for(int x = 0 ; x < size.getX(); x++){
 			for(int y = 0 ; y < size.getY(); y++){
 				int op = rnd.nextInt(3);
-				int hasPotenciador = rnd.nextInt(2);
+				//int hasPotenciador = rnd.nextInt(2);
+				boolean hasPotenciador = rnd.nextDouble() < porcPot;
+				boolean esNoRompible = rnd.nextDouble() < porcBloq;
+				boolean seRompe = rnd.nextDouble() < 0.5;
 				TileMap t = null;
-				if(potCounter < nPotenciadores){
-					if(hasPotenciador == 1){
+				//if(potCounter < nPotenciadores)
+				if(seRompe){
+					if(hasPotenciador == true){
 						switch (op) {
 							case 0:
 								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), new BombaMasPotente("potb"));
@@ -66,13 +70,16 @@ public class MapAutoGeneration {
 								break;*/
 						}
 					}else{
-							t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
+							if(esNoRompible == true)
+								t = new TileMap(new Tile(false, true, new Sprite("bl", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
+							else
+								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 					}
-					potCounter++;
+					//potCounter++;
 				}else{
-					if(hasPotenciador == 0)
-						t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
-					else
+					/*if(hasPotenciador == 0)
+						t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);*/
+					//else
 						t = new TileMap(new Tile(false, false, null,new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 				}
 				

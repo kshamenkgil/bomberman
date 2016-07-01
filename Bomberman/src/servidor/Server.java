@@ -32,7 +32,7 @@ public class Server implements Runnable{
 		this.connectedUsers = 0;
 		this.lastId = 0;
 	}
-	
+
 	public void run(){
 		if(isRunning){
 			System.out.println("El servidor ya esta en ejecución");
@@ -56,7 +56,7 @@ public class Server implements Runnable{
 		
 		Mundo.getInstance().setCantPlayers(cantPlayers);
 		
-		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 50);
+		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 0.1 , 0.05);
 		
 		while(isRunning){
 			Socket entrante = null;
@@ -64,7 +64,8 @@ public class Server implements Runnable{
 				entrante = serverSocket.accept();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				getPantalla().consola.append("No se puede escuchar en el puerto 24556\n");
+				//e.printStackTrace();
 			}
 			ThreadServer t = new ThreadServer(entrante,"Usuario" + connectedUsers);
 			
@@ -107,9 +108,8 @@ public class Server implements Runnable{
 			getPantalla().consola.append("Ingreso jugador con id "+lastId+"\n");
 			this.lastId++;
 			this.connectedUsers++;
-			if(this.connectedUsers == this.cantPlayers)
-				
-				setRunning(false);			
+			if(this.connectedUsers == this.cantPlayers)				
+				setRunning(false);
 			
 		}
 		

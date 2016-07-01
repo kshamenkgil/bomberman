@@ -168,7 +168,10 @@ public abstract class Personaje {
 			case Protocolo.SUR: //cambiar por protocolo.sur
 				//if(!colision(new Punto2D(posicionRelativa.x, posicionRelativa.y+1))){
 				this.direccion = Protocolo.SUR;				
-				if(!colision(direccion,new Rectangle(getBounds().x, getBounds().y + (int)(1*this.velocidad), getBounds().width, getBounds().height))){
+				if(!colision(direccion,new Rectangle(getBounds().x, getBounds().y + (int)(1*this.velocidad), getBounds().width, getBounds().height))
+						&&
+						(this.posicion.getY()/Engine.TILE_HEIGHT < Mundo.getInstance().getMap().getSize().getY()-2)
+						){
 					this.posicion = new Punto2D(this.posicion.getX(), this.posicion.getY() + (1*this.velocidad));
 					
 					return true;
@@ -179,7 +182,9 @@ public abstract class Personaje {
 			case Protocolo.ESTE: //cambiar por protocolo.este
 				//if(!colision(new Punto2D(posicionRelativa.x+1, posicionRelativa.y))){
 				this.direccion = Protocolo.ESTE;
-				if(!colision(direccion,new Rectangle(getBounds().x + (int)(1*this.velocidad), getBounds().y , getBounds().width, getBounds().height))){
+				if(!colision(direccion,new Rectangle(getBounds().x + (int)(1*this.velocidad), getBounds().y , getBounds().width, getBounds().height))
+					&&  (this.posicion.getX()/Engine.TILE_WIDTH < Mundo.getInstance().getMap().getSize().getX()-2) 
+						){
 					this.posicion = new Punto2D(this.posicion.getX() + (1*this.velocidad), this.posicion.getY());
 					
 					return true;

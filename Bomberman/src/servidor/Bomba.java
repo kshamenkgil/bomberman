@@ -60,8 +60,8 @@ public class Bomba {
 	}
 	
 	public void explotar(float tiempoExplocion){
-	Mundo.getInstance().getBombas();
-		
+		//Mundo.getInstance().getBombas();
+		final Bomba b = this;
 		Timer t = new Timer();
 		t.schedule(new TimerTask() {
 
@@ -69,8 +69,7 @@ public class Bomba {
             public void run() {
             	ExplotoBomba exB = new ExplotoBomba();
             	exB.setPosicion(posicion);
-            	
-            	Bomba b = null;
+            	            	
             	int x = (int)(posicion.getX()/Engine.TILE_WIDTH);
             	int y = (int)(posicion.getY()/Engine.TILE_HEIGHT);
             	
@@ -78,8 +77,8 @@ public class Bomba {
             	int py;
             	
             	int pot = 1;
-            	for (Bomba bomba : Mundo.getInstance().getBombas()) { 
-            		if(bomba.getPosicion() == posicion)
+            	//for (Bomba bomba : Mundo.getInstance().getBombas()) {
+            		//if(bomba.getPosicion().equals(posicion)){
         				for (ThreadServer p1 : Mundo.getInstance().getConnections()){
         					if(getBounds(new Punto2D(posicion.getX(),posicion.getY())).intersects(new Rectangle((int)p1.getJugador().getPosicion().getX(), (int)p1.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
         						p1.getJugador().setVidas(0);
@@ -208,9 +207,10 @@ public class Bomba {
                 			}
                     		pot++;
                     	}
+                    	//}
                     		
-            			b = bomba;
-				}
+            			//b = bomba;
+				//}
             	
             	Mundo.getInstance().sendExplotoBomba(exB);
             	
