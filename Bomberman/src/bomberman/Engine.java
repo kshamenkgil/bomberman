@@ -29,6 +29,7 @@ public class Engine {
 	private static Engine instancia;
 	private InputHandler input = new InputHandler();
 	
+	private pantallaIngreso pantalla;
 	private GameScreen juego;
 	private boolean startUpdate = false;
 	private int fpsCounter = 0;
@@ -65,15 +66,23 @@ public class Engine {
 			t.getTileSprite().setLooping(false);
 			tiles.add(t);
 		}*/
-		
-		
-		
-		juego = new GameScreen();
-		juego.setVisible(true);
+		pantalla = new pantallaIngreso();
+		pantalla.setVisible(true);
+
 		//setStartUpdate(true);
 		
 	}
+	
+	
 		
+	public GameScreen getJuego() {
+		return juego;
+	}
+
+	public void setJuego(GameScreen juego) {
+		this.juego = juego;
+	}
+
 	public void cargarTexturas(String set){
 		//personajes
 		
