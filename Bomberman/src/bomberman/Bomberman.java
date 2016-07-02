@@ -65,7 +65,7 @@ public class Bomberman {
 	}
 	
 	public void run() {		
-							
+		
 		Engine.getInstancia().inicializarVentana();			
 		
 		Engine.getInstancia().update();

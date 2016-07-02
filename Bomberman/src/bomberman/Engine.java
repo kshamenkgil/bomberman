@@ -247,7 +247,7 @@ public class Engine {
 		offsetMaxY = (float) (Mundo.getInstance().getMap().getSize().y*TILE_HEIGHT - Configuracion.getInstancia().getScreenY());
 		
 		//reproducir musica
-		//MidiPlayer.getInstancia().play("m1", true);
+		MidiPlayer.getInstancia().play("m1", true);
 		
 		long lastTime = Calendar.getInstance().getTimeInMillis();
 		//long lag = 0;

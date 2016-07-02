@@ -15,17 +15,17 @@ public class Server implements Runnable{
 	private int connectedUsers;	
 	private static byte lastId;
 	private ArrayList<ThreadServer> connections = new ArrayList<ThreadServer>();
-	private int cantPlayers = 1;
+	private int cantPlayers = 4;
 	private static ServerScreen pantalla;
 	private ServerSocket serverSocket = null;
 	
 	
 	
-	public int getCantPlayers() {
+	public synchronized int getCantPlayers() {
 		return cantPlayers;
 	}
 	
-	public void setCantPlayers(int cantPlayers) {
+	public synchronized void setCantPlayers(int cantPlayers) {
 		this.cantPlayers = cantPlayers;
 	}
 	
