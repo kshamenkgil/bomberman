@@ -274,7 +274,7 @@ public class Engine {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				if(t<= 0){
+				if(t< 0){
 					Bomberman.getInstancia().dispose();
 				}
 			}
