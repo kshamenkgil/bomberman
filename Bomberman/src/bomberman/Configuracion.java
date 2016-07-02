@@ -21,7 +21,7 @@ public class Configuracion {
 	}
 	
 	public void leerConfiguracion(){
-		File inputFile = new File("config.xml");
+		File inputFile = new File("assets/config.xml");
         DocumentBuilderFactory dbFactory 
            = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
