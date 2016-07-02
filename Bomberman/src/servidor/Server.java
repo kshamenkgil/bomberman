@@ -38,6 +38,7 @@ public class Server implements Runnable{
 		//guardar stats
 		getPantalla().consola.append("Guardando info...");
 		Conector c = new Conector();
+		c.connect();
 		for (ThreadServer threadServer : connections) {
 			c.modificarEstado(threadServer.getName(), 0);
 		}		
@@ -234,9 +235,11 @@ public class Server implements Runnable{
 						String s = "{'header' : 'fin_juego', 'g_id': '"+ id_winner + "'}";						
 						if(threadServer.getJugador().getId() == id_winner){
 							Conector c = new Conector();
+							c.connect();
 							DatosJugador dj = new DatosJugador(threadServer.getJugador().getNombre(), "");
-//							dj.setPuntos(c.puntosJugador(dj.getId())+1);
-	//						c.grabarPuntos(dj);
+							dj.setPuntos(c.puntosJugador(dj.getId())+1);
+							c.connect();
+							c.grabarPuntos(dj);
 						}
 						threadServer.sendData(s.getBytes(Charset.forName("UTF-8")));
 					}					

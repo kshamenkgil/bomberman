@@ -129,8 +129,14 @@ public class Protocolo {
 								con = new Conector();
 								con.connect();
 								con.modificarEstado(jugador.getNombre(),0);
-								if(Mundo.getInstance().getConnectedUsers() == 0)
+								if(Mundo.getInstance().getConnectedUsers() == 0){
+									Conector c = new Conector();
+									c.connect();
+									for (ThreadServer threadServer : Mundo.getInstance().getConnections()) {
+										c.modificarEstado(threadServer.getName(), 0);
+									}
 									System.exit(0);
+								}
 								
 								break;								
 							case JSON:

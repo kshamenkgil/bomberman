@@ -263,7 +263,10 @@ public class Engine {
 					dibujarTextoConSombra("El juego finaliza en: "+ t , 40, Color.RED, g, new Punto2D(200, 250));
 				}else{
 					getTextura("gameover").dibujarTextura(g, io, new Punto2D(0, 0));
-					dibujarTextoConSombra("El ganador fue: "+ Mundo.getInstance().getGanador().getNombre() , 40, Color.RED, g, new Punto2D(200, 200));
+					if(Mundo.getInstance().getGanador() != null)
+						dibujarTextoConSombra("El ganador fue: "+ Mundo.getInstance().getGanador().getNombre() , 40, Color.RED, g, new Punto2D(200, 200));
+					else
+						dibujarTextoConSombra("Empate", 40, Color.RED, g, new Punto2D(200, 200));
 					dibujarTextoConSombra("El juego finaliza en: "+ t , 40, Color.RED, g, new Punto2D(200, 250));
 				}
 				
