@@ -60,7 +60,9 @@ public class Server implements Runnable{
 		Server.pantalla = pantalla;
 	}
 	
-	public Server(ServerScreen pantalla) {
+	public Server(ServerScreen pantalla,int cantJugadores) {
+		setCantPlayers(cantJugadores);
+		Mundo.getInstance().setCantPlayers(cantJugadores);
 		setPantalla(pantalla);
 		setRunning(false);
 		this.connectedUsers = 0;
@@ -95,8 +97,7 @@ public class Server implements Runnable{
 		
         try {
             serverSocket = new ServerSocket(24556);
-            getPantalla().consola.append("Servidor escuchando en puerto 24556\n");
-            getPantalla().consola.append("Partida actualmente seteada para "+ getCantPlayers() +" jugadores.\n");
+            getPantalla().consola.append("Servidor escuchando en puerto 24556\n");            
             getPantalla().consola.append("Ingrese /help para mas informacion\n");
             //System.out.println("Servidor escuchando en puerto 24556");
             
@@ -108,7 +109,7 @@ public class Server implements Runnable{
 		
 		isRunning2 = true;
 		
-		Mundo.getInstance().setCantPlayers(cantPlayers);
+		//Mundo.getInstance().setCantPlayers(cantPlayers);
 		
 		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 0.1);// , 0.05);
 		Mapa tMap = mAG.getMap();

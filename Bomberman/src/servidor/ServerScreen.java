@@ -19,6 +19,7 @@ public class ServerScreen extends JFrame {
 
 	private JPanel contentPane;
 	private Server server = null;
+	private int cant_players = 1;
 	public JTextArea consola;
 	private JTextField textField;
 	private JButton btnNewButton_1;
@@ -36,12 +37,13 @@ public class ServerScreen extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+				
 		
 		final JButton btnNewButton = new JButton("Iniciar servidor");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(server == null){					
-					server = new Server(sc);
+					server = new Server(sc,cant_players);
 					new Thread(server, "Servidor").start();
 					//btnNewButton.setText("Parar servidor");
 					//consola.setText("");						
@@ -88,6 +90,10 @@ public class ServerScreen extends JFrame {
 		textArea.setEditable(false);
 		consola = textArea;
 		
+		consola.append("Bienvenido al servidor de Bomberman:\n");
+		consola.append("Partida actualmente seteada para "+ cant_players +" jugadores.\n");
+		consola.append("Para setear el numero de jugadores: /setjugadores cantidad\n ");
+		
 		textField = new JTextField();
 		textField.setBounds(32, 210, 277, 25);
 		contentPane.add(textField);
@@ -108,13 +114,19 @@ public class ServerScreen extends JFrame {
 							for (ThreadServer ts : Mundo.getInstance().getConnections())
 								consola.append("Jugador x con id" + ts.getJugador().getId()+ "\n");
 						break;
-					case "/setjugadores":						
-						try{
-							server.setCantPlayers(Integer.parseInt(cmd[1]));
-							consola.append("Cantidad de jugadores ahora es :" + server.getCantPlayers() + "\n");
-						}catch(Exception e){
-							consola.append("Comando incorrecto pruebe /help\n");
-						}												
+					case "/setjugadores":
+						if(server == null){							
+							try{
+								cant_players = Integer.parseInt(cmd[1]);
+								if(cant_players > 4) cant_players = 4;
+								if(cant_players < 1) cant_players = 1;
+								consola.append("Cantidad de jugadores ahora es :" + cant_players + "\n");
+							}catch(Exception e){
+								consola.append("Comando incorrecto pruebe /help\n");
+							}					
+						}else{
+							consola.append("Los cantidad de jugadores solo puede cambiarse ANTES de iniciar el servidor.\n");
+						}
 						break;	
 				}
 				textField.setText("");
