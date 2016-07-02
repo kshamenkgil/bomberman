@@ -94,6 +94,8 @@ public class Protocolo {
 				break;
 			case DESCONEXION:
 				byte id = data[1];
+				if(Mundo.getInstance().getJugador() == null)
+					return;
 				if(id == Mundo.getInstance().getJugador().getId()){				
 					Bomberman.getInstancia().setCanClose(true);
 				}else{
@@ -266,7 +268,12 @@ public class Protocolo {
 			}
 			
 			Mundo.getInstance().getMap().getMapa()[(int)ap.getPos().getX()][(int)ap.getPos().getY()].setPotenciador(null);
-			
+		}else if(o.get("header").getAsString().compareTo("registro") == 0){
+			if(o.get("estado").getAsString().compareTo("ok") == 0){
+				JOptionPane.showMessageDialog(null, "Se registro el usuario correctamente");				
+			}else{
+				JOptionPane.showMessageDialog(null, o.get("estado").getAsString());
+			}
 		}else if(o.get("header").getAsString().compareTo("iniciar_sesion") == 0){
 			//String s = "{'header' : 'iniciar_sesion', 'estado': 'ok', 'puntos': usuario.puntos}";
 			if(o.get("estado").getAsString().compareTo("ok") == 0){

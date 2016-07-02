@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import database.Conector;
 import database.DatosJugador;
@@ -75,7 +77,20 @@ public class PantallaRegistro extends JFrame {
 				} catch (NoSuchAlgorithmException e) {
 					e.printStackTrace();
 				}
-				String user = new String(usuario.getText());
+				
+				if(password.equals(confirm)){
+					String s = "{'header' : 'registro',";
+					s+="'user':"+usuario.getText()+",'password':'"+ pass +"'}";					
+					Bomberman.getInstancia().getCliente().sendData(s.getBytes(Charset.forName("UTF-8")));
+				}else{
+					JOptionPane.showMessageDialog(null, "Las contraseñas no coinciden");
+				}
+				
+				
+				
+				//dispose();
+				
+				/*String user = new String(usuario.getText());
 				if(password.equals(confirm)){
 					con = new Conector();
 					con.connect();
@@ -86,7 +101,7 @@ public class PantallaRegistro extends JFrame {
 					con.grabarJugador(jugador);
 					new Registrado().setVisible(true);
 					dispose();
-					}
+					}*/
 			}
 		});
 		

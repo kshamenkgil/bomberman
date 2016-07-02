@@ -19,7 +19,7 @@ public class ServerScreen extends JFrame {
 
 	private JPanel contentPane;
 	private Server server = null;
-	private int cant_players = 2;
+	private int cant_players = 4;
 	public JTextArea consola;
 	private JTextField textField;
 	private JButton btnNewButton_1;

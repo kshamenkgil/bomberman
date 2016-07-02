@@ -18,7 +18,9 @@ import bomberman.Engine;
 import bomberman.Jugador;
 import bomberman.Mapa;
 import bomberman.Punto2D;
+import bomberman.Registrado;
 import bomberman.Sprite;
+import bomberman.UsuarioRepetido;
 import servidor.Mundo;
 
 import database.Conector;
@@ -173,7 +175,21 @@ public class Protocolo {
 			bomba.explotar(Bomba.tiempoExplosion);
 			Mundo.getInstance().getBombas().add(bomba);
 			Mundo.getInstance().enviarBomba(json,bomba.getJugadorPlantoBomba().getId());
-			
+		}else if(o.get("header").getAsString().compareTo("registro") == 0){								
+			String user = o.get("user").getAsString();
+			String password = o.get("password").getAsString();			
+			Conector con =  new Conector();
+			con.connect();			
+			if(con.usuarioRepetido(user)){
+				String s = "{'header' : 'registro', 'estado': 'usuario repetido'}";
+				ts.sendData(s.getBytes(Charset.forName("UTF-8")));
+				return;
+			}
+			DatosJugador jugador = new DatosJugador(user,password);
+			con.connect();
+			con.grabarJugador(jugador);
+			String s = "{'header' : 'registro', 'estado': 'ok'}";
+			ts.sendData(s.getBytes(Charset.forName("UTF-8")));
 		}else if(o.get("header").getAsString().compareTo("iniciar_sesion") == 0){								
 				String user = o.get("user").getAsString();
 				String password = o.get("password").getAsString();

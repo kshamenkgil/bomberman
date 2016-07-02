@@ -47,7 +47,7 @@ public class pantallaRanking extends JFrame {
 		con.connect();
 		listado = con.ranking(); 
 		 for (int i = 4; i > -1;i--){
-			 textArea.setText(listado.get(i)+"\n"+textArea.getText());   
+			 textArea.setText(listado.get(i)+"\n"+textArea.getText());
 		  }
 		 contentPane.add(textArea);
 
