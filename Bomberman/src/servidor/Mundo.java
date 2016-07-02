@@ -225,6 +225,8 @@ public class Mundo {
 		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);
+ 			else
+ 				t.getJugador().setMuerto(true);
 		}
 	}
 	
