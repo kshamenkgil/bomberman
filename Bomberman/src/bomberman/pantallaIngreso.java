@@ -45,7 +45,7 @@ public class pantallaIngreso extends JFrame {
 		contentPane.setLayout(null);
 		
 		//conectar con el server		
-		try {
+		try { 
 			Bomberman.getInstancia().conectar();	
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No se pudo conectar con el servidor");
