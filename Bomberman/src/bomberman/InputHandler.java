@@ -34,7 +34,7 @@ public class InputHandler implements KeyListener {
 	}
 		
 	public void update(){
-		if(!Mundo.getInstance().getJugador().isMuerto()){
+		if(!Mundo.getInstance().getJugador().isMuerto() || !Mundo.getInstance().isFinJuego()){
 			if(keys.get(KeyEvent.VK_UP)){			
 				/*Mundo.getInstance().getJugador().mover(Protocolo.NORTE);	        
 		        Mundo.getInstance().getJugador().playAnimation();*/

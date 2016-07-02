@@ -289,7 +289,22 @@ public class Protocolo {
 				}
 			}
 			
-			Mundo.getInstance().setFinJuego(true);
+			if(!Mundo.getInstance().isFinJuego()){
+				new Thread(new Runnable() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						try {
+							Thread.sleep(1000);
+							Mundo.getInstance().setFinJuego(true);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}).start();
+			}
 		}
 		
 		
