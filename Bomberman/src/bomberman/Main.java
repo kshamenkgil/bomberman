@@ -19,6 +19,7 @@ public class Main {
 		if(!serverOnly){
 			pantallaIngreso pantalla = new pantallaIngreso();
 			pantalla.setVisible(true);
+			//Bomberman.getInstancia().run();
 		}
 		
 		

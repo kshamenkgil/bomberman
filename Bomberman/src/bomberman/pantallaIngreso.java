@@ -39,20 +39,20 @@ public class pantallaIngreso extends JFrame {
 		contentPane.setLayout(null);
 		
 		JLabel lblUsuario = new JLabel("Usuario: ");
-		lblUsuario.setBounds(75, 62, 46, 14);
+		lblUsuario.setBounds(60, 62, 106, 14);
 		contentPane.add(lblUsuario);
 		
 		textUsuario = new JTextField();
-		textUsuario.setBounds(159, 59, 86, 20);
+		textUsuario.setBounds(199, 62, 147, 20);
 		contentPane.add(textUsuario);
 		textUsuario.setColumns(10);
 		
 		JLabel lblPassword = new JLabel("Password: ");
-		lblPassword.setBounds(75, 107, 63, 14);
+		lblPassword.setBounds(60, 107, 106, 14);
 		contentPane.add(lblPassword);
 		
 		textPassword = new JPasswordField();
-		textPassword.setBounds(159, 104, 86, 20);
+		textPassword.setBounds(199, 107, 147, 20);
 		contentPane.add(textPassword);
 		JButton btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
@@ -80,7 +80,7 @@ public class pantallaIngreso extends JFrame {
 				pantallaIngreso.this.dispose();
 			}	
 		});
-		btnIngresar.setBounds(159, 157, 86, 23);
+		btnIngresar.setBounds(140, 193, 100, 23);
 		contentPane.add(btnIngresar);
 		
 		JButton btnSalir = new JButton("Salir");
@@ -91,11 +91,11 @@ public class pantallaIngreso extends JFrame {
 				System.exit(0);
 			}
 		});
-		btnSalir.setBounds(60, 157, 86, 23);
+		btnSalir.setBounds(42, 193, 86, 23);
 		contentPane.add(btnSalir);
 	
 	JButton btnRegistro = new JButton("Registrarse");
-	btnRegistro.setBounds(260, 157, 130, 23);
+	btnRegistro.setBounds(251, 193, 130, 23);
 	contentPane.add(btnRegistro);
 	btnRegistro.addActionListener(new ActionListener() {
 		public void actionPerformed(ActionEvent arg0) {

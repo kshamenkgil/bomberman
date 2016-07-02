@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Conector {
-	private String ruta = "Database\\database";
+	private String ruta = "Database/database";
 	private Connection connect;
 	
 	public void connect(){

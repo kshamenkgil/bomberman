@@ -67,7 +67,7 @@ public class Protocolo {
 				setPotenciador(id0, pot);
 				break;
 			case MURIO_JUGADOR:
-				byte id1 = data[1];
+				byte id1 = data[1];				
 				for (Jugador j : Mundo.getInstance().getJugadores()) {
 					if(j.getId() == id1)
 						j.setMuerto(true);

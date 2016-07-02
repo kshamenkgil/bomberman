@@ -47,18 +47,20 @@ public class Bomberman {
 		SonidoManager.getInstancia().agregarSonido("pasos", new Sonido("assets/sonidos/pasos.wav"));
 	}
 	
-	public void run() {
+	public void conectar(){
 		cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
-			
+		cliente.recieveData();
+	}
+	
+	public void run() {		
 		//cambiar por "p"+(id+1)+"s", etc
-		
-		
+				
 		Engine.getInstancia().cargarTexturas("bomberman1/");
 				
 		cargarSonidos();
 		cargarMusica();			
 				
-		cliente.recieveData();
+		
 		Engine.getInstancia().inicializarVentana();			
 		
 		Engine.getInstancia().update();

@@ -17,9 +17,37 @@ public class Server implements Runnable{
 	private ArrayList<ThreadServer> connections = new ArrayList<ThreadServer>();
 	private int cantPlayers = 1;
 	private static ServerScreen pantalla;
+	private ServerSocket serverSocket = null;
+	public int getCantPlayers() {
+		return cantPlayers;
+	}
+	
+	public void setCantPlayers(int cantPlayers) {
+		this.cantPlayers = cantPlayers;
+	}
 	
 	public static ServerScreen getPantalla() {
 		return pantalla;
+	}
+	
+	public boolean dispose(){
+		//guardar stats
+		
+		//cerrar sockets
+		if(serverSocket != null){
+			for (ThreadServer threadServer : connections) {
+				threadServer.closeSocket();
+			}
+			try {
+				serverSocket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		//salir
+		setRunning(false);
+		return true;
 	}
 	
 	public static void setPantalla(ServerScreen pantalla) {
@@ -39,7 +67,7 @@ public class Server implements Runnable{
 			return;
 		}
 		
-		ServerSocket serverSocket = null;
+		serverSocket = null;
 		
         try {
             serverSocket = new ServerSocket(24556);
@@ -56,7 +84,7 @@ public class Server implements Runnable{
 		
 		Mundo.getInstance().setCantPlayers(cantPlayers);
 		
-		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 0.1 , 0.05);
+		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 0.1);// , 0.05);
 		
 		while(isRunning){
 			Socket entrante = null;
@@ -116,7 +144,7 @@ public class Server implements Runnable{
 		//si el juego comenzó enviar info inicial e iniciar update
 		Mundo.getInstance().setConnections(connections);
 		Mundo.getInstance().setConnectedUsers(connectedUsers);
-		mAG.saveMap(); //se guarda el mapa
+		//mAG.saveMap(); //se guarda el mapa
 		Mapa tMap = mAG.getMap();
 		Mundo.getInstance().setMap(tMap);
 		bomberman.Mundo.getInstance().setMap(tMap);
@@ -127,15 +155,18 @@ public class Server implements Runnable{
 		update();
 		
 		//cierre del servidor
-		try {
+		/*try {
 			serverSocket.close();
 			System.exit(0);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
+	public boolean isRunning() {
+		return isRunning;
+	}
 	
 	public synchronized static void setRunning(boolean isRunning) {
 		Server.isRunning = isRunning;

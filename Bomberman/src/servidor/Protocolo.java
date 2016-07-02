@@ -88,7 +88,7 @@ public class Protocolo {
 					byte[] data = colaMensajes.poll();
 					try {
 						byte header = data[0];
-						switch(header){	
+						switch(header){
 							case GET_POTENCIADOR:
 								
 								break;	
@@ -156,7 +156,7 @@ public class Protocolo {
 			Mundo.getInstance().actualizarPosicion(jugador, data);
 			int x = (int)Math.floor((jugador.getPosicion().getX()+16)/(Engine.TILE_WIDTH));
 			int y = (int)Math.floor((jugador.getPosicion().getY()+16)/(Engine.TILE_HEIGHT));
-			if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null){				
+			if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null && !Mundo.getInstance().getMap().getMapa()[x][y].getTile().isColisionable()){				
 				AgarroPotenciador ap = new AgarroPotenciador(new Punto2D(x, y), Mundo.getInstance().getMap().getMapa()[x][y].getObjeto(), jugador.getId());
 				ap.getPot().potenciar(jugador);				
 				Mundo.getInstance().sendPotenciador(ap);

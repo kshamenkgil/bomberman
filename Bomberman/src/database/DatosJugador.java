@@ -7,9 +7,9 @@ public class DatosJugador {
 	private int puntos;
 	private int estado;
 	
-	public DatosJugador(String nombre, String contraseña){
+	public DatosJugador(String nombre, String password){
 		id = nombre;
-		pass = contraseña;
+		pass = password;
 		puntos = 0;
 		estado = 0;
 	}
