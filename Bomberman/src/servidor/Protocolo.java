@@ -55,6 +55,7 @@ public class Protocolo {
 	public static final byte READY = 11;
 	public static final byte INICIAR_SESION = 12;
 	public static final byte DESCONEXION_USER = 13;
+	public static final byte MENSAJE = 14;
 	public static final byte JSON = 123;
 	
 	//Direcciones
@@ -101,7 +102,7 @@ public class Protocolo {
 					byte[] data = colaMensajes.poll();
 					try {
 						byte header = data[0];
-						switch(header){
+						switch(header){													
 							case READY:
 								Mundo.getInstance().getAndSetReadyUsers();
 							break;
@@ -109,7 +110,8 @@ public class Protocolo {
 								
 								break;	
 							case MURIO_JUGADOR:
-								matarJugador(jugador);
+								Mundo.getInstance().restarCantVivos();
+								matarJugador(jugador);								
 								break;
 							case MOVIMIENTO:
 								moverJugador(jugador, data[1]);
@@ -144,7 +146,7 @@ public class Protocolo {
 		//},"protocolo").start();		
 	}
 	
-	private void matarJugador(Jugador jugador) {		
+	private void matarJugador(Jugador jugador) {	
 		byte[] data = new byte[3];
 		data[0] = Protocolo.MURIO_JUGADOR;
 		data[1] = (byte)jugador.getId();

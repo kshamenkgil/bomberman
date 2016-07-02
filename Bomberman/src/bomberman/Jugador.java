@@ -13,6 +13,15 @@ public class Jugador extends Personaje {
 	private boolean noCollide;
 	private Color color;
 	private String nombre = "Prueba";
+	private boolean ganador = false;
+	
+	public void setGanador(boolean ganador) {
+		this.ganador = ganador;
+	}
+	
+	public boolean isGanador() {
+		return ganador;
+	}
 	
 	public Jugador(Punto2D posicion, Punto2D posicionRelativa) {
 		super(posicion,posicionRelativa);
@@ -66,7 +75,7 @@ public class Jugador extends Personaje {
 		}
 		
 		if(!isMuerto())
-			Engine.getInstancia().dibujarTexto(nombre, 8, color, g, new Punto2D(posicion.x, posicion.y-(personajeE.getTileWidth()/4)));
+			Engine.getInstancia().dibujarTextoConSombra(nombre, 8, color, g, new Punto2D(posicion.x, posicion.y-(personajeE.getTileWidth()/4)));
 		
 	}
 	

@@ -112,7 +112,7 @@ public class ServerScreen extends JFrame {
 					case "/online":
 						if(Mundo.getInstance().getConnections() != null)
 							for (ThreadServer ts : Mundo.getInstance().getConnections())
-								consola.append("Jugador x con id" + ts.getJugador().getId()+ "\n");
+								consola.append("Jugador "+ ts.getJugador().getNombre() +" con id" + ts.getJugador().getId()+ "\n");
 						break;
 					case "/setjugadores":
 						if(server == null){							
@@ -127,7 +127,20 @@ public class ServerScreen extends JFrame {
 						}else{
 							consola.append("Los cantidad de jugadores solo puede cambiarse ANTES de iniciar el servidor.\n");
 						}
-						break;	
+						break;
+					case "/say":
+						if(Mundo.getInstance().getReadyUsers() == Mundo.getInstance().getCantPlayers()){
+							for (ThreadServer ts : Mundo.getInstance().getConnections()){
+								byte[] data = new byte[cmd[1].getBytes().length+1];
+								data[0] = Protocolo.MENSAJE;								
+								for (int i = 1; i < cmd[1].getBytes().length; i++) {
+									data[i] = cmd[1].getBytes()[i-1];
+								}
+								data[data.length-1] = cmd[1].getBytes()[cmd[1].getBytes().length-1]; 
+								ts.sendData(data);
+							}
+						}
+						break;
 				}
 				textField.setText("");
 			}

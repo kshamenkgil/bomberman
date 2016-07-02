@@ -13,7 +13,7 @@ public class DatosJugador {
 		puntos = 0;
 		estado = 0;
 	}
-
+	
 	public String getId() {
 		return id;
 	}

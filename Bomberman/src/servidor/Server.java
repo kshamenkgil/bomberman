@@ -2,12 +2,15 @@ package servidor;
 
 import java.io.*;
 import java.net.*;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 import bomberman.Engine;
 import bomberman.Jugador;
 import bomberman.Mapa;
 import bomberman.Punto2D;
+import database.Conector;
+import database.DatosJugador;
 
 public class Server implements Runnable{
 	
@@ -18,9 +21,7 @@ public class Server implements Runnable{
 	private int cantPlayers = 4;
 	private static ServerScreen pantalla;
 	private ServerSocket serverSocket = null;
-	
-	
-	
+		
 	public synchronized int getCantPlayers() {
 		return cantPlayers;
 	}
@@ -36,6 +37,10 @@ public class Server implements Runnable{
 	public synchronized void dispose(){
 		//guardar stats
 		getPantalla().consola.append("Guardando info...");
+		Conector c = new Conector();
+		for (ThreadServer threadServer : connections) {
+			c.modificarEstado(threadServer.getName(), 0);
+		}		
 		//cerrar sockets
 	/*	if(serverSocket != null){
 			for (ThreadServer threadServer : connections) {
@@ -63,6 +68,7 @@ public class Server implements Runnable{
 	public Server(ServerScreen pantalla,int cantJugadores) {
 		setCantPlayers(cantJugadores);
 		Mundo.getInstance().setCantPlayers(cantJugadores);
+		Mundo.getInstance().setCantVivos(cantJugadores);
 		setPantalla(pantalla);
 		setRunning(false);
 		this.connectedUsers = 0;
@@ -206,9 +212,36 @@ public class Server implements Runnable{
 	}
 	
 	private void update(){
+		byte id_winner = -1;
 		setRunning(true);
-		while(isRunning){
-			
+		Mundo.getInstance().setCantVivos(Mundo.getInstance().getCantPlayers());
+		while(isRunning){			
+			if(Mundo.getInstance().getCantVivos()<=1){
+				for (ThreadServer threadServer : connections) {
+					if(!threadServer.getJugador().isMuerto())
+						id_winner = threadServer.getJugador().getId();
+				}
+				
+				if(id_winner == -1){
+					//nadie gana
+					String s = "{'header' : 'fin_juego', 'g_id': '-1'}";
+					for (ThreadServer threadServer : connections) {
+						threadServer.sendData(s.getBytes(Charset.forName("UTF-8")));
+					}	
+				}else{
+					//gano x persona
+					for (ThreadServer threadServer : connections) {
+						String s = "{'header' : 'fin_juego', 'g_id': '"+ id_winner + "'}";						
+						if(threadServer.getJugador().getId() == id_winner){
+							Conector c = new Conector();
+							DatosJugador dj = new DatosJugador(threadServer.getJugador().getNombre(), "");
+//							dj.setPuntos(c.puntosJugador(dj.getId())+1);
+	//						c.grabarPuntos(dj);
+						}
+						threadServer.sendData(s.getBytes(Charset.forName("UTF-8")));
+					}					
+				}
+			}
 		}
 	}
 	

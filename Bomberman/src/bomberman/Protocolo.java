@@ -2,6 +2,7 @@ package bomberman;
 
 import java.nio.charset.Charset;
 
+import javax.swing.GroupLayout.SequentialGroup;
 import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
@@ -42,6 +43,7 @@ public class Protocolo {
 	public static final byte READY = 11;
 	public static final byte INICIAR_SESION = 12;
 	public static final byte DESCONEXION_USER = 13;
+	public static final byte MENSAJE = 14;
 	public static final byte JSON = 123;
 	
 	//Direcciones
@@ -62,7 +64,16 @@ public class Protocolo {
 	
 	public void procesarEntrada(byte[] data){
 		byte header = data[0];
-		switch(header){			
+		switch(header){
+			case MENSAJE:
+				String msg;
+				byte tt[] = new byte[data.length-1];
+				for (int i = 0; i < data.length-1; i++) {
+					tt[i] = data[i];
+				}
+				msg = new String(tt);
+				Mundo.getInstance().getMensajes().add(msg);
+			break;
 			case CONEXION:
 				setParametrosIniciales(data[1]);
 				break;
@@ -265,7 +276,22 @@ public class Protocolo {
 			else{
 				Bomberman.getInstancia().getCliente().setErrorLog(true);
 			}
+		}else if(o.get("header").getAsString().compareTo("fin_juego") == 0){
+			//String s = "{'header' : 'fin_juego', 'g_id': '1'}";
+			if(Mundo.getInstance().getJugador().getId() == o.get("g_id").getAsByte()){
+				Mundo.getInstance().getJugador().setGanador(true);
+			}else{
+				if(o.get("g_id").getAsByte() != -1){
+					for (Jugador jugador : Mundo.getInstance().getJugadores()) {
+						if(jugador.getId() == o.get("g_id").getAsByte())
+							Mundo.getInstance().setGanador(jugador);
+					}					
+				}
+			}
+			
+			Mundo.getInstance().setFinJuego(true);
 		}
+		
 		
 	}
 	
