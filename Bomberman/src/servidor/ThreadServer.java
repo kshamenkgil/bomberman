@@ -54,9 +54,9 @@ public class ThreadServer extends Thread {
 				    message = new byte[length];
 				    dIn.readFully(message, 0, message.length); // read the message				    
 				}
-								
+				
 				protocolo.getColaMensajes().add(message);
-				protocolo.procesarEntrada();				
+				protocolo.procesarEntrada(this);				
 				//dIn.close();
 								
 				//protocolo.procesarEntrada(message, jugador);				

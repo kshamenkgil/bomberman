@@ -1,5 +1,6 @@
 package bomberman;
 
+import javax.swing.JOptionPane;
 
 public class Bomberman {
 	
@@ -48,19 +49,23 @@ public class Bomberman {
 	}
 	
 	public void conectar(){
-		cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
-		cliente.recieveData();
-	}
-	
-	public void run() {		
-		//cambiar por "p"+(id+1)+"s", etc
-				
+		
 		Engine.getInstancia().cargarTexturas("bomberman1/");
 				
 		cargarSonidos();
-		cargarMusica();			
-				
 		
+		cargarMusica();
+		
+		try{
+			cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
+			cliente.recieveData();
+		}catch(Exception e){			
+			JOptionPane.showMessageDialog(null, "No se pudo conectar con el servidor");			
+		}
+	}
+	
+	public void run() {		
+							
 		Engine.getInstancia().inicializarVentana();			
 		
 		Engine.getInstancia().update();

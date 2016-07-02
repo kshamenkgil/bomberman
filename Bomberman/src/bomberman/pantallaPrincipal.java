@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import database.Conector;
 import database.DatosJugador;
+import servidor.Protocolo;
 
 public class pantallaPrincipal extends JFrame {
 
@@ -61,7 +62,9 @@ public class pantallaPrincipal extends JFrame {
 					
 					@Override
 					public void run() {
-						// TODO Auto-generated method stub
+						byte[] data = new byte[1];
+						data[0] = Protocolo.READY;
+						Bomberman.getInstancia().getCliente().sendData(data);
 						Bomberman.getInstancia().run();
 					}
 				}).start();
@@ -78,9 +81,10 @@ public class pantallaPrincipal extends JFrame {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				con = new Conector();
-				con.connect();
-				con.modificarEstado(textUsuario.getText(),0);
+				byte data[] = new byte[1];
+				data[0] = Protocolo.DESCONEXION_USER;								
+				Bomberman.getInstancia().getCliente().sendData(data);
+								
 				System.exit(0);
 			}
 		});

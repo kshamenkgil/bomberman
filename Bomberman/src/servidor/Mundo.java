@@ -22,6 +22,19 @@ public class Mundo {
 	private ArrayList<Bomba> bombas = new ArrayList<Bomba>();	
 	private int connectedUsers = 0;
 	private int cantPlayers = 0;
+	private int readyUsers = 0;
+
+	public synchronized void getAndSetReadyUsers() {		
+		setReadyUsers(getReadyUsers()+1);
+	}
+	
+	public synchronized int getReadyUsers() {
+		return readyUsers;
+	}
+	
+	public synchronized void setReadyUsers(int readyUsers) {
+		this.readyUsers = readyUsers;
+	}
 	
 	public int getCantPlayers() {
 		return cantPlayers;
@@ -37,6 +50,14 @@ public class Mundo {
 	
 	public void setBombas(ArrayList<Bomba> bombas) {
 		this.bombas = bombas;
+	}
+	
+	public synchronized void disconnectConnectedUser() {		
+		setConnectedUsers(getConnectedUsers()-1);
+	}
+	
+	public synchronized void getAndSetConnectedUsers() {		
+		setConnectedUsers(getConnectedUsers()+1);
 	}
 	
 	public int getConnectedUsers() {
@@ -56,7 +77,8 @@ public class Mundo {
 	public void setMap(Mapa map) {
 		this.map = map;
 	}
-
+	
+	
 	public synchronized void sendPotenciador(AgarroPotenciador pot){
 		Gson gson = new GsonBuilder()
 				.registerTypeAdapter(bomberman.Punto2D.class, new bomberman.Punto2DSerializer())								
@@ -103,8 +125,8 @@ public class Mundo {
 		int index = 1;
 		String s = "{'header' : 'startInfo','jugadores':[";
 		for (ThreadServer t : connections) {			
-			s+="{'name':'Jugador";
-			s+=t.getJugador().getId();
+			s+="{'name':'";
+			s+=t.getJugador().getNombre();
 			s+="', 'id':";
 			s+=t.getJugador().getId();
 			s+=", 'x':";
@@ -148,7 +170,7 @@ public class Mundo {
 		return connections;
 	}
 	
-	public void setConnections(ArrayList<ThreadServer> connections) {
+	public synchronized void setConnections(ArrayList<ThreadServer> connections) {
 		this.connections = connections;
 	}
 	
