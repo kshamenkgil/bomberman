@@ -26,7 +26,8 @@ public class Explosion {
 		this.explosionMedio = new Sprite("emedio", true);
 		this.explosionVertical = new Sprite("evertic", true);
 		this.potencia = potencia;
-		this.posicion = new Punto2D((int)posicion.getX()/Engine.TILE_WIDTH, (int)posicion.getY()/Engine.TILE_HEIGHT);		
+		this.posicion = new Punto2D((int)posicion.getX()/Engine.TILE_WIDTH, (int)posicion.getY()/Engine.TILE_HEIGHT);
+		SonidoManager.getInstancia().playSound("exp");
 	}
 	
 	public Sprite getExplosionMedio() {
