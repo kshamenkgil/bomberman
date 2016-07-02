@@ -18,7 +18,9 @@ import bomberman.Engine;
 import bomberman.Jugador;
 import bomberman.Mapa;
 import bomberman.Punto2D;
+import bomberman.Registrado;
 import bomberman.Sprite;
+import bomberman.UsuarioRepetido;
 import servidor.Mundo;
 
 import database.Conector;
@@ -55,6 +57,7 @@ public class Protocolo {
 	public static final byte READY = 11;
 	public static final byte INICIAR_SESION = 12;
 	public static final byte DESCONEXION_USER = 13;
+	public static final byte MENSAJE = 14;
 	public static final byte JSON = 123;
 	
 	//Direcciones
@@ -101,7 +104,7 @@ public class Protocolo {
 					byte[] data = colaMensajes.poll();
 					try {
 						byte header = data[0];
-						switch(header){
+						switch(header){													
 							case READY:
 								Mundo.getInstance().getAndSetReadyUsers();
 							break;
@@ -109,7 +112,8 @@ public class Protocolo {
 								
 								break;	
 							case MURIO_JUGADOR:
-								matarJugador(jugador);
+								Mundo.getInstance().restarCantVivos();
+								matarJugador(jugador);								
 								break;
 							case MOVIMIENTO:
 								moverJugador(jugador, data[1]);
@@ -127,8 +131,14 @@ public class Protocolo {
 								con = new Conector();
 								con.connect();
 								con.modificarEstado(jugador.getNombre(),0);
-								if(Mundo.getInstance().getConnectedUsers() == 0)
+								if(Mundo.getInstance().getConnectedUsers() == 0){
+									Conector c = new Conector();
+									c.connect();
+									for (ThreadServer threadServer : Mundo.getInstance().getConnections()) {
+										c.modificarEstado(threadServer.getName(), 0);
+									}
 									System.exit(0);
+								}
 								
 								break;								
 							case JSON:
@@ -144,7 +154,7 @@ public class Protocolo {
 		//},"protocolo").start();		
 	}
 	
-	private void matarJugador(Jugador jugador) {		
+	private void matarJugador(Jugador jugador) {	
 		byte[] data = new byte[3];
 		data[0] = Protocolo.MURIO_JUGADOR;
 		data[1] = (byte)jugador.getId();
@@ -165,7 +175,21 @@ public class Protocolo {
 			bomba.explotar(Bomba.tiempoExplosion);
 			Mundo.getInstance().getBombas().add(bomba);
 			Mundo.getInstance().enviarBomba(json,bomba.getJugadorPlantoBomba().getId());
-			
+		}else if(o.get("header").getAsString().compareTo("registro") == 0){								
+			String user = o.get("user").getAsString();
+			String password = o.get("password").getAsString();			
+			Conector con =  new Conector();
+			con.connect();			
+			if(con.usuarioRepetido(user)){
+				String s = "{'header' : 'registro', 'estado': 'usuario repetido'}";
+				ts.sendData(s.getBytes(Charset.forName("UTF-8")));
+				return;
+			}
+			DatosJugador jugador = new DatosJugador(user,password);
+			con.connect();
+			con.grabarJugador(jugador);
+			String s = "{'header' : 'registro', 'estado': 'ok'}";
+			ts.sendData(s.getBytes(Charset.forName("UTF-8")));
 		}else if(o.get("header").getAsString().compareTo("iniciar_sesion") == 0){								
 				String user = o.get("user").getAsString();
 				String password = o.get("password").getAsString();

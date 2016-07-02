@@ -21,7 +21,7 @@ public class Conector {
 	public void close(){
 		try{
 			connect.close();
-		}catch(Exception e){
+		}catch(Exception e){ 
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +49,7 @@ public class Conector {
 		try {
 			st = connect.prepareStatement("Update jugador set puntos = ? where id = '"+jugador.getId()+"';");
 			st.setString(1, jugador.getId());
-			st.setInt(2, jugador.getPuntos());
+			st.setInt(1, jugador.getPuntos());
 			st.executeUpdate();			
 		} catch(SQLException sqle) {
 			sqle.printStackTrace();
@@ -146,10 +146,31 @@ public class Conector {
 		Statement st = null;
 		try{
 			st = connect.createStatement();
-			rs = st.executeQuery("Select * From jugador Order by puntos  Up to 5 rows");
+			rs = st.executeQuery("Select id,puntos From jugador Order by puntos desc LIMIT 5");
 			while(rs.next())
-				  listado.add(rs.getString(1)+rs.getInt(3)) ;
+				  listado.add(rs.getString(1)+"------------------->"+rs.getInt(2));    
 
+		}catch(SQLException e){
+			e.printStackTrace();
+		}finally {
+			try {
+				st.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}	
+		return listado;
+	}
+	public ArrayList<String> enlinea(){
+		ArrayList<String> listado = new ArrayList<String>();
+		ResultSet rs = null;
+		Statement st = null;
+		try{
+			st = connect.createStatement();
+			rs = st.executeQuery("Select * From jugador ");
+			while(rs.next())
+				if(rs.getInt(4)== 1)  
+					listado.add(rs.getString(1)) ;
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {

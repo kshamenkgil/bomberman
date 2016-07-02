@@ -81,7 +81,9 @@ public class Bomba {
             		//if(bomba.getPosicion().equals(posicion)){
         				for (ThreadServer p1 : Mundo.getInstance().getConnections()){
         					if(getBounds(new Punto2D(posicion.getX(),posicion.getY())).intersects(new Rectangle((int)p1.getJugador().getPosicion().getX(), (int)p1.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+        						Mundo.getInstance().restarCantVivos();
         						p1.getJugador().setVidas(0);
+        						p1.getJugador().setMuerto(true);
         						exB.getJugadoresMuertos().add(p1.getJugador().getId());
         					}
         				}
@@ -102,7 +104,9 @@ public class Bomba {
                     			{
                     				for (ThreadServer p : Mundo.getInstance().getConnections()){
                     					if(getBounds(new Punto2D(posicion.getX()+Engine.TILE_WIDTH*pot,posicion.getY())).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                    						Mundo.getInstance().restarCantVivos();
                     						p.getJugador().setVidas(0);
+                    						p.getJugador().setMuerto(true);
                     						exB.getJugadoresMuertos().add(p.getJugador().getId());
                     					}
                     					/*px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);
@@ -133,7 +137,9 @@ public class Bomba {
                 			{
                 				for (ThreadServer p : Mundo.getInstance().getConnections()){
                 					if(getBounds(new Punto2D(posicion.getX()-Engine.TILE_WIDTH*pot,posicion.getY())).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                						Mundo.getInstance().restarCantVivos();
                 						p.getJugador().setVidas(0);
+                						p.getJugador().setMuerto(true);
                 						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 					}
                 					/*px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);
@@ -164,7 +170,9 @@ public class Bomba {
                 			{
                 				for (ThreadServer p : Mundo.getInstance().getConnections()){
                 					if(getBounds(new Punto2D(posicion.getX(),posicion.getY()+Engine.TILE_WIDTH*pot)).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                						Mundo.getInstance().restarCantVivos();
                 						p.getJugador().setVidas(0);
+                						p.getJugador().setMuerto(true);
                 						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 					}
                 					/*px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);
@@ -194,7 +202,9 @@ public class Bomba {
                 			{
                 				for (ThreadServer p : Mundo.getInstance().getConnections()){
                 					if(getBounds(new Punto2D(posicion.getX(),posicion.getY()-Engine.TILE_WIDTH*pot)).intersects(new Rectangle((int)p.getJugador().getPosicion().getX(), (int)p.getJugador().getPosicion().getY(), Engine.TILE_WIDTH, Engine.TILE_HEIGHT))){
+                						Mundo.getInstance().restarCantVivos();
                 						p.getJugador().setVidas(0);
+                						p.getJugador().setMuerto(true);
                 						exB.getJugadoresMuertos().add(p.getJugador().getId());
                 					}
                 					/*px = (int)( p.getJugador().getPosicion().getX()/Engine.TILE_WIDTH);

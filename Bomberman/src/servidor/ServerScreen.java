@@ -19,6 +19,7 @@ public class ServerScreen extends JFrame {
 
 	private JPanel contentPane;
 	private Server server = null;
+	private int cant_players = 4;
 	public JTextArea consola;
 	private JTextField textField;
 	private JButton btnNewButton_1;
@@ -36,12 +37,13 @@ public class ServerScreen extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+				
 		
 		final JButton btnNewButton = new JButton("Iniciar servidor");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(server == null){					
-					server = new Server(sc);
+					server = new Server(sc,cant_players);
 					new Thread(server, "Servidor").start();
 					//btnNewButton.setText("Parar servidor");
 					//consola.setText("");						
@@ -88,6 +90,10 @@ public class ServerScreen extends JFrame {
 		textArea.setEditable(false);
 		consola = textArea;
 		
+		consola.append("Bienvenido al servidor de Bomberman:\n");
+		consola.append("Partida actualmente seteada para "+ cant_players +" jugadores.\n");
+		consola.append("Para setear el numero de jugadores: /setjugadores cantidad\n ");
+		
 		textField = new JTextField();
 		textField.setBounds(32, 210, 277, 25);
 		contentPane.add(textField);
@@ -106,16 +112,35 @@ public class ServerScreen extends JFrame {
 					case "/online":
 						if(Mundo.getInstance().getConnections() != null)
 							for (ThreadServer ts : Mundo.getInstance().getConnections())
-								consola.append("Jugador x con id" + ts.getJugador().getId()+ "\n");
+								consola.append("Jugador "+ ts.getJugador().getNombre() +" con id" + ts.getJugador().getId()+ "\n");
 						break;
-					case "/setjugadores":						
-						try{
-							server.setCantPlayers(Integer.parseInt(cmd[1]));
-							consola.append("Cantidad de jugadores ahora es :" + server.getCantPlayers() + "\n");
-						}catch(Exception e){
-							consola.append("Comando incorrecto pruebe /help\n");
-						}												
-						break;	
+					case "/setjugadores":
+						if(server == null){							
+							try{
+								cant_players = Integer.parseInt(cmd[1]);
+								if(cant_players > 4) cant_players = 4;
+								if(cant_players < 1) cant_players = 1;
+								consola.append("Cantidad de jugadores ahora es :" + cant_players + "\n");
+							}catch(Exception e){
+								consola.append("Comando incorrecto pruebe /help\n");
+							}					
+						}else{
+							consola.append("Los cantidad de jugadores solo puede cambiarse ANTES de iniciar el servidor.\n");
+						}
+						break;
+					case "/say":
+						if(Mundo.getInstance().getReadyUsers() == Mundo.getInstance().getCantPlayers()){
+							for (ThreadServer ts : Mundo.getInstance().getConnections()){
+								byte[] data = new byte[cmd[1].getBytes().length+1];
+								data[0] = Protocolo.MENSAJE;								
+								for (int i = 1; i < cmd[1].getBytes().length; i++) {
+									data[i] = cmd[1].getBytes()[i-1];
+								}
+								data[data.length-1] = cmd[1].getBytes()[cmd[1].getBytes().length-1]; 
+								ts.sendData(data);
+							}
+						}
+						break;
 				}
 				textField.setText("");
 			}

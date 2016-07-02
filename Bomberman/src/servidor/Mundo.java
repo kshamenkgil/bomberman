@@ -23,6 +23,19 @@ public class Mundo {
 	private int connectedUsers = 0;
 	private int cantPlayers = 0;
 	private int readyUsers = 0;
+	private int cantVivos = 0;
+	
+	public synchronized int getCantVivos() {
+		return cantVivos;
+	}
+	
+	public synchronized void restarCantVivos() {
+		setCantVivos(getCantVivos()-1);
+	}
+	
+	public synchronized void setCantVivos(int cantVivos) {
+		this.cantVivos = cantVivos;
+	}
 
 	public synchronized void getAndSetReadyUsers() {		
 		setReadyUsers(getReadyUsers()+1);
@@ -212,6 +225,8 @@ public class Mundo {
 		for (ThreadServer t: connections) {
  			if(t.getJugador().getId() != jugador.getId())
 				t.sendData(data);
+ 			else
+ 				t.getJugador().setMuerto(true);
 		}
 	}
 	

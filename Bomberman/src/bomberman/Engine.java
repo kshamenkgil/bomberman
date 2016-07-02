@@ -21,7 +21,8 @@ public class Engine {
 	private float offsetMinX = 0;
 	private float offsetMinY = 0;
 	
-	
+	private ArrayList<String> msg = new ArrayList<String>();
+	private int t = 10;
 	
 	private float camX = 0;
 	private float camY = 0;
@@ -142,6 +143,7 @@ public class Engine {
 		
 		//Game over
 		addTexturas("gameover", new Textura("assets/graficos/GAME OVER.png"));
+		addTexturas("ganador", new Textura("assets/graficos/GANADOR.png"));
 		
 	}
 	
@@ -158,10 +160,29 @@ public class Engine {
 		return texturas.get(name);
 	}
 	
+	public void dibujarTextoConSombra(String texto, int size, Graphics2D g, Punto2D pos){
+		g.setColor(Color.BLACK);
+		g.setFont(new Font("Arial", Font.BOLD, size));
+		g.drawString(texto, (int)pos.getX()-1, (int)pos.getY()-1);
+		g.setColor(Color.white);		
+		g.drawString(texto, (int)pos.getX(), (int)pos.getY());		
+		//g.setColor(Color.);
+	}
+	
 	public void dibujarTexto(String texto, int size, Graphics2D g, Punto2D pos){
 		g.setColor(Color.white);
 		g.setFont(new Font("Arial", Font.BOLD, size));
 		g.drawString(texto, (int)pos.getX(), (int)pos.getY());
+		//g.setColor(Color.);
+	}
+
+	public void dibujarTextoConSombra(String texto, int size, Color color ,Graphics2D g, Punto2D pos){
+				
+		g.setFont(new Font("Arial", Font.BOLD, size));
+		g.setColor(Color.BLACK);
+		g.drawString(texto, (int)pos.getX()-1, (int)pos.getY()-1);
+		g.setColor(color);
+		g.drawString(texto, (int)pos.getX(), (int)pos.getY());		
 		//g.setColor(Color.);
 	}
 	
@@ -172,40 +193,94 @@ public class Engine {
 		//g.setColor(Color.);
 	}
 	
+	private void mostrarMensaje(Graphics2D g){
+		int c = 0;
+		String t = null;		
+		if(!Mundo.getInstance().getMensajes().isEmpty()){			
+			msg.add(Mundo.getInstance().getMensajes().remove());
+			Timer ti = new Timer();
+			ti.schedule(new TimerTask() {
+				
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					if(!msg.isEmpty())
+						msg.remove(0);
+				}
+			},6000);
+		}
+				
+		for (String string : msg) {
+			dibujarTextoConSombra(string, 40, g, new Punto2D(150*camX,100-(c*40)*camY));
+			c++;
+			if(c == 4)
+				t = string;
+		}		
+		
+		if(t != null)
+			msg.remove(t);		
+		
+	}
+	
 	public synchronized void dibujar(Graphics2D g, ImageObserver io){
 		//mapa
-		if(this.isStartUpdate()){	
-			g.translate(-camX, -camY);			
-			for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
-				for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
-					Mundo.getInstance().getMap().getMapa()[x][y].getTile().dibujar(g, io, new Punto2D(x, y));
-					if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null)
-						Mundo.getInstance().getMap().getMapa()[x][y].getObjeto().dibujar(g, io, new Punto2D(x, y));
+		if(this.isStartUpdate()){
+			if(!Mundo.getInstance().isFinJuego()){
+				g.translate(-camX, -camY);			
+				for(int x = 0 ; x < Mundo.getInstance().getMap().getSize().getX(); x++){
+					for(int y = 0 ; y < Mundo.getInstance().getMap().getSize().getY(); y++){
+						Mundo.getInstance().getMap().getMapa()[x][y].getTile().dibujar(g, io, new Punto2D(x, y));
+						if(Mundo.getInstance().getMap().getMapa()[x][y].getObjeto() != null)
+							Mundo.getInstance().getMap().getMapa()[x][y].getObjeto().dibujar(g, io, new Punto2D(x, y));
+					}
+				}
+				
+				if(!Mundo.getInstance().getBombas().isEmpty()){
+					for (Bomba bomba : Mundo.getInstance().getBombas()) {
+						if(bomba != null)
+							bomba.dibujarBomba(g,io);
+					}
+				}
+				
+				//jugadores
+				Mundo.getInstance().getJugador().dibujar(g, io);
+				for (Jugador j : Mundo.getInstance().getJugadores()) {
+					j.dibujar(g, io);
+				}
+				
+				//fps
+				//g.translate(0, 0);
+				//dibujarTexto("FPS: " + fps, 16, g, new Punto2D(5+camX, 15+camY));
+				
+				if(Mundo.getInstance().getJugador().isMuerto()){				
+					getTextura("gameover").dibujarTextura(g, io, new Punto2D(camX, camY));
+				}
+				
+				mostrarMensaje(g);
+			}else{				
+				if(Mundo.getInstance().getJugador().isGanador()){
+					getTextura("ganador").dibujarTextura(g, io, new Punto2D(0, 0));
+					dibujarTextoConSombra("El juego finaliza en: "+ t , 40, Color.RED, g, new Punto2D(200, 250));
+				}else{
+					getTextura("gameover").dibujarTextura(g, io, new Punto2D(0, 0));
+					if(Mundo.getInstance().getGanador() != null)
+						dibujarTextoConSombra("El ganador fue: "+ Mundo.getInstance().getGanador().getNombre() , 40, Color.RED, g, new Punto2D(200, 200));
+					else
+						dibujarTextoConSombra("Empate", 40, Color.RED, g, new Punto2D(200, 200));
+					dibujarTextoConSombra("El juego finaliza en: "+ t , 40, Color.RED, g, new Punto2D(200, 250));
+				}
+				
+				try {
+					t--;
+					Thread.sleep(1000);					
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(t< 0){
+					Bomberman.getInstancia().dispose();
 				}
 			}
-			
-			if(!Mundo.getInstance().getBombas().isEmpty()){
-				for (Bomba bomba : Mundo.getInstance().getBombas()) {
-					if(bomba != null)
-						bomba.dibujarBomba(g,io);
-				}
-			}
-			
-			//jugadores
-			Mundo.getInstance().getJugador().dibujar(g, io);
-			for (Jugador j : Mundo.getInstance().getJugadores()) {
-				j.dibujar(g, io);
-			}
-			
-			//fps
-			//g.translate(0, 0);
-			//dibujarTexto("FPS: " + fps, 16, g, new Punto2D(5+camX, 15+camY));
-			
-			if(Mundo.getInstance().getJugador().isMuerto()){				
-				getTextura("gameover").dibujarTextura(g, io, new Punto2D(camX, camY));
-			}
-			
-			
 		}else{
 			dibujarTexto("Esperando por los otros jugadores",20, g, new Punto2D(250, 300));
 		}
@@ -299,7 +374,7 @@ public class Engine {
 			
 			//fin update
 		    
-			 
+			
 			//repaint
 			juego.repaint();
 			
