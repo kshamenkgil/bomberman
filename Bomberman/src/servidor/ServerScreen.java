@@ -40,25 +40,26 @@ public class ServerScreen extends JFrame {
 		final JButton btnNewButton = new JButton("Iniciar servidor");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(server == null){
+				if(server == null){					
 					server = new Server(sc);
 					new Thread(server, "Servidor").start();
-					btnNewButton.setText("Parar servidor");
-					while(!server.isRunning()){
+					//btnNewButton.setText("Parar servidor");
+					//consola.setText("");						
+				}else{
+				
+					/*server.dispose();
+					while(server.isRunning() && server.isRunning2()){
 						try {
 							Thread.sleep(1);
-						} catch (InterruptedException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
+						} catch (Exception e2) {
+							// TODO: handle exception
 						}
 					}
-					consola.append("Cantidad de jugadores actual: "+ server.getCantPlayers() +"\n");
-					consola.append("Ingrese /help para mas informacion\n");					
-				}else{
-					server.dispose();
 					server = null;
 					btnNewButton.setText("Iniciar servidor");
-					//consola.append("Ya hay una instancia del servidor corriendo!\n");
+					consola.setText("Se detuvo el servidor\n");*/
+					//consola.append("Cantidad de jugadores ahora es :" + server.getCantPlayers() + "\n");
+					consola.append("Ya hay una instancia del servidor corriendo!\n");
 				}					
 			}
 		});
@@ -68,9 +69,11 @@ public class ServerScreen extends JFrame {
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//if(server != null)
+				if(server != null)
 					//cerrar server
-				System.exit(0);
+					server.dispose();
+				else
+					System.exit(0);
 			}
 		});
 		btnSalir.setBounds(238, 247, 172, 40);

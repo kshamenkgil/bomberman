@@ -11,7 +11,7 @@ import bomberman.Punto2D;
 
 public class Server implements Runnable{
 	
-	private static boolean isRunning;
+	private static boolean isRunning,isRunning2;
 	private int connectedUsers;
 	private byte lastId;
 	private ArrayList<ThreadServer> connections = new ArrayList<ThreadServer>();
@@ -30,13 +30,14 @@ public class Server implements Runnable{
 		return pantalla;
 	}
 	
-	public boolean dispose(){
+	public synchronized void dispose(){
 		//guardar stats
-		
+		getPantalla().consola.append("Guardando info...");
 		//cerrar sockets
-		if(serverSocket != null){
+	/*	if(serverSocket != null){
 			for (ThreadServer threadServer : connections) {
-				threadServer.closeSocket();
+				threadServer.terminate();
+				//threadServer.closeSocket();
 			}
 			try {
 				serverSocket.close();
@@ -45,9 +46,11 @@ public class Server implements Runnable{
 				e.printStackTrace();
 			}
 		}
+		
 		//salir
-		setRunning(false);
-		return true;
+		setRunning2(false);
+		setRunning(false);*/
+		System.exit(0);
 	}
 	
 	public static void setPantalla(ServerScreen pantalla) {
@@ -72,6 +75,8 @@ public class Server implements Runnable{
         try {
             serverSocket = new ServerSocket(24556);
             getPantalla().consola.append("Servidor escuchando en puerto 24556\n");
+            getPantalla().consola.append("Cantidad de jugadores actual: "+ getCantPlayers() +"\n");
+            getPantalla().consola.append("Ingrese /help para mas informacion\n");
             //System.out.println("Servidor escuchando en puerto 24556");
             
         } catch (IOException e) {
@@ -80,13 +85,13 @@ public class Server implements Runnable{
         	Thread.currentThread().interrupt();
         }
 		
-		isRunning = true;
+		isRunning2 = true;
 		
 		Mundo.getInstance().setCantPlayers(cantPlayers);
 		
 		MapAutoGeneration mAG = new MapAutoGeneration(new Punto2D(30, 30), 0.1);// , 0.05);
 		
-		while(isRunning){
+		while(isRunning2){
 			Socket entrante = null;
 			try {
 				entrante = serverSocket.accept();
@@ -137,7 +142,7 @@ public class Server implements Runnable{
 			this.lastId++;
 			this.connectedUsers++;
 			if(this.connectedUsers == this.cantPlayers)				
-				setRunning(false);
+				setRunning2(false);
 			
 		}
 		
@@ -162,6 +167,14 @@ public class Server implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
+	}
+	
+	public static void setRunning2(boolean isRunning2) {
+		Server.isRunning2 = isRunning2;
+	}
+	
+	public boolean isRunning2() {
+		return isRunning2;
 	}
 	
 	public boolean isRunning() {
