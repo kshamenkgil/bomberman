@@ -29,7 +29,7 @@ public class pantallaRanking extends JFrame {
 	private JPanel contentPane;
 	private ArrayList<String>listado= new ArrayList<String>();
 	private Conector con;
-	/**
+	/** 
 	 * Create the frame.
 	 */
 	public pantallaRanking() {

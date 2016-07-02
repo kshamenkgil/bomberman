@@ -23,7 +23,7 @@ public class pantallaPrincipal extends JFrame {
 	public JTextField textUsuario;
 	public JTextField textPuntuacion;
 	private ArrayList<String>listado= new ArrayList<String>();
-	private Conector con;
+	private Conector con; 
 
 	/**
 	 * Create the frame.

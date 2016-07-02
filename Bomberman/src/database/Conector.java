@@ -21,7 +21,7 @@ public class Conector {
 	public void close(){
 		try{
 			connect.close();
-		}catch(Exception e){
+		}catch(Exception e){ 
 			e.printStackTrace();
 		}
 	}
