@@ -42,10 +42,10 @@ public class pantallaIngreso extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
+		contentPane.setLayout(null); 
 		
 		//conectar con el server		
-		try {
+		try { 
 			Bomberman.getInstancia().conectar();	
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "No se pudo conectar con el servidor");

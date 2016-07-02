@@ -11,6 +11,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import database.Conector;
 import database.DatosJugador;
@@ -21,7 +22,8 @@ public class pantallaPrincipal extends JFrame {
 	private JPanel contentPane;
 	public JTextField textUsuario;
 	public JTextField textPuntuacion;
-	private Conector con;
+	private ArrayList<String>listado= new ArrayList<String>();
+	private Conector con; 
 
 	/**
 	 * Create the frame.
@@ -96,6 +98,12 @@ public class pantallaPrincipal extends JFrame {
 		JComboBox comboUsuariosEnLinea = new JComboBox();
 		comboUsuariosEnLinea.setToolTipText("");
 		comboUsuariosEnLinea.setBounds(10, 97, 158, 22);
+		con =  new Conector();
+		con.connect();
+		listado = con.enlinea();
+		
+		for(String l : listado)
+			comboUsuariosEnLinea.addItem(l);
 		contentPane.add(comboUsuariosEnLinea);
 		
 		JLabel lblUsuariosEnLinea = new JLabel("Usuarios en linea:");
@@ -106,7 +114,7 @@ public class pantallaPrincipal extends JFrame {
 		btnRanking.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				pantallaRanking pRanking = new pantallaRanking();
+				pantallaRanking pRanking = new pantallaRanking(); 
 				pRanking.setVisible(true);				
 			}
 		});
