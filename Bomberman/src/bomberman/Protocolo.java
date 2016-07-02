@@ -2,6 +2,8 @@ package bomberman;
 
 import java.nio.charset.Charset;
 
+import javax.swing.JOptionPane;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 //import com.google.gson.Gson;
@@ -37,6 +39,9 @@ public class Protocolo {
 	public static final byte DESCONEXION = 8;
 	public static final byte GET_POTENCIADOR = 9;
 	public static final byte CONEXION = 10;
+	public static final byte READY = 11;
+	public static final byte INICIAR_SESION = 12;
+	public static final byte DESCONEXION_USER = 13;
 	public static final byte JSON = 123;
 	
 	//Direcciones
@@ -57,7 +62,7 @@ public class Protocolo {
 	
 	public void procesarEntrada(byte[] data){
 		byte header = data[0];
-		switch(header){
+		switch(header){			
 			case CONEXION:
 				setParametrosIniciales(data[1]);
 				break;
@@ -67,7 +72,7 @@ public class Protocolo {
 				setPotenciador(id0, pot);
 				break;
 			case MURIO_JUGADOR:
-				byte id1 = data[1];
+				byte id1 = data[1];				
 				for (Jugador j : Mundo.getInstance().getJugadores()) {
 					if(j.getId() == id1)
 						j.setMuerto(true);
@@ -132,6 +137,7 @@ public class Protocolo {
 		
 		Mundo.getInstance().setJugador(j);
 		Mundo.getInstance().getJugador().id = id1;
+		Mundo.getInstance().getJugador().setNombre(Bomberman.getInstancia().getCliente().getUserName());
 		
 	}
 
@@ -141,14 +147,14 @@ public class Protocolo {
 		if(o.get("header").getAsString().compareTo("startInfo") == 0){
 			JsonArray ja = o.getAsJsonArray("jugadores");
 			for (JsonElement jsonElement : ja) {				
-				//String nombre = jsonElement.getAsJsonObject().get("name").getAsString();
+				String nombre = jsonElement.getAsJsonObject().get("name").getAsString();				
 				byte id = (byte)jsonElement.getAsJsonObject().get("id").getAsInt();
 				int x = jsonElement.getAsJsonObject().get("x").getAsInt();
 				int y = jsonElement.getAsJsonObject().get("y").getAsInt();				
 				int rx = jsonElement.getAsJsonObject().get("rx").getAsInt();
 				int ry = jsonElement.getAsJsonObject().get("ry").getAsInt();
 				
-				if(id == Mundo.getInstance().getJugador().getId()){
+				if(id == Mundo.getInstance().getJugador().getId()){					
 					Mundo.getInstance().getJugador().setPosicion(new Punto2D(x, y));
 					Mundo.getInstance().getJugador().setPosicionRelativa(new Punto2D(rx, ry));
 				}
@@ -159,6 +165,7 @@ public class Protocolo {
 					j.setSprites(new Sprite("p"+idd+"n", true),new Sprite("p"+idd+"s", true),
 							 new Sprite("p"+idd+"e", true),new Sprite("p"+idd+"o", true),
 							 new Sprite("p"+idd+"m", true));
+					j.setNombre(nombre);
 					Mundo.getInstance().getJugadores().add(j);
 				}
 			}
@@ -249,6 +256,15 @@ public class Protocolo {
 			
 			Mundo.getInstance().getMap().getMapa()[(int)ap.getPos().getX()][(int)ap.getPos().getY()].setPotenciador(null);
 			
+		}else if(o.get("header").getAsString().compareTo("iniciar_sesion") == 0){
+			//String s = "{'header' : 'iniciar_sesion', 'estado': 'ok', 'puntos': usuario.puntos}";
+			if(o.get("estado").getAsString().compareTo("ok") == 0){
+				Bomberman.getInstancia().getCliente().setLogged(true);
+				Bomberman.getInstancia().getCliente().setPuntosJugador(o.get("puntos").getAsInt());
+			}
+			else{
+				Bomberman.getInstancia().getCliente().setErrorLog(true);
+			}
 		}
 		
 	}

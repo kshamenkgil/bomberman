@@ -37,7 +37,7 @@ public class MapAutoGeneration {
 	
 	/*private ArrayList<Tile> explotables = new ArrayList<Tile>();
 	private ArrayList<Tile> rompibles = new ArrayList<Tile>();*/
-	public MapAutoGeneration(Punto2D size, double porcPot, double porcBloq) {
+	public MapAutoGeneration(Punto2D size, double porcPot){//, double porcBloq) {
 		long seed = Calendar.getInstance().getTimeInMillis();
 		Random rnd = new Random();
 		rnd.setSeed(seed);
@@ -49,7 +49,7 @@ public class MapAutoGeneration {
 				int op = rnd.nextInt(3);
 				//int hasPotenciador = rnd.nextInt(2);
 				boolean hasPotenciador = rnd.nextDouble() < porcPot;
-				boolean esNoRompible = rnd.nextDouble() < porcBloq;
+				//boolean esNoRompible = rnd.nextDouble() < porcBloq;
 				boolean seRompe = rnd.nextDouble() < 0.5;
 				TileMap t = null;
 				//if(potCounter < nPotenciadores)
@@ -70,9 +70,9 @@ public class MapAutoGeneration {
 								break;*/
 						}
 					}else{
-							if(esNoRompible == true)
+							/*if(esNoRompible == true)
 								t = new TileMap(new Tile(false, true, new Sprite("bl", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
-							else
+							else*/
 								t = new TileMap(new Tile(true, true, new Sprite("ex", false, true),new Punto2D(x*Engine.TILE_WIDTH, y*Engine.TILE_HEIGHT)), null);
 					}
 					//potCounter++;

@@ -29,6 +29,7 @@ public class Engine {
 	private static Engine instancia;
 	private InputHandler input = new InputHandler();
 	
+	private pantallaIngreso pantalla;
 	private GameScreen juego;
 	private boolean startUpdate = false;
 	private int fpsCounter = 0;
@@ -65,15 +66,24 @@ public class Engine {
 			t.getTileSprite().setLooping(false);
 			tiles.add(t);
 		}*/
-		
-		
-		
 		juego = new GameScreen();
 		juego.setVisible(true);
+		
+
 		//setStartUpdate(true);
 		
 	}
+	
+	
 		
+	public GameScreen getJuego() {
+		return juego;
+	}
+
+	public void setJuego(GameScreen juego) {
+		this.juego = juego;
+	}
+
 	public void cargarTexturas(String set){
 		//personajes
 		
@@ -237,7 +247,7 @@ public class Engine {
 		offsetMaxY = (float) (Mundo.getInstance().getMap().getSize().y*TILE_HEIGHT - Configuracion.getInstancia().getScreenY());
 		
 		//reproducir musica
-		//MidiPlayer.getInstancia().play("m1", true);
+		MidiPlayer.getInstancia().play("m1", true);
 		
 		long lastTime = Calendar.getInstance().getTimeInMillis();
 		//long lag = 0;
@@ -297,7 +307,7 @@ public class Engine {
 			
 						
 			fpsCounter++;
-		}	
+		}	 
 		
 		Bomberman.getInstancia().dispose();
 							

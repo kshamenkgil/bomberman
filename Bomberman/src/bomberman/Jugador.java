@@ -24,6 +24,10 @@ public class Jugador extends Personaje {
 		this.cantBombasActual = 0;		
 	}	
 		
+	public String getNombre() {
+		return nombre;
+	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}

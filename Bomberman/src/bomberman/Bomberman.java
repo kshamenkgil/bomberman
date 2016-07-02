@@ -1,5 +1,6 @@
 package bomberman;
 
+import javax.swing.JOptionPane;
 
 public class Bomberman {
 	
@@ -47,17 +48,24 @@ public class Bomberman {
 		SonidoManager.getInstancia().agregarSonido("pasos", new Sonido("assets/sonidos/pasos.wav"));
 	}
 	
-	public void run() {
-		cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
-			
-		//cambiar por "p"+(id+1)+"s", etc
+	public void conectar(){
 		
 		Engine.getInstancia().cargarTexturas("bomberman1/");
 				
 		cargarSonidos();
-		cargarMusica();			
-				
-		cliente.recieveData();
+		
+		cargarMusica();
+		
+		try{
+			cliente = new Cliente(Configuracion.getInstancia().getIp(), Configuracion.getInstancia().getPuerto());
+			cliente.recieveData();
+		}catch(Exception e){			
+			JOptionPane.showMessageDialog(null, "No se pudo conectar con el servidor");			
+		}
+	}
+	
+	public void run() {		
+		
 		Engine.getInstancia().inicializarVentana();			
 		
 		Engine.getInstancia().update();
