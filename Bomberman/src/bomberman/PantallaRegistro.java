@@ -11,6 +11,8 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -28,6 +30,28 @@ public class PantallaRegistro extends JFrame {
 	private DatosJugador jugador;
 	private Conector con;
 
+	public static String hash(String pass)throws NoSuchAlgorithmException {
+		
+		String passwordToHash = pass;
+        String generatedPassword = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(passwordToHash.getBytes());
+            byte[] bytes = md.digest();
+            StringBuilder sb = new StringBuilder();
+            for(int i=0; i< bytes.length ;i++)
+            {
+                sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = sb.toString();
+        } 
+        catch (NoSuchAlgorithmException e) 
+        {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+		
+	}
 	
 	public PantallaRegistro() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,13 +68,20 @@ public class PantallaRegistro extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String password = new String(pass.getPassword());
 				String confirm = new String(pass.getPassword());
+				String pass = null;
+				try 
+				{
+					pass = hash(password);
+				} catch (NoSuchAlgorithmException e) {
+					e.printStackTrace();
+				}
 				String user = new String(usuario.getText());
 				if(password.equals(confirm)){
 					con = new Conector();
 					con.connect();
 					while(con.usuarioRepetido(user))
 						new UsuarioRepetido().setVisible(true);
-					jugador = new DatosJugador(user,password);
+					jugador = new DatosJugador(user,pass);
 					con.connect();
 					con.grabarJugador(jugador);
 					new Registrado().setVisible(true);

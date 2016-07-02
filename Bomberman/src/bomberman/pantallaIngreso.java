@@ -16,7 +16,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.awt.event.ActionEvent;
+import bomberman.PantallaRegistro;
 
 public class pantallaIngreso extends JFrame {
 
@@ -70,7 +73,11 @@ public class pantallaIngreso extends JFrame {
 		btnIngresar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String s = "{'header' : 'iniciar_sesion',";							
-				s+="'user':"+textUsuario.getText()+",'password':"+new String(textPassword.getPassword())+"}";
+				try {
+					s+="'user':"+textUsuario.getText()+",'password':"+ PantallaRegistro.hash(new String(textPassword.getPassword()))+"}";
+				} catch (NoSuchAlgorithmException e1) {
+					e1.printStackTrace();
+				}
 				Bomberman.getInstancia().getCliente().sendData(s.getBytes(Charset.forName("UTF-8")));
 				userName = textUsuario.getText();
 				while(!Bomberman.getInstancia().getCliente().isLogged() && !Bomberman.getInstancia().getCliente().isErrorLog()){
